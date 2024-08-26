@@ -1,0 +1,244 @@
+import React, { useState, useEffect } from 'react';
+import Sidebar from '../../sidebar';
+import { useNavigate, useParams } from 'react-router-dom';
+import { fetchEventById, addEvent, updateEvent } from '../../../../api/events/events_api'; // Adjust the path as needed
+
+export default function AddEvents() {
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const [formData, setFormData] = useState({
+        metaTitle: '',
+        metaKeyword: '',
+        metaDescription: '',
+        eventName: '',
+        eventDate: '',
+        eventImage: null
+    });
+    const [previewUrl, setPreviewUrl] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState({});
+
+    useEffect(() => {
+        if (id !== 'add') {
+            fetchEvent(id);
+        }
+    }, [id]);
+
+    const fetchEvent = async (id) => {
+        try {
+            const response = await fetchEventById(id);
+            setFormData(response.data);
+            if (response.data.eventImage) {
+                setPreviewUrl(`https://star-estate-api.onrender.com/uploads/events/${response.data.eventImage}`);
+            }
+        } catch (err) {
+            console.error('Failed to fetch data:', err);
+        }
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const valid = validateImage(file);
+            if (valid) {
+                setFormData(prevState => ({
+                    ...prevState,
+                    eventImage: file
+                }));
+                setPreviewUrl(URL.createObjectURL(file));
+            } else {
+                setPreviewUrl('');
+            }
+        }
+    };
+
+    const validateImage = (file) => {
+        const allowedTypes = ["image/png", "image/webp", "image/jpeg"];
+        if (!allowedTypes.includes(file.type)) {
+            alert("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
+            return false;
+        }
+        return true;
+    };
+
+    const validateForm = () => {
+        const errors = {};
+        if (!formData.eventName) errors.eventName = 'Event Name is required';
+        if (!formData.eventDate) errors.eventDate = 'Date is required';
+        if (!formData.eventImage) errors.eventImage = 'Image is required';
+        return errors;
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const errors = validateForm();
+        if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
+
+        const data = new FormData();
+        for (const key in formData) {
+            if (formData[key] !== null && formData[key] !== '') {
+                data.append(key, formData[key]);
+            }
+        }
+        
+        setLoading(true);
+
+        try {
+            let response;
+            if (id !== 'add') {
+                response = await updateEvent(id, data);
+            } else {
+                response = await addEvent(data);
+            }
+            console.log('Success:', response.data);
+            navigate('/events');
+        } catch (error) {
+            console.error('Error:', error.response ? error.response.data : error.message);
+            alert('An error occurred. Please try again.');
+        }
+        setLoading(false);
+    };
+
+    return (
+        <div>
+            <Sidebar />
+            <div>
+                <div className="midde_cont">
+                    <div className="container-fluid">
+                        <div className="row column_title">
+                            <div className="col-md-12">
+                                <div className="page_title">
+                                    <h2>{id === 'add' ? 'Add Events' : 'Edit Events'}</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row column1">
+                            <div className="col-md-12">
+                                <div className="white_shd full margin_bottom_30">
+                                    <div className="full graph_head">
+                                        <button 
+                                            className="btn btn-primary btn-xs float-right"
+                                            onClick={() => navigate(-1)}
+                                        >
+                                            Back
+                                        </button>
+                                    </div>
+                                    <div className="full price_table padding_infor_info">
+                                        <form onSubmit={handleSubmit} id="add_eventsform" encType="multipart/form-data">
+                                            <div className="form-row">
+                                                <div className="col-md-6 form-group">
+                                                    <label className="label_field">Meta Title</label>
+                                                    <input
+                                                        type="text"
+                                                        name="metaTitle"
+                                                        id="metaTitle"
+                                                        className="form-control"
+                                                        value={formData.metaTitle}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </div>
+                                                <div className="col-md-6 form-group">
+                                                    <label className="label_field">Meta Keyword</label>
+                                                    <input
+                                                        type="text"
+                                                        name="metaKeyword"
+                                                        id="metaKeyword"
+                                                        className="form-control"
+                                                        value={formData.metaKeyword}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </div>
+                                                <div className="col-md-12 form-group">
+                                                    <label className="label_field">Meta Description</label>
+                                                    <textarea
+                                                        name="metaDescription"
+                                                        id="metaDescription"
+                                                        className="form-control"
+                                                        rows="5"
+                                                        value={formData.metaDescription}
+                                                        onChange={handleInputChange}
+                                                    ></textarea>
+                                                </div>
+                                                <div className="col-md-6 form-group">
+                                                    <label className="label_field">Event Name</label>
+                                                    <input
+                                                        type="text"
+                                                        name="eventName"
+                                                        id="eventName"
+                                                        className={`form-control ${validationErrors.eventName ? 'is-invalid' : ''}`}
+                                                        value={formData.eventName}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                    {validationErrors.eventName && (
+                                                        <div className="invalid-feedback">{validationErrors.eventName}</div>
+                                                    )}
+                                                </div>
+                                                <div className="col-md-6 form-group">
+                                                    <label className="label_field">Event Date</label>
+                                                    <input
+                                                        type="date"
+                                                        name="eventDate"
+                                                        id="eventDate"
+                                                        className={`form-control ${validationErrors.eventDate ? 'is-invalid' : ''}`}
+                                                        value={formData.eventDate}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                    {validationErrors.eventDate && (
+                                                        <div className="invalid-feedback">{validationErrors.eventDate}</div>
+                                                    )}
+                                                </div>
+                                                <div className="col-md-6 form-group">
+                                                    <label className="label_field">Event Image</label>
+                                                    <input
+                                                        type="file"
+                                                        name="eventImage"
+                                                        id="eventImage"
+                                                        className={`form-control ${validationErrors.eventImage ? 'is-invalid' : ''}`}
+                                                        onChange={handleFileChange}
+                                                    />
+                                                    {previewUrl && (
+                                                        <img
+                                                            src={previewUrl}
+                                                            alt="Event Image Preview"
+                                                            className="img-thumbnail"
+                                                            width="120"
+                                                            height="70"
+                                                        />
+                                                    )}
+                                                    {validationErrors.eventImage && (
+                                                        <div className="invalid-feedback">{validationErrors.eventImage}</div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className="form-group margin_0">
+                                                <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        id === 'add' ? 'Submit' : 'Update'
+                                                    )}
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
