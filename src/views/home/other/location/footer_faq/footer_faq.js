@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../../sidebar';
 import { fetchFAQs, updateFAQStatus, deleteFAQ } from '../../../../../api/location/footer_faq_api';
 
@@ -7,6 +7,8 @@ export default function FooterFAQ() {
     const [faq, setFAQ] = useState([]);
 
     const { city, projectType } = useParams();
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (city && projectType) {
@@ -57,6 +59,14 @@ export default function FooterFAQ() {
                         <div className="row column1">
                             <div className="col-md-12">
                                 <div className="white_shd full margin_bottom_30">
+                                <div className="full graph_head">
+                                    <button 
+                                    className="btn btn-primary btn-xs float-right"
+                                    onClick={() => navigate(-1)}
+                                >
+                                    Back
+                                </button>
+                                    </div>
                                     <div className="full graph_head">
                                         <Link to={`/addFAQ/${city}/add`} className="btn btn-success btn-xs">Add FAQs</Link>
                                     </div>

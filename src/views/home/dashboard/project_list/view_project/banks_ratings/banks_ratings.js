@@ -35,6 +35,9 @@ export default function ProjectBanksRatings() {
         }
     };
     
+    const handleStatusUpdate = () => {}
+
+    const handleDelete = () => {}
 
    
 

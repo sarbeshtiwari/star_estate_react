@@ -6,6 +6,8 @@ import { fetchDetail, addQuickDetails, updateQuickDetails } from '../../../../..
 const AddQuickDetails = () => {
     const { ids, id } = useParams();
     const [headings, setHeadings] = useState([{ heading: '', data: '', projectname: id }]);
+    const [validationErrors, setValidationErrors] = useState({});
+    const [loading, setLoading] = useState(false);
   
     const navigate = useNavigate();
 
@@ -48,8 +50,30 @@ const AddQuickDetails = () => {
         setHeadings(updatedHeadings);
     };
 
+    const validateForm = () => {
+        const errors = {};
+        headings.forEach((heading, index) => {
+            if (!heading.heading.trim()) {
+                errors[`heading${index}`] = 'Heading is required';
+            }
+            if (!heading.data.trim()) {
+                errors[`data${index}`] = 'Data is required';
+            }
+        });
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        if (!validateForm()) {
+            return; // Stop submission if validation fails
+        }
+
+        setLoading(true)
+
         try {
             let response;
             if (ids !== 'add') {
@@ -65,8 +89,10 @@ const AddQuickDetails = () => {
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while saving data. Please check the console for more details.');
+            alert('An error occurred while saving data. Please try after some time');
         }
+
+        setLoading(false);
     };
 
     return (
@@ -99,13 +125,7 @@ const AddQuickDetails = () => {
                                             <div className="more_fields_container">
                                                 {headings.map((heading, index) => (
                                                     <div className="clone_fields" key={index}>
-                                                        <div className="col-md-6 form-group remove">
-                                                            {headings.length > 1 && (
-                                                                <span onClick={() => removeField(index)}>
-                                                                    <i className="fa fa-times red_color" aria-hidden="true"></i>
-                                                                </span>
-                                                            )}
-                                                        </div>
+                                                       
                                                         <div className="form-row">
                                                             <div className="col-md-6 form-group">
                                                                 <label className="label_field">Heading</label>
@@ -114,8 +134,11 @@ const AddQuickDetails = () => {
                                                                     name="heading"
                                                                     value={heading.heading}
                                                                     onChange={(e) => handleInputChange(e, index)}
-                                                                    className="form-control"
+                                                                    className={`form-control ${validationErrors[`heading${index}`] ? 'is-invalid' : ''}`}
                                                                 />
+                                                                 {validationErrors[`heading${index}`] && (
+                                                                    <div className="text-danger">{validationErrors[`heading${index}`]}</div>
+                                                                )}
                                                             </div>
                                                             <div className="col-md-6 form-group">
                                                                 <label className="label_field">Text</label>
@@ -124,20 +147,67 @@ const AddQuickDetails = () => {
                                                                     name="data"
                                                                     value={heading.data}
                                                                     onChange={(e) => handleInputChange(e, index)}
-                                                                    className="form-control"
+                                                                    className={`form-control ${validationErrors[`data${index}`] ? 'is-invalid' : ''}`}
                                                                 />
+                                                                 {validationErrors[`data${index}`] && (
+                                                                    <div className="text-danger">{validationErrors[`data${index}`]}</div>
+                                                                )}
                                                             </div>
+                                                        </div>
+                                                        <div className="col-md-6 form-group remove">
+                                                            {headings.length > 1 && (
+                                                                <span onClick={() => removeField(index)}>
+                                                                    <button
+                                                                    type="button"
+                                                                    className="btn btn-danger"
+                                                                    onClick={() => removeField(index)}
+                                                                >
+                                                                    Remove
+                                                                </button>
+                                                                </span>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 ))}
                                             </div>
-                                            {ids === 'add' ? (<><span onClick={addMoreFields} className="col-md-12 form-group add-more-link">Add More</span>
+                                            {ids === 'add' ? (<><span onClick={addMoreFields} className="btn btn-primary mb-3 mt-3">Add More</span>
                                             <div className="form-group margin_0">
-                                                <button type="submit" className="main_bt">Submit</button>
+                                           
+                                                    <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Submit'
+                                                    )}
+                                                </button>
+                                              
                                             </div></>): (<>
                                             <div className="form-group margin_0">
-                                                <button type="submit" className="main_bt">Update</button>
+                                            <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Update'
+                                                    )}
+                                                </button>
                                             </div></>)}
+
+                                            
+                                        {/* {id === 'add' ? ( 
+                                                    <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Submit'
+                                                    )}
+                                                </button>) : ( <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Update'
+                                                    )}
+                                                </button>)}
+                                        */}
                                             
                                             <span id="result" className="text-danger mt-4 d-block"></span>
                                         </form>

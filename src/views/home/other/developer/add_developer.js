@@ -51,14 +51,30 @@ export default function AddDeveloper() {
         }));
     };
 
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         const file = e.target.files[0];
-        const valid = validateImage(file);
-        if(valid) 
-            setFormData(prevState => ({
-                ...prevState,
-                developerLogo: file
-            }));
+        
+        if (file) {
+            try {
+                // Validate the file
+                await validateImage(file);
+                
+                // If valid, update form data
+                setFormData(prevState => ({
+                    ...prevState,
+                    developerLogo: file
+                }));
+                
+                // Clear any previous validation errors
+                setValidationErrors(prevErrors => ({ ...prevErrors, developerLogo: '' }));
+            } catch (error) {
+                // Handle validation error
+                setValidationErrors(prevErrors => ({ ...prevErrors, developerLogo: error }));
+            }
+        } else {
+            // Handle case when no file is selected
+            setValidationErrors(prevErrors => ({ ...prevErrors, developerLogo: 'No file selected.' }));
+        }
     };
 
     const validateImage = (file) => {
@@ -94,13 +110,13 @@ export default function AddDeveloper() {
                 }
     
                 if (!allowedTypes.includes(fileType)) {
-                    alert("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
+                    reject("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
                 } else {
                     resolve(file);
                 }
             };
     
-            reader.onerror = () => alert("Error reading file.");
+            reader.onerror = () => reject("Error reading file.");
             reader.readAsArrayBuffer(file);
         });
     };
@@ -306,7 +322,7 @@ export default function AddDeveloper() {
                                                         value={formData.description}
                                                         onChange={handleInputChange}
                                                         className={`form-control ${validationErrors.description ? 'is-invalid' : ''}`}
-                                                        rows="3"
+                                                        rows="7"
                                                         placeholder="Description"
                                                     ></textarea>
                                                     {validationErrors.description && (

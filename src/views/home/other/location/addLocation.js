@@ -62,58 +62,86 @@ export default function AddLocation() {
         });
     };
 
-    const handleFileChange = (e) => {
-        const valid = validateImage(e.target.files[0]);
-        if (valid) {
-            setImage(e.target.files[0]);}
-        else{
-            
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            try {
+                // Validate the file
+                await validateImage(file);
+                
+                // If valid, update the image state
+                setImage(file);
+                
+                // Clear any previous validation errors
+                setValidationErrors(prevErrors => ({ ...prevErrors, image: '' }));
+            } catch (error) {
+                // Handle validation error
+                setValidationErrors(prevErrors => ({ ...prevErrors, image: error }));
+            }
+        } else {
+            // Handle case when no file is selected
+            setValidationErrors(prevErrors => ({ ...prevErrors, image: 'No file selected.' }));
         }
     };
+    
+
+
+    // const handleFileChange = (e) => {
+    //     const valid = validateImage(e.target.files[0]);
+    //     if (valid) {
+    //         try{
+    //         setImage(e.target.files[0]);
+    //         setValidationErrors(prevErrors => ({ ...prevErrors, image: '' }));
+    //     }  catch (error) {
+    //         setValidationErrors(prevErrors => ({ ...prevErrors, image: error }));
+    //     }}
+
+    // };
 
     const validateImage = (file) => {
-        const allowedTypes = ["image/png", "image/webp", "image/jpeg"];
-        const reader = new FileReader();
+    const allowedTypes = ["image/png", "image/webp", "image/jpeg"];
+    const reader = new FileReader();
 
-        return new Promise((resolve, reject) => {
-            reader.onloadend = () => {
-                const arr = new Uint8Array(reader.result).subarray(0, 4);
-                let header = "";
-                for (let i = 0; i < arr.length; i++) {
-                    header += arr[i].toString(16);
-                }
+    return new Promise((resolve, reject) => {
+        reader.onloadend = () => {
+            const arr = new Uint8Array(reader.result).subarray(0, 4);
+            let header = "";
+            for (let i = 0; i < arr.length; i++) {
+                header += arr[i].toString(16).padStart(2, '0'); // Ensure each byte is 2 hex digits
+            }
 
-                let fileType = "";
-                switch (header) {
-                    case "89504e47":
-                        fileType = "image/png";
-                        break;
-                    case "52494646":
-                        fileType = "image/webp";
-                        break;
-                    case "ffd8ffe0":
-                    case "ffd8ffe1":
-                    case "ffd8ffe2":
-                    case "ffd8ffe3":
-                    case "ffd8ffe8":
-                        fileType = "image/jpeg";
-                        break;
-                    default:
-                        fileType = "unknown";
-                        break;
-                }
+            let fileType = "";
+            switch (header) {
+                case "89504e47":
+                    fileType = "image/png";
+                    break;
+                case "52494646":
+                    fileType = "image/webp";
+                    break;
+                case "ffd8ffe0":
+                case "ffd8ffe1":
+                case "ffd8ffe2":
+                case "ffd8ffe3":
+                case "ffd8ffe8":
+                    fileType = "image/jpeg";
+                    break;
+                default:
+                    fileType = "unknown";
+                    break;
+            }
 
-                if (!allowedTypes.includes(fileType)) {
-                    alert("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
-                } else {
-                    resolve(file);
-                }
-            };
+            if (!allowedTypes.includes(fileType)) {
+                reject("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
+            } else {
+                resolve(file);
+            }
+        };
 
-            reader.onerror = () => alert("Error reading file.");
-            reader.readAsArrayBuffer(file);
-        });
-    };
+        reader.onerror = () => reject("Error reading file.");
+        reader.readAsArrayBuffer(file);
+    });
+};
+
 
     
 
@@ -177,6 +205,7 @@ export default function AddLocation() {
                 alert(`Failed to save City: ${result.message}`);
             }
         } catch (error) {
+            alert('Faild to add Data at the moment, Please try after some time.')
             console.error('Error submitting form:', error);
         }
         setLoading(false)

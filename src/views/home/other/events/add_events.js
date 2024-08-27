@@ -44,29 +44,78 @@ export default function AddEvents() {
         }));
     };
 
-    const handleFileChange = (e) => {
+  
+
+    const handleFileChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            const valid = validateImage(file);
-            if (valid) {
+            try {
+                // Validate the file
+                await validateImage(file);
+                
+                // If valid, update form data
                 setFormData(prevState => ({
                     ...prevState,
                     eventImage: file
                 }));
+                
+                // Clear any previous validation errors
+                setValidationErrors(prevErrors => ({ ...prevErrors, eventImage: '' }));
                 setPreviewUrl(URL.createObjectURL(file));
-            } else {
-                setPreviewUrl('');
+            } 
+                
+            catch (error) {
+                // Handle validation error
+                setValidationErrors(prevErrors => ({ ...prevErrors, eventImage: error }));
             }
+        } else {
+            // Handle case when no file is selected
+            setValidationErrors(prevErrors => ({ ...prevErrors, eventImage: 'No file selected.' }));
         }
     };
 
     const validateImage = (file) => {
         const allowedTypes = ["image/png", "image/webp", "image/jpeg"];
-        if (!allowedTypes.includes(file.type)) {
-            alert("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
-            return false;
-        }
-        return true;
+        const reader = new FileReader();
+    
+        return new Promise((resolve, reject) => {
+            reader.onloadend = () => {
+                const arr = new Uint8Array(reader.result).subarray(0, 4);
+                let header = "";
+                for (let i = 0; i < arr.length; i++) {
+                    header += arr[i].toString(16);
+                }
+    
+                let fileType = "";
+                switch (header) {
+                    case "89504e47":
+                        fileType = "image/png";
+                        break;
+                    case "52494646":
+                        fileType = "image/webp";
+                        break;
+                    case "ffd8ffe0":
+                    case "ffd8ffe1":
+                    case "ffd8ffe2":
+                    case "ffd8ffe3":
+                    case "ffd8ffe8":
+                        fileType = "image/jpeg";
+                        break;
+                    default:
+                        fileType = "unknown";
+                        break;
+                }
+    
+                if (!allowedTypes.includes(fileType)) {
+                    reject("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
+                } else {
+                    resolve(file);
+                }
+            };
+    
+            reader.onerror = () => alert("Error reading file.");
+            reader.readAsArrayBuffer(file);
+        });
     };
 
     const validateForm = () => {

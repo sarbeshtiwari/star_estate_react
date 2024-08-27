@@ -8,9 +8,10 @@ import { addSubAmenities, getSubAmenitiyByID, updateSubAmenity } from '../../../
 const AddAmenities = () => {
     const { ids, id } = useParams(); // Assuming ids is the category
     const [headings, setHeadings] = useState([{ image: '', title: '', alt_tag: '', category: ids }]); // State to store dynamic inputs
-    const [showToast, setShowToast] = useState(false);
-    const [toastMessage, setToastMessage] = useState('');
+
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState({});
 
     useEffect(() => {
         if (id !== 'add') {
@@ -51,11 +52,19 @@ const AddAmenities = () => {
     const handleHeadingChange = (index, field, value) => {
         const updatedHeadings = [...headings];
         if (field === 'image') {
-            updatedHeadings[index] = { ...updatedHeadings[index], [field]: value[0] }; // Handle file input
+            validateImage(value[0])
+                .then((file) => {
+                    updatedHeadings[index] = { ...updatedHeadings[index], [field]: file };
+                    setHeadings(updatedHeadings);
+                    setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: '' }));
+                })
+                .catch((error) => {
+                    setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: error }));
+                });
         } else {
             updatedHeadings[index] = { ...updatedHeadings[index], [field]: value };
+            setHeadings(updatedHeadings);
         }
-        setHeadings(updatedHeadings);
     };
 
     const validateImage = (file) => {
@@ -102,10 +111,31 @@ const AddAmenities = () => {
         });
     };
 
+    const validateForm = () => {
+        const errors = {};
+        headings.forEach((heading, index) => {
+            if (!heading.title.trim()) {
+                errors[`title${index}`] = 'Title is required';
+            }
+            if (!heading.alt_tag.trim()) {
+                errors[`alt_tag${index}`] = 'Alt Tag is required';
+            }
+            if (!heading.image) {
+                errors[`image${index}`] = 'Image is required';
+            }
+        });
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
     // Function to handle form submission
    // React component
    const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!validateForm()) {
+        return; // Stop submission if validation fails
+    }
+    setLoading(true);
     try {
         const formData = new FormData();
 
@@ -127,21 +157,16 @@ const AddAmenities = () => {
         }
 
         if (response && response.success) {
-            setToastMessage('Data saved successfully');
-            setShowToast(true);
-            setTimeout(() => setShowToast(false), 2000); // Hide toast after 2 seconds
-            setTimeout(() => navigate(-1), 2000);
+            alert('Data Saved Successfully')
+            navigate(-1);
         } else {
-            setToastMessage(`Failed to save data: ${response.message}`);
-            setShowToast(true);
-            setTimeout(() => setShowToast(false), 2000); // Hide toast after 2 seconds
+            alert('Unable to Save data. Please try after some time')
         }
     } catch (error) {
         console.error('Error:', error);
-        setToastMessage('An error occurred while saving data.');
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 2000); // Hide toast after 2 seconds
+        alert('Unable to Save data. Please try after some time')
     }
+    setLoading(false);
 };
 
 
@@ -154,7 +179,7 @@ const AddAmenities = () => {
                         <div className="row column_title">
                             <div className="col-md-12">
                                 <div className="page_title">
-                                    <h2>Add Amenities</h2>
+                                    <h2>{id === 'add' ? 'Add' : 'Update'} Amenities</h2>
                                 </div>
                             </div>
                         </div>
@@ -175,54 +200,80 @@ const AddAmenities = () => {
                                             <div className="more_fields_container">
                                                 {headings.map((heading, index) => (
                                                     <div className="clone_fields" key={index}>
-                                                        <div className="col-md-6 form-group remove">
-                                                            {index > 0 && (
-                                                                <span onClick={() => removeField(index)}>
-                                                                    <i className="fa fa-times red_color" aria-hidden="true"></i>
-                                                                </span>
-                                                            )}
-                                                        </div>
+                                                        
                                                         <div className="form-row">
                                                             <div className="col-md-6 form-group">
                                                                 <label className="label_field">Title</label>
                                                                 <input
                                                                     type="text"
                                                                     name="title"
-                                                                    className="form-control"
+                                                                    className={`form-control ${validationErrors[`title${index}`] ? 'is-invalid' : ''}`}
                                                                     value={heading.title}
                                                                     onChange={(e) => handleHeadingChange(index, 'title', e.target.value)}
                                                                 />
+                                                                {validationErrors[`title${index}`] && (
+                                                                        <div className="text-danger">{validationErrors[`title${index}`]}</div>
+                                                                    )}
                                                             </div>
                                                             <div className="col-md-6 form-group">
                                                                 <label className="label_field">Alt</label>
                                                                 <input
                                                                     type="text"
                                                                     name="alt_tag"
-                                                                    className="form-control"
+                                                                    className={`form-control ${validationErrors[`alt_tag${index}`] ? 'is-invalid' : ''}`}
                                                                     value={heading.alt_tag}
                                                                     onChange={(e) => handleHeadingChange(index, 'alt_tag', e.target.value)}
                                                                 />
+                                                                {validationErrors[`alt_tag${index}`] && (
+                                                                        <div className="text-danger">{validationErrors[`alt_tag${index}`]}</div>
+                                                                    )}
                                                             </div>
                                                             <div className="col-md-12 form-group">
                                                                 <label className="label_field">Image</label>
                                                                 <input
                                                                     type="file"
                                                                     name="image"
-                                                                    className="form-control"
+                                                                    className={`form-control ${validationErrors[`image${index}`] ? 'is-invalid' : ''}`}
                                                                     onChange={(e) => handleHeadingChange(index, 'image', e.target.files)}
                                                                 />
+                                                                 {validationErrors[`image${index}`] && (
+                                                                        <div className="text-danger">{validationErrors[`image${index}`]}</div>
+                                                                    )}
                                                             </div>
+                                                        </div>
+                                                        <div className="col-md-6 form-group remove">
+                                                            {index > 0 && (
+                                                                <span onClick={() => removeField(index)}>
+                                                                     <button
+                                                                    type="button"
+                                                                    className="btn btn-danger"
+                                                                    onClick={() => removeField(index)}
+                                                                >
+                                                                    Remove
+                                                                </button>
+                                                                </span>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 ))}
                                             </div>
-                                            {id === 'add' ? (<span onClick={addMoreFields} className="col-md-12 form-group">Add More</span>):('')}
-                                            
-
+                                            {id === 'add' ? (<span onClick={addMoreFields} className="btn btn-primary mb-3 mt-3">Add More</span>) : ('') }
                                             <div className="form-group margin_0">
-                                                <input type="hidden" name="Amenities" value="yes" />
-                                                <input type="hidden" name="amcat" value="3" />
-                                                <button type="submit" className="main_bt"> {id === 'add' ? 'Submit' : 'Update'}</button>
+                                                {id === 'add' ? ( 
+                                                    <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Submit'
+                                                    )}
+                                                </button>) : ( <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Update'
+                                                    )}
+                                                </button>)}
+                                               
                                             </div>
                                             <span id="result" className="text-danger mt-4 d-block"></span>
                                         </form>
@@ -232,20 +283,7 @@ const AddAmenities = () => {
                         </div>
                     </div>
                 </div>
-                {/* Toast Notification */}
-                {showToast && (
-                    <div className="toast-container position-fixed bottom-0 end-0 p-3">
-                        <div className="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
-                            <div className="toast-header">
-                                <strong className="me-auto">Notification</strong>
-                                <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                            </div>
-                            <div className="toast-body">
-                                {toastMessage}
-                            </div>
-                        </div>
-                    </div>
-                )}
+                
             </div>
         </div>
     );

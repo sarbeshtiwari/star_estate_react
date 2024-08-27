@@ -15,7 +15,8 @@ export default function AddProject() {
     const [cities, setCities] = useState([]);
     const [developers, setDevelopers] = useState([]);
     const [locality, setLocality] = useState([]);
-    const [loading, setLoading] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState({});
    
     const [formData, setFormData] = useState({
         metaTitle: '',
@@ -57,10 +58,12 @@ export default function AddProject() {
     const fetchLocalities = async (cityId) => {
         try {
             const data = await fetchLocalitiesByCity(cityId);
-            if (data.length === 0) {
-                alert("No data Found");
+            if (!data) {
+                alert("No data Found for this city, add this Locality or choose another city");
+            } else {
+                setLocality(data);
             }
-            setLocality(data);
+            
         } catch (error) {
             console.error('Error fetching localities:', error);
         }
@@ -68,11 +71,24 @@ export default function AddProject() {
 
     const handleChange = async (e) => {
         const { name, value, type, checked, files } = e.target;
+    
         if (type === 'file') {
-            setFormData({
-                ...formData,
-                [name]: files[0]
-            });
+            const file = files[0];
+            
+            // Validate image file
+            try {
+                await validateImage(file);
+                // Update formData if file is valid
+                setFormData({
+                    ...formData,
+                    [name]: file
+                });
+                // Clear any previous validation errors for this field
+                setValidationErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
+            } catch (error) {
+                // Handle validation error
+                setValidationErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+            }
         } else if (type === 'checkbox') {
             setFormData({
                 ...formData,
@@ -90,9 +106,82 @@ export default function AddProject() {
             }
         }
     };
+    
 
+    const validateImage = (file) => {
+        const allowedTypes = ["image/png", "image/webp", "image/jpeg"];
+        const reader = new FileReader();
+    
+        return new Promise((resolve, reject) => {
+            reader.onloadend = () => {
+                const arr = new Uint8Array(reader.result).subarray(0, 4);
+                let header = "";
+                for (let i = 0; i < arr.length; i++) {
+                    header += arr[i].toString(16);
+                }
+    
+                let fileType = "";
+                switch (header) {
+                    case "89504e47":
+                        fileType = "image/png";
+                        break;
+                    case "52494646":
+                        fileType = "image/webp";
+                        break;
+                    case "ffd8ffe0":
+                    case "ffd8ffe1":
+                    case "ffd8ffe2":
+                    case "ffd8ffe3":
+                    case "ffd8ffe8":
+                        fileType = "image/jpeg";
+                        break;
+                    default:
+                        fileType = "unknown";
+                        break;
+                }
+    
+                if (!allowedTypes.includes(fileType)) {
+                    reject("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
+                } else {
+                    resolve(file);
+                }
+            };
+    
+            reader.onerror = () => reject("Error reading file.");
+            reader.readAsArrayBuffer(file);
+        });
+    };
+
+    const validateForm = () => {
+        const errors = {};
+        if (!formData.projectName) errors.projectName = 'Project Name is required';
+        if (!formData.projectAddress) errors.projectAddress = 'Project Address is required';
+        if (!formData.cityLocation) errors.cityLocation = 'Project City is required';
+        if (!formData.projectLocality) errors.projectLocality = 'Project Locality is required';
+        if (!formData.projectConfiguration) errors.projectConfiguration = 'Project Configuration is required';
+        if (!formData.projectBy) errors.projectBy = 'Developer is required';
+        if (!formData.projectType) errors.projectType = 'Project Type is required';
+        if (!formData.projectPrice) errors.projectPrice = 'Project Price is required';
+        if (!formData.rera_no) errors.rera_no = 'Rera No is required';
+        if (!formData.locationMap) errors.locationMap = 'Project Location is required';
+        if (!formData.project_logo) errors.project_logo = 'Project Logo is required';
+        return errors;
+    };
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const errors = validateForm();
+        if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
+        if (formData.project_status.length === 0){  
+            alert( 'At least one Project Status is required');
+            setValidationErrors(errors);
+            return;
+        }
+
+        setLoading(true);
 
         try {
             if (id === 'add') {
@@ -106,6 +195,7 @@ export default function AddProject() {
             console.error('Error submitting form:', error);
             alert('Failed to save project');
         }
+        setLoading(false);
     };
     
 
@@ -176,10 +266,13 @@ export default function AddProject() {
                                                 type="text"
                                                 name="projectName"
                                                 placeholder="Project Name"
-                                                className="form-control"
+                                                className={`form-control ${validationErrors.projectName ? 'is-invalid' : ''}`}
                                                 value={formData.projectName}
                                                 onChange={handleChange}
                                             />
+                                            {validationErrors.projectName && (
+                                                            <div className="invalid-feedback">{validationErrors.projectName}</div>
+                                                        )}
                                         </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">Project Address</label>
@@ -187,16 +280,19 @@ export default function AddProject() {
                                                 type="text"
                                                 name="projectAddress"
                                                 placeholder="Project Address"
-                                                className="form-control"
+                                                className={`form-control ${validationErrors.projectAddress ? 'is-invalid' : ''}`}
                                                 value={formData.projectAddress}
                                                 onChange={handleChange}
                                             />
+                                            {validationErrors.projectAddress && (
+                                                <div className="invalid-feedback">{validationErrors.projectAddress}</div>
+                                            )}
                                         </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">City</label>
                                             <select
                                                 name="cityLocation"
-                                                className="form-control"
+                                                className={`form-control ${validationErrors.cityLocation ? 'is-invalid' : ''}`}
                                                 value={formData.cityLocation}
                                                 onChange={handleChange}
                                             >
@@ -205,12 +301,15 @@ export default function AddProject() {
                                                     <option key={city._id} value={city.location}>{city.location}</option>
                                                 ))}
                                             </select>
+                                            {validationErrors.cityLocation && (
+                                                <div className="invalid-feedback">{validationErrors.cityLocation}</div>
+                                            )}
                                         </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">Locality</label>
                                             <select
                                                 name="projectLocality"
-                                                className="form-control"
+                                                className={`form-control ${validationErrors.projectLocality ? 'is-invalid' : ''}`}
                                                 value={formData.projectLocality}
                                                 onChange={handleChange}
                                             >
@@ -219,6 +318,9 @@ export default function AddProject() {
                                                     <option key={locality._id} value={locality.sub_city}>{locality.sub_city}</option>
                                                 ))}
                                             </select>
+                                            {validationErrors.projectLocality && (
+                                                <div className="invalid-feedback">{validationErrors.projectLocality}</div>
+                                            )}
                                         </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">Project Configuration</label>
@@ -226,16 +328,19 @@ export default function AddProject() {
                                                 type="text"
                                                 name="projectConfiguration"
                                                 placeholder="3 &amp; 4 BHK"
-                                                className="form-control"
+                                                className={`form-control ${validationErrors.projectConfiguration ? 'is-invalid' : ''}`}
                                                 value={formData.projectConfiguration}
                                                 onChange={handleChange}
                                             />
+                                            {validationErrors.projectConfiguration && (
+                                                <div className="invalid-feedback">{validationErrors.projectConfiguration}</div>
+                                            )}
                                         </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">Project BY</label>
                                             <select
                                                 name="projectBy"
-                                                className="form-control"
+                                                className={`form-control ${validationErrors.projectBy ? 'is-invalid' : ''}`}
                                                 value={formData.projectBy}
                                                 onChange={handleChange}
                                             >
@@ -244,6 +349,9 @@ export default function AddProject() {
                                                     <option key={developers._id} value={developers.developersName}>{developers.developerName}</option>
                                                 ))}
                                             </select>
+                                            {validationErrors.projectBy && (
+                                                <div className="invalid-feedback">{validationErrors.projectBy}</div>
+                                            )}
                                         </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">Project Type</label>
@@ -251,10 +359,13 @@ export default function AddProject() {
                                                 type="text"
                                                 name="projectType"
                                                 placeholder="Ex - Independent Floor"
-                                                className="form-control"
+                                                className={`form-control ${validationErrors.projectType ? 'is-invalid' : ''}`}
                                                 value={formData.projectType}
                                                 onChange={handleChange}
                                             />
+                                            {validationErrors.projectType && (
+                                                <div className="invalid-feedback">{validationErrors.projectType}</div>
+                                            )}
                                         </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">Project Price</label>
@@ -262,10 +373,13 @@ export default function AddProject() {
                                                 type="text"
                                                 name="projectPrice"
                                                 placeholder="Ex - 4 Cr/Lakhs/K"
-                                                className="form-control"
+                                                className={`form-control ${validationErrors.projectPrice ? 'is-invalid' : ''}`}
                                                 value={formData.projectPrice}
                                                 onChange={handleChange}
                                             />
+                                            {validationErrors.projectPrice && (
+                                                <div className="invalid-feedback">{validationErrors.projectPrice}</div>
+                                            )}
                                         </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">IVR Number</label>
@@ -284,10 +398,13 @@ export default function AddProject() {
                                                 type="text"
                                                 name="locationMap"
                                                 placeholder="Ex - https://goo.gl/maps/8HFai3e5fxvCc5Q78"
-                                                className="form-control"
+                                                className={`form-control ${validationErrors.locationMap ? 'is-invalid' : ''}`}
                                                 value={formData.locationMap}
                                                 onChange={handleChange}
                                             />
+                                            {validationErrors.locationMap && (
+                                                <div className="invalid-feedback">{validationErrors.locationMap}</div>
+                                            )}
                                         </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">RERA No.</label>
@@ -295,10 +412,13 @@ export default function AddProject() {
                                                 type="text"
                                                 name="rera_no"
                                                 placeholder="Ex -XXXXXXXXXXX"
-                                                className="form-control"
+                                                className={`form-control ${validationErrors.rera_no ? 'is-invalid' : ''}`}
                                                 value={formData.rera_no}
                                                 onChange={handleChange}
                                             />
+                                            {validationErrors.rera_no && (
+                                                <div className="invalid-feedback">{validationErrors.rera_no}</div>
+                                            )}
                                         </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">City Priority</label>
@@ -415,19 +535,38 @@ export default function AddProject() {
                                                         onChange={handleChange}
                                                     /> Recent
                                                 </label>
+                                                
                                             </div>
+                                            
+                                           
                                         </div>
                                         <div className="col-md-12 form-group">
                                             <label className="label_field">Project Logo</label>
                                             <input
                                                 type="file"
                                                 name="project_logo"
-                                                className="form-control"
+                                                className={`form-control ${validationErrors.project_logo ? 'is-invalid' : ''}`}
                                                 onChange={handleChange}
                                             />
+                                            {validationErrors.project_logo && (
+                                                <div className="invalid-feedback">{validationErrors.project_logo}</div>
+                                            )}
                                         </div>
                                         <div className="col-md-12 form-group">
-                                            <button type="submit" className="main_bt">{id === 'add' ? 'Submit' : 'Update'}</button>
+                                        {id === 'add' ? ( 
+                                                    <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Submit'
+                                                    )}
+                                                </button>) : ( <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Update'
+                                                    )}
+                                                </button>)}
                                         </div>
                                     </div>
                                 </form>

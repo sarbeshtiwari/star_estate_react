@@ -9,6 +9,7 @@ const AddLocationAdvantages = () => {
     const {id} = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState({});
 
     useEffect(() => {
         if(id !== 'add'){
@@ -20,7 +21,7 @@ const AddLocationAdvantages = () => {
         try{
             const data = await getLocationAdvantagesByID(id);
             setHeadings([{ ...data}]);
-        }catch{
+        }catch(error){
             console.log('Error fetching data', error);
             setHeadings([{image: '', title: '', alt_tag: ''}]);
         }
@@ -42,60 +43,89 @@ const AddLocationAdvantages = () => {
    const handleHeadingChange = (index, field, value) => {
     const updatedHeadings = [...headings];
     if (field === 'image') {
-        updatedHeadings[index] = { ...updatedHeadings[index], [field]: value[0] }; // Handle file input
+        validateImage(value[0])
+            .then((file) => {
+                updatedHeadings[index] = { ...updatedHeadings[index], [field]: file };
+                setHeadings(updatedHeadings);
+                setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: '' }));
+            })
+            .catch((error) => {
+                setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: error }));
+            });
     } else {
         updatedHeadings[index] = { ...updatedHeadings[index], [field]: value };
+        setHeadings(updatedHeadings);
     }
-    setHeadings(updatedHeadings);
 };
 
-const validateImage = (file) => {
-    const allowedTypes = ["image/png", "image/webp", "image/jpeg"];
-    const reader = new FileReader();
+    const validateImage = (file) => {
+        const allowedTypes = ["image/png", "image/webp", "image/jpeg"];
+        const reader = new FileReader();
 
-    return new Promise((resolve, reject) => {
-        reader.onloadend = () => {
-            const arr = new Uint8Array(reader.result).subarray(0, 4);
-            let header = "";
-            for (let i = 0; i < arr.length; i++) {
-                header += arr[i].toString(16);
+        return new Promise((resolve, reject) => {
+            reader.onloadend = () => {
+                const arr = new Uint8Array(reader.result).subarray(0, 4);
+                let header = "";
+                for (let i = 0; i < arr.length; i++) {
+                    header += arr[i].toString(16);
+                }
+
+                let fileType = "";
+                switch (header) {
+                    case "89504e47":
+                        fileType = "image/png";
+                        break;
+                    case "52494646":
+                        fileType = "image/webp";
+                        break;
+                    case "ffd8ffe0":
+                    case "ffd8ffe1":
+                    case "ffd8ffe2":
+                    case "ffd8ffe3":
+                    case "ffd8ffe8":
+                        fileType = "image/jpeg";
+                        break;
+                    default:
+                        fileType = "unknown";
+                        break;
+                }
+
+                if (!allowedTypes.includes(fileType)) {
+                    reject("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
+                } else {
+                    resolve(file);
+                }
+            };
+
+            reader.onerror = () => reject("Error reading file.");
+            reader.readAsArrayBuffer(file);
+        });
+    };
+
+    const validateForm = () => {
+        const errors = {};
+        headings.forEach((heading, index) => {
+            if (!heading.title.trim()) {
+                errors[`title${index}`] = 'Title is required';
             }
-
-            let fileType = "";
-            switch (header) {
-                case "89504e47":
-                    fileType = "image/png";
-                    break;
-                case "52494646":
-                    fileType = "image/webp";
-                    break;
-                case "ffd8ffe0":
-                case "ffd8ffe1":
-                case "ffd8ffe2":
-                case "ffd8ffe3":
-                case "ffd8ffe8":
-                    fileType = "image/jpeg";
-                    break;
-                default:
-                    fileType = "unknown";
-                    break;
+            if (!heading.alt_tag.trim()) {
+                errors[`alt_tag${index}`] = 'Alt Tag is required';
             }
-
-            if (!allowedTypes.includes(fileType)) {
-                reject("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
-            } else {
-                resolve(file);
+            if (!heading.image) {
+                errors[`image${index}`] = 'Image is required';
             }
-        };
+        });
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
 
-        reader.onerror = () => reject("Error reading file.");
-        reader.readAsArrayBuffer(file);
-    });
-};
 
-    // Function to handle form submission
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        if (!validateForm()) {
+            return; // Stop submission if validation fails
+        }
         setLoading(true);
         try {
             const formData = new FormData();
@@ -118,13 +148,14 @@ const validateImage = (file) => {
             }
     
             if (response && response.success) {
-                setTimeout(() => navigate(-1), 1000);
+                alert('Data Saved Successfully')
+                navigate(-1);
             } else {
-                
+                alert('Unable to Save data. Please try after some time')
             }
         } catch (error) {
             console.error('Error:', error);
-         
+            alert('Unable to Save data. Please try after some time')
             
         }
         setLoading(false);
@@ -160,49 +191,65 @@ const validateImage = (file) => {
                                             <div className="more_fields_container">
                                                 {headings.map((heading, index) => (
                                                     <div className="clone_fields" key={index}>
-                                                        <div className="col-md-6 form-group remove">
-                                                            {index > 0 && (
-                                                                <span onClick={() => removeField(index)}>
-                                                                    <i className="fa fa-times red_color" aria-hidden="true"></i>
-                                                                </span>
-                                                            )}
-                                                        </div>
+                                                        
                                                         <div className="form-row">
                                                             <div className="col-md-6 form-group">
                                                                 <label className="label_field">Title</label>
                                                                 <input
                                                                     type="text"
                                                                     name="title"
-                                                                    className="form-control"
+                                                                    className={`form-control ${validationErrors[`title${index}`] ? 'is-invalid' : ''}`}
                                                                     value={heading.title}
                                                                     onChange={(e) => handleHeadingChange(index, 'title', e.target.value)}
                                                                 />
+                                                                {validationErrors[`title${index}`] && (
+                                                                        <div className="text-danger">{validationErrors[`title${index}`]}</div>
+                                                                    )}
                                                             </div>
                                                             <div className="col-md-6 form-group">
                                                                 <label className="label_field">Alt</label>
                                                                 <input
                                                                     type="text"
                                                                     name="alt_tag"
-                                                                    className="form-control"
+                                                                    className={`form-control ${validationErrors[`alt_tag${index}`] ? 'is-invalid' : ''}`}
                                                                     value={heading.alt_tag}
                                                                     onChange={(e) => handleHeadingChange(index, 'alt_tag', e.target.value)}
                                                                 />
+                                                                {validationErrors[`alt_tag${index}`] && (
+                                                                        <div className="text-danger">{validationErrors[`alt_tag${index}`]}</div>
+                                                                    )}
                                                             </div>
                                                             <div className="col-md-12 form-group">
                                                                 <label className="label_field">Icon</label>
                                                                 <input
                                                                     type="file"
                                                                     name="image"
-                                                                    className="form-control"
+                                                                    className={`form-control ${validationErrors[`image${index}`] ? 'is-invalid' : ''}`}
                                                                     onChange={(e) => handleHeadingChange(index, 'image', e.target.files)}
                                                                 
                                                                 />
+                                                                {validationErrors[`image${index}`] && (
+                                                                        <div className="text-danger">{validationErrors[`image${index}`]}</div>
+                                                                    )}
                                                             </div>
+                                                        </div>
+                                                        <div className="col-md-6 form-group remove">
+                                                            {index > 0 && (
+                                                                <span onClick={() => removeField(index)}>
+                                                                     <button
+                                                                    type="button"
+                                                                    className="btn btn-danger"
+                                                                    onClick={() => removeField(index)}
+                                                                >
+                                                                    Remove
+                                                                </button>
+                                                                </span>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 ))}
                                             </div>
-                                            {id === 'add' ? (<span onClick={addMoreFields} className="col-md-12 form-group">Add More</span>) : ('') }
+                                            {id === 'add' ? (<span onClick={addMoreFields} className="btn btn-primary mb-3 mt-3">Add More</span>) : ('') }
                                             <div className="form-group margin_0">
                                                 {id === 'add' ? ( 
                                                     <button className="main_bt" type="submit" disabled={loading}>

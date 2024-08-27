@@ -87,8 +87,10 @@ export default function LuxuryPropery(){
         });
         doc.save('data.pdf');
     };
-   
 
+    const deleteluxury = () => {}
+
+    
     return (
     <>
     <div >

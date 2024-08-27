@@ -37,7 +37,7 @@ export const getProjectbanksRatings = async (id) => {
     try{
         const response = await axios.get(`${$API_URL}/getProjectbanksRatings/${id}`);
         return response.data;
-    } catch{
+    } catch (error){
         console.error('Error:', error.response ? error.response.data : error.message);
         throw error;
     }

@@ -89,6 +89,7 @@ export const getSubAmenitiyByID = async (id) => {
 
 export const updateSubAmenity = async (id, formData) => {
     try {
+        console.log(formData)
         const response = await axios.put(`${BASE_URL}/updateSubAmenities/${id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'

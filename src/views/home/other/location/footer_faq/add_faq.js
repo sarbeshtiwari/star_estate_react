@@ -8,6 +8,8 @@ const AddFAQ = () => {
     const [faqType, setFaqType] = useState('');
     const [headings, setHeadings] = useState([{ faqType: '', faqQuestion: '', faqAnswer: '', city: ids }]);
     const navigate = useNavigate();
+    const [validationErrors, setValidationErrors] = useState({});
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (id !== 'add') {
@@ -62,8 +64,29 @@ const AddFAQ = () => {
         setHeadings(updatedHeadings);
     };
 
+const validateForm = () => {
+        const errors = {};
+        headings.forEach((heading, index) => {
+            if (!heading.faqType.trim()) {
+                errors[`faqType`] = 'Faq Type is required';
+            }
+            if (!heading.faqQuestion.trim()) {
+                errors[`faqQuestion${index}`] = 'Question is required';
+            }
+            if (!heading.faqAnswer.trim()) {
+                errors[`faqAnswer${index}`] = 'Answer is required';
+            }
+        });
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!validateForm()) {
+            return; // Stop submission if validation fails
+        }
+        setLoading(true);
         try {
             let response;
             if (id !== 'add') {
@@ -123,7 +146,7 @@ const AddFAQ = () => {
                                                         name="faqType"
                                                         value={faqType}
                                                         onChange={handleFaqTypeChange}
-                                                        className="form-control"
+                                                        className={`form-control ${validationErrors[`faqType`] ? 'is-invalid' : ''}`}
                                                     >
                                                         <option value="">Select Type</option>
                                                         <option value="residential">Residential</option>
@@ -133,18 +156,15 @@ const AddFAQ = () => {
                                                         <option value="commercial">Commercial</option>
                                                         <option value="studio">Studio</option>
                                                     </select>
+                                                    {validationErrors[`faqType`] && (
+                                                                    <div className="text-danger">{validationErrors[`faqType`]}</div>
+                                                                )}
                                                 </div>
                                             </div>
                                             <div className="more_fields_container">
                                                 {headings.map((heading, index) => (
                                                     <div className="clone_fields" key={index}>
-                                                        <div className="col-md-6 form-group remove">
-                                                            {headings.length > 1 && (
-                                                                <span onClick={() => removeField(index)}>
-                                                                    <i className="fa fa-times red_color" aria-hidden="true"></i>
-                                                                </span>
-                                                            )}
-                                                        </div>
+                                                       
                                                         <div className="form-row">
                                                             <div className="col-md-6 form-group">
                                                                 <label className="label_field">Question</label>
@@ -153,8 +173,11 @@ const AddFAQ = () => {
                                                                     name="faqQuestion"
                                                                     value={heading.faqQuestion}
                                                                     onChange={(e) => handleInputChange(e, index)}
-                                                                    className="form-control"
-                                                                />
+                                                                    className={`form-control ${validationErrors[`faqQuestion${index}`] ? 'is-invalid' : ''}`}
+                                                                    />
+                                                                     {validationErrors[`faqQuestion${index}`] && (
+                                                                        <div className="text-danger">{validationErrors[`faqQuestion${index}`]}</div>
+                                                                    )}
                                                             </div>
                                                             <div className="col-md-6 form-group">
                                                                 <label className="label_field">Answer</label>
@@ -163,19 +186,50 @@ const AddFAQ = () => {
                                                                     name="faqAnswer"
                                                                     value={heading.faqAnswer}
                                                                     onChange={(e) => handleInputChange(e, index)}
-                                                                    className="form-control"
+                                                                    className={`form-control ${validationErrors[`faqAnswer${index}`] ? 'is-invalid' : ''}`}
                                                                 />
+                                                                 {validationErrors[`faqAnswer${index}`] && (
+                                                                    <div className="text-danger">{validationErrors[`faqAnswer${index}`]}</div>
+                                                                )}
                                                             </div>
+                                                        </div>
+                                                        <div className="col-md-6 form-group remove">
+                                                            {headings.length > 1 && (
+                                                                <span onClick={() => removeField(index)}>
+                                                                     <button
+                                                                    type="button"
+                                                                    className="btn btn-danger"
+                                                                    onClick={() => removeField(index)}
+                                                                >
+                                                                    Remove
+                                                                </button>
+                                                                </span>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 ))}
                                             </div>
-                                            <span onClick={addMoreFields} className="col-md-12 form-group add-more-link">Add More</span>
+                                            {id === 'add' ? (<><span onClick={addMoreFields} className="btn btn-primary mb-3 mt-3">Add More</span>
                                             <div className="form-group margin_0">
-                                                <input type="hidden" name="Amenities" value="yes" />
-                                                <input type="hidden" name="amcat" value="3" />
-                                                <button type="submit" className="main_bt">Submit</button>
-                                            </div>
+                                           
+                                                    <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Submit'
+                                                    )}
+                                                </button>
+                                              
+                                            </div></>): (<>
+                                            <div className="form-group margin_0">
+                                            <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Update'
+                                                    )}
+                                                </button>
+                                            </div></>)}
                                             <span id="result" className="text-danger mt-4 d-block"></span>
                                         </form>
                                     </div>

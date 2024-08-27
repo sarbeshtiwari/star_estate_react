@@ -49,7 +49,7 @@ export const fetchFAQById = async (faqId) => {
 // Update existing FAQs
 export const updateFAQ = async (projectId, faqArray) => {
     try {
-        const response = await axios.put(`${API_URL}/updateFaq/${projectId}`, { faqArray });
+        const response = await axios.put(`${API_URL}/updateFaq/${projectId}`,  faqArray);
         return response.data;
     } catch (error) {
         console.error('Error updating FAQ:', error);

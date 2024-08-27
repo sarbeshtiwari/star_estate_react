@@ -3,15 +3,18 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 const Overview = ({ isOpen, onClose, description }) => {
-  if (!isOpen) return null;
   
   const { id } = useParams();
   const [editorHtml, setEditorHtml] = useState('');
+  
+  
 
   // Use useEffect to update editorHtml when description changes
   useEffect(() => {
     setEditorHtml(description);
   }, [description]);
+  
+  if (!isOpen) return null;
 
   return (
     <div className="modal show" tabIndex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden={!isOpen} style={{ display: 'block' }}>

@@ -163,25 +163,25 @@ export default function Sidebar() {
     const toggleOther = () => setShowOther(!showOther);
     const toggleEnquiry = () => setShowEnquiry(!showEnquiry);
 
-    // useEffect(() => {
-    //     // Timer for session logout
-    //     const countdown = setInterval(() => {
-    //         setTimeLeft(prevTime => {
-    //             if (prevTime <= 0) {
-    //                 clearInterval(countdown);
-    //                 alert('Your session has ended.');
-    //                 handleLogout();
-    //                 return 0;
-    //             }
-    //             if (prevTime <= 120) {
-    //                 setWarningMessage('Your session will expire shortly!');
-    //             }
-    //             return prevTime - 1;
-    //         });
-    //     }, 1000);
+    useEffect(() => {
+        // Timer for session logout
+        const countdown = setInterval(() => {
+            setTimeLeft(prevTime => {
+                if (prevTime <= 0) {
+                    clearInterval(countdown);
+                    alert('Your session has ended.');
+                    handleLogout();
+                    return 0;
+                }
+                if (prevTime <= 120) {
+                    setWarningMessage('Your session will expire shortly!');
+                }
+                return prevTime - 1;
+            });
+        }, 1000);
 
-    //     return () => clearInterval(countdown);
-    // }, []);
+        return () => clearInterval(countdown);
+    }, []);
 
     const formatTime = (seconds) => {
         if (seconds <= 0) return '0m 0s';

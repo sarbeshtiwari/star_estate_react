@@ -11,8 +11,8 @@ export default function AddBrochureWalkthrough() {
         walkthrough: '',
         projectname: id
     });
-
-    const [status, setStatus] = useState('');
+    const [validationErrors, setValidationErrors] = useState({});
+    const [loading, setLoading] = useState(false);
 
 
     useEffect(() => {
@@ -40,13 +40,100 @@ export default function AddBrochureWalkthrough() {
         });
     };
 
-    const handleBrochureChange = (e) => {
+    const handleBrochureChange = async (e) => {
         const file = e.target.files[0];
-        setFormData(prevState => ({
-            ...prevState,
-            brochure: file
-        }));
+        
+        if (file) {
+            try {
+                // Validate the file
+                await validateFile(file);
+                
+                // If valid, update form data
+                setFormData(prevState => ({
+                    ...prevState,
+                    brochure: file
+                }));
+                
+                // Clear any previous validation errors for this file
+                setValidationErrors(prevErrors => ({ ...prevErrors, brochure: '' }));
+            } catch (error) {
+                // Handle validation error
+                setValidationErrors(prevErrors => ({ ...prevErrors, brochure: error }));
+            }
+        } else {
+            // Handle case when no file is selected
+            setValidationErrors(prevErrors => ({ ...prevErrors, brochure: 'No file selected.' }));
+        }
     };
+    
+    const validateFile = (file) => {
+        const allowedTypes = [
+            "application/pdf",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        ];
+        
+        return new Promise((resolve, reject) => {
+            // Check if the file type is allowed
+            if (!allowedTypes.includes(file.type)) {
+                return reject("Only PDF and DOCX formats are allowed.");
+            }
+    
+            // Check the file size (5 MB limit)
+            const maxSize = 5 * 1024 * 1024; // 5 MB in bytes
+            if (file.size > maxSize) {
+                return reject("File size must be less than 5 MB.");
+            }
+    
+            // Check the file signature using binary data
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const arrayBuffer = reader.result;
+                const dataView = new DataView(arrayBuffer);
+                
+                const isPDF = dataView.getUint8(0) === 0x25 &&
+                    dataView.getUint8(1) === 0x50 &&
+                    dataView.getUint8(2) === 0x44 &&
+                    dataView.getUint8(3) === 0x46;
+    
+                const isDOCX = dataView.getUint8(0) === 0x50 &&
+                    dataView.getUint8(1) === 0x4b &&
+                    dataView.getUint8(2) === 0x03 &&
+                    dataView.getUint8(3) === 0x04;
+    
+                if (isPDF || isDOCX) {
+                    resolve(file);
+                } else {
+                    reject("Invalid file format.");
+                }
+            };
+    
+            reader.onerror = () => reject("Error reading file.");
+            reader.readAsArrayBuffer(file);
+        });
+    };
+    
+    
+    
+
+    const validateForm = () => {
+        const errors = {};
+        
+            if (!formData.walkthrough) {
+                errors.walkthrough = 'Walkthrough is required';
+            }
+            if (!formData.brochure) {
+                errors.brochure = 'Brochure is required';
+            }
+       
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
+
+
+
+     
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -57,6 +144,11 @@ export default function AddBrochureWalkthrough() {
         //         data.append(key, formData[key]);
         //     }
         // }
+        if (!validateForm()) {
+            return; // Stop submission if validation fails
+        }
+
+        setLoading(true);
 
         try {
             if (ids !== 'add') {
@@ -68,6 +160,7 @@ export default function AddBrochureWalkthrough() {
         } catch (error) {
             console.error('Error:', error.message);
         }
+        setLoading(false);
 
     };
 
@@ -97,7 +190,7 @@ return (
                                 </button>
                             </div>
                             <div className="full price_table padding_infor_info">
-                                {status && <span className="status text-danger">{status}</span>}
+
                                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                                     <div className="form-row">
                                         <div className="col-md-6 form-group">
@@ -108,8 +201,11 @@ return (
                                                 id="walkthrough" 
                                                 value={formData.walkthrough} 
                                                 onChange={handleWalkthroughChange} 
-                                                className="form-control" 
+                                                className={`form-control ${validationErrors.walkthrough ? 'is-invalid' : ''}`}
                                             />
+                                            {validationErrors.walkthrough && (
+                                                <div className="text-danger">{validationErrors.walkthrough}</div>
+                                            )}
                                         </div>
                                         <div className="col-md-6 form-group">
                                             <label className="label_field">Brochure</label>
@@ -118,14 +214,35 @@ return (
                                                 name="brochure" 
                                                 id="brochure" 
                                                 onChange={handleBrochureChange} 
-                                                className="form-control" 
+                                                className={`form-control ${validationErrors.brochure ? 'is-invalid' : ''}`}
                                             />
+                                            {validationErrors.brochure && (
+                                                <div className="text-danger">{validationErrors.brochure}</div>
+                                            )}
                                         </div>
                                     </div>
-                                    <div className="form-group margin_0">
-                                        <button className="main_bt" type="submit">Submit</button>
-                                    </div>
-                                    <span id="result" className="text-danger mt-4 d-block">{status}</span>
+                                    {ids === 'add' ? (
+                                            <div className="form-group margin_0">
+                                           
+                                                    <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Submit'
+                                                    )}
+                                                </button>
+                                              
+                                            </div>): (<>
+                                            <div className="form-group margin_0">
+                                            <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Update'
+                                                    )}
+                                                </button>
+                                            </div></>)}
+                                    
                                 </form>
                             </div>
                         </div>

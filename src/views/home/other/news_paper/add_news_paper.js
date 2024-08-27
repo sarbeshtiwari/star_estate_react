@@ -9,6 +9,7 @@ export default function AddNewsPaper() {
     const { id } = useParams();
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
+    const [previewUrl, setPreviewUrl] = useState('');
 
     const [formData, setFormData] = useState({
         metaTitle: '',
@@ -31,22 +32,43 @@ export default function AddNewsPaper() {
 
     const fetchNews = async (id) => {
         try {
+            setLoading(true)
             const response = await fetchNewsById(id);
             setFormData(response.data);
         } catch (err) {
             console.error('Failed to fetch data:', err);
         }
+        setLoading(false)
     };
 
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         const file = e.target.files[0];
-        const valid = validateImage(file);
-        if (valid)
-            setFormData(prevState => ({
-                ...prevState,
-                [e.target.name]: file
-            }));
+        const { name } = e.target;
+    
+        if (file) {
+            try {
+                // Validate the image
+                await validateImage(file);
+    
+                // If valid, update form data
+                setFormData(prevState => ({
+                    ...prevState,
+                    [name]: file
+                }));
+    
+                // Clear any previous validation errors for this file
+                setValidationErrors(prevErrors => ({ ...prevErrors, [name]: '' }));
+                setPreviewUrl(URL.createObjectURL(file));
+            } catch (error) {
+                // Handle validation error
+                setValidationErrors(prevErrors => ({ ...prevErrors, [name]: error }));
+            }
+        } else {
+            // Handle case when no file is selected
+            setValidationErrors(prevErrors => ({ ...prevErrors, [name]: 'No file selected.' }));
+        }
     };
+    
 
     const validateImage = (file) => {
         const allowedTypes = ["image/png", "image/webp", "image/jpeg"];
@@ -81,13 +103,13 @@ export default function AddNewsPaper() {
                 }
     
                 if (!allowedTypes.includes(fileType)) {
-                    alert("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
+                    reject("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
                 } else {
                     resolve(file);
                 }
             };
     
-            reader.onerror = () => alert("Error reading file.");
+            reader.onerror = () => reject("Error reading file.");
             reader.readAsArrayBuffer(file);
         });
     };
@@ -151,10 +173,6 @@ export default function AddNewsPaper() {
         setLoading(false);
     };
 
-    // Helper function to create a URL for the image preview
-    const getFilePreviewUrl = (file) => {
-        return file ? URL.createObjectURL(file) : '';
-    };
 
     return (
         <div>
@@ -298,7 +316,7 @@ export default function AddNewsPaper() {
                                                     />
                                                     {formData.newsThumb && (
                                                         <img
-                                                            // src={getFilePreviewUrl(formData.newsThumb)}
+                                                            src={previewUrl}
                                                             alt="Thumbnail Preview"
                                                             className="img-thumbnail mt-2"
                                                             width="120"
@@ -320,7 +338,7 @@ export default function AddNewsPaper() {
                                                     />
                                                     {formData.newsImage && (
                                                         <img
-                                                            // src={getFilePreviewUrl(formData.newsImage)}
+                                                            src={previewUrl}
                                                             alt="Image Preview"
                                                             className="img-thumbnail mt-2"
                                                             width="120"

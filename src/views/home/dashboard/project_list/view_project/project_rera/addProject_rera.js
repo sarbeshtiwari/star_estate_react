@@ -7,7 +7,9 @@ import { addProjectRera, getProjectReraByID, updateProjectRera } from '../../../
 const AddProjectRERA = () => {
     const { ids, id} = useParams();
     const [headings, setHeadings] = useState([{ image: '', title: '',  reraHeading: '', reraWebsite: '', projectname: id}]);
-   
+    const [validationErrors, setValidationErrors] = useState({});
+    const [loading, setLoading] = useState(false);
+  
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -20,7 +22,7 @@ const AddProjectRERA = () => {
         try{
             const data = await getProjectReraByID(ids);
             setHeadings([{ ...data}]);
-        }catch{
+        }catch(error){
             console.log('Error fetching data', error);
             setHeadings([{image: '', title: '', reraHeading: '', reraWebsite: '', projectname: id}]);
         }
@@ -42,16 +44,95 @@ const AddProjectRERA = () => {
    const handleHeadingChange = (index, field, value) => {
     const updatedHeadings = [...headings];
     if (field === 'image') {
-        updatedHeadings[index] = { ...updatedHeadings[index], [field]: value[0] }; // Handle file input
+        validateImage(value[0])
+            .then((file) => {
+                updatedHeadings[index] = { ...updatedHeadings[index], [field]: file };
+                setHeadings(updatedHeadings);
+                setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: '' }));
+            })
+            .catch((error) => {
+                setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: error }));
+            });
     } else {
         updatedHeadings[index] = { ...updatedHeadings[index], [field]: value };
+        setHeadings(updatedHeadings);
     }
-    setHeadings(updatedHeadings);
 };
 
-    // Function to handle form submission
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+const validateImage = (file) => {
+    const allowedTypes = ["image/png", "image/webp", "image/jpeg"];
+    const reader = new FileReader();
+
+    return new Promise((resolve, reject) => {
+        reader.onloadend = () => {
+            const arr = new Uint8Array(reader.result).subarray(0, 4);
+            let header = "";
+            for (let i = 0; i < arr.length; i++) {
+                header += arr[i].toString(16);
+            }
+
+            let fileType = "";
+            switch (header) {
+                case "89504e47":
+                    fileType = "image/png";
+                    break;
+                case "52494646":
+                    fileType = "image/webp";
+                    break;
+                case "ffd8ffe0":
+                case "ffd8ffe1":
+                case "ffd8ffe2":
+                case "ffd8ffe3":
+                case "ffd8ffe8":
+                    fileType = "image/jpeg";
+                    break;
+                default:
+                    fileType = "unknown";
+                    break;
+            }
+
+            if (!allowedTypes.includes(fileType)) {
+                reject("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
+            } else {
+                resolve(file);
+            }
+        };
+
+        reader.onerror = () => reject("Error reading file.");
+        reader.readAsArrayBuffer(file);
+    });
+};
+
+const validateForm = () => {
+    const errors = {};
+    headings.forEach((heading, index) => {
+        if (!heading.title.trim()) {
+            errors[`title${index}`] = 'Title is required';
+        }
+        if (!heading.reraHeading.trim()) {
+            errors[`reraHeading${index}`] = 'Rera Heading is required';
+        }
+        if (!heading.reraWebsite.trim()) {
+            errors[`reraWebsite${index}`] = 'Rera Website is required';
+        }
+        if (!heading.image) {
+            errors[`image${index}`] = 'Image is required';
+        }
+    });
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+};
+
+
+const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!validateForm()) {
+        return; // Stop submission if validation fails
+    }
+
+    setLoading(true)
+
         try {
             const formData = new FormData();
     
@@ -82,6 +163,7 @@ const AddProjectRERA = () => {
          
             
         }
+        setLoading(false);
     };
 
     return (
@@ -114,64 +196,101 @@ const AddProjectRERA = () => {
                                             <div className="more_fields_container">
                                                 {headings.map((heading, index) => (
                                                     <div className="clone_fields" key={index}>
-                                                        <div className="col-md-6 form-group remove">
-                                                            {index > 0 && (
-                                                                <span onClick={() => removeField(index)}>
-                                                                    <i className="fa fa-times red_color" aria-hidden="true"></i>
-                                                                </span>
-                                                            )}
-                                                        </div>
+                                                        
                                                         <div className="form-row">
                                                             <div className="col-md-6 form-group">
                                                                 <label className="label_field">RERA Heading</label>
                                                                 <input
                                                                     type="text"
                                                                     name="reraHeading"
-                                                                    className="form-control"
+                                                                    
                                                                     value={heading.reraHeading}
                                                                     onChange={(e) => handleHeadingChange(index, 'reraHeading', e.target.value)}
-                                                                />
+                                                                    className={`form-control ${validationErrors[`reraHeading${index}`] ? 'is-invalid' : ''}`}
+                                                                    />
+                                                                     {validationErrors[`reraHeading${index}`] && (
+                                                                        <div className="text-danger">{validationErrors[`reraHeading${index}`]}</div>
+                                                                    )}
                                                             </div>
                                                             <div className="col-md-6 form-group">
                                                                 <label className="label_field">RERA Website</label>
                                                                 <input
                                                                     type="text"
                                                                     name="reraWebsite"
-                                                                    className="form-control"
+                                                                   
                                                                     value={heading.reraWebsite}
                                                                     onChange={(e) => handleHeadingChange(index, 'reraWebsite', e.target.value)}
-                                                                />
+                                                                    className={`form-control ${validationErrors[`reraWebsite${index}`] ? 'is-invalid' : ''}`}
+                                                                    />
+                                                                     {validationErrors[`reraWebsite${index}`] && (
+                                                                        <div className="text-danger">{validationErrors[`reraWebsite${index}`]}</div>
+                                                                    )}
                                                             </div>
                                                             <div className="col-md-6 form-group">
                                                                 <label className="label_field">Title</label>
                                                                 <input
                                                                     type="text"
                                                                     name="title"
-                                                                    className="form-control"
+                                                                  
                                                                     value={heading.title}
                                                                     onChange={(e) => handleHeadingChange(index, 'title', e.target.value)}
-                                                                />
+                                                                    className={`form-control ${validationErrors[`title${index}`] ? 'is-invalid' : ''}`}
+                                                                    />
+                                                                     {validationErrors[`title${index}`] && (
+                                                                        <div className="text-danger">{validationErrors[`title${index}`]}</div>
+                                                                    )}
                                                             </div>
                                                             <div className="col-md-6 form-group">
                                                                 <label className="label_field">Image</label>
                                                                 <input
                                                                     type="file"
                                                                     name="image"
-                                                                    className="form-control"
+                                                                    
                                                                     onChange={(e) => handleHeadingChange(index, 'image', e.target.files)}
                                                                 
-                                                                />
+                                                                    className={`form-control ${validationErrors[`image${index}`] ? 'is-invalid' : ''}`}
+                                                                    />
+                                                                     {validationErrors[`image${index}`] && (
+                                                                        <div className="text-danger">{validationErrors[`image${index}`]}</div>
+                                                                    )}
                                                             </div>
+                                                        </div>
+                                                        <div className="col-md-6 form-group remove">
+                                                            {index > 0 && (
+                                                                <span onClick={() => removeField(index)}>
+                                                                    <button
+                                                                    type="button"
+                                                                    className="btn btn-danger"
+                                                                    onClick={() => removeField(index)}
+                                                                >
+                                                                    Remove
+                                                                </button>
+                                                                </span>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 ))}
                                             </div>
-                                            {ids === 'add' ? (<><span onClick={addMoreFields} className="col-md-12 form-group">Add More</span>
+                                            {ids === 'add' ? (<><span onClick={addMoreFields} className="btn btn-primary mb-3 mt-3">Add More</span>
                                             <div className="form-group margin_0">
-                                                <button type="submit" className="main_bt">Submit</button>
-                                            </div></>) : (<>
+                                           
+                                                    <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Submit'
+                                                    )}
+                                                </button>
+                                              
+                                            </div></>): (<>
                                             <div className="form-group margin_0">
-                                                <button type="submit" className="main_bt">Update</button>
+                                            <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Update'
+                                                    )}
+                                                </button>
                                             </div></>)}
                                             
                                             <span id="result" className="text-danger mt-4 d-block"></span>

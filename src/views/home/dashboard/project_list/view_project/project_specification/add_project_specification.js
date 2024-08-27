@@ -6,7 +6,9 @@ import { fetchDetailById, addProjectSpecifications, updateProjectSpecifications 
 const AddProjectSpecification = () => {
     const { ids, id } = useParams();
     const [headings, setHeadings] = useState([{ title: '', value: '', projectname: id }]); // Initialize with one entry
-   
+    const [validationErrors, setValidationErrors] = useState({});
+    const [loading, setLoading] = useState(false);
+  
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -51,8 +53,29 @@ const AddProjectSpecification = () => {
         setHeadings(updatedHeadings);
     };
 
+    const validateForm = () => {
+        const errors = {};
+        headings.forEach((heading, index) => {
+            if (!heading.title.trim()) {
+                errors[`title${index}`] = 'Title is required';
+            }
+            if (!heading.value.trim()) {
+                errors[`value${index}`] = 'Value is required';
+            }
+        });
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        if (!validateForm()) {
+            return; // Stop submission if validation fails
+        }
+
+        setLoading(true)
         try {
             let response;
 
@@ -74,6 +97,7 @@ const AddProjectSpecification = () => {
             console.error('Error:', error);
             alert('An error occurred while saving data. Please check the console for more details.');
         }
+        setLoading(false);
     };
 
     return (
@@ -106,13 +130,7 @@ const AddProjectSpecification = () => {
                                             <div className="more_fields_container">
                                                 {headings.map((heading, index) => (
                                                     <div className="clone_fields" key={index}>
-                                                        <div className="col-md-6 form-group remove">
-                                                            {headings.length > 1 && (
-                                                                <span onClick={() => removeField(index)}>
-                                                                    <i className="fa fa-times red_color" aria-hidden="true"></i>
-                                                                </span>
-                                                            )}
-                                                        </div>
+                                                        
                                                         <div className="form-row">
                                                             <div className="col-md-6 form-group">
                                                                 <label className="label_field">Title</label>
@@ -121,8 +139,11 @@ const AddProjectSpecification = () => {
                                                                     name="title"
                                                                     value={heading.title}
                                                                     onChange={(e) => handleInputChange(e, index)}
-                                                                    className="form-control"
-                                                                />
+                                                                    className={`form-control ${validationErrors[`title${index}`] ? 'is-invalid' : ''}`}
+                                                                    />
+                                                                     {validationErrors[`title${index}`] && (
+                                                                        <div className="text-danger">{validationErrors[`title${index}`]}</div>
+                                                                    )}
                                                             </div>
                                                             <div className="col-md-6 form-group">
                                                                 <label className="label_field">Value</label>
@@ -131,17 +152,50 @@ const AddProjectSpecification = () => {
                                                                     name="value"
                                                                     value={heading.value}
                                                                     onChange={(e) => handleInputChange(e, index)}
-                                                                    className="form-control"
-                                                                />
+                                                                    className={`form-control ${validationErrors[`value${index}`] ? 'is-invalid' : ''}`}
+                                                                    />
+                                                                     {validationErrors[`value${index}`] && (
+                                                                        <div className="text-danger">{validationErrors[`value${index}`]}</div>
+                                                                    )}
                                                             </div>
+                                                        </div>
+                                                        <div className="col-md-6 form-group remove">
+                                                            {headings.length > 1 && (
+                                                                <span onClick={() => removeField(index)}>
+                                                                   <button
+                                                                    type="button"
+                                                                    className="btn btn-danger"
+                                                                    onClick={() => removeField(index)}
+                                                                >
+                                                                    Remove
+                                                                </button>
+                                                                </span>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 ))}
                                             </div>
-                                            {ids === 'add' ? (<span onClick={addMoreFields} className="col-md-12 form-group add-more-link">Add More</span>) : ('')}
+                                            {ids === 'add' ? (<><span onClick={addMoreFields} className="btn btn-primary mb-3 mt-3">Add More</span>
                                             <div className="form-group margin_0">
-                                                <button type="submit" className="main_bt">Submit</button>
-                                            </div>
+                                           
+                                                    <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Submit'
+                                                    )}
+                                                </button>
+                                              
+                                            </div></>): (<>
+                                            <div className="form-group margin_0">
+                                            <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Update'
+                                                    )}
+                                                </button>
+                                            </div></>)}
                                         </form>
                                     </div>
                                 </div>

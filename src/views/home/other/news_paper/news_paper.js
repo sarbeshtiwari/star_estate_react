@@ -5,6 +5,7 @@ import { fetchNews, updateNewsStatus, deleteNews } from '../../../../api/news/ne
 
 export default function NewsPaper() {
     const [news, setNews] = useState([]);
+    
 
     useEffect(() => {
         fetchNewsData();

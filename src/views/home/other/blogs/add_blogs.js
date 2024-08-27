@@ -8,6 +8,7 @@ export default function AddBlogs() {
     const { id } = useParams();
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
+    const [previewUrl, setPreviewUrl] = useState('');
 
     const [formData, setFormData] = useState({
         metaTitle: '',
@@ -46,15 +47,33 @@ export default function AddBlogs() {
         });
     };
 
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         const file = e.target.files[0];
-        const valid = validateImage(file);
-        if(valid) 
-            setFormData(prevState => ({
-                ...prevState,
-                blogsImage: file
-            }));
+        
+        if (file) {
+            try {
+                // Validate the file
+                await validateImage(file);
+                
+                // If valid, update form data
+                setFormData(prevState => ({
+                    ...prevState,
+                    blogsImage: file
+                }));
+                
+                // Clear any previous validation errors
+                setValidationErrors(prevErrors => ({ ...prevErrors, blogsImage: '' }));
+                setPreviewUrl(URL.createObjectURL(file));
+            } catch (error) {
+                // Handle validation error
+                setValidationErrors(prevErrors => ({ ...prevErrors, blogsImage: error }));
+            }
+        } else {
+            // Handle case when no file is selected
+            setValidationErrors(prevErrors => ({ ...prevErrors, blogsImage: 'No file selected.' }));
+        }
     };
+    
 
     const validateImage = (file) => {
         const allowedTypes = ["image/png", "image/webp", "image/jpeg"];
@@ -89,7 +108,7 @@ export default function AddBlogs() {
                 }
     
                 if (!allowedTypes.includes(fileType)) {
-                    alert("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
+                    reject("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
                 } else {
                     resolve(file);
                 }
@@ -277,7 +296,7 @@ export default function AddBlogs() {
                                                     />
                                                     {formData.blogsImage && (
                                                         <img
-                                                            // src={getImagePreviewUrl()}
+                                                            src={previewUrl}
                                                             alt="Blogs Image"
                                                             className="img-thumbnail mt-2"
                                                             width="120"

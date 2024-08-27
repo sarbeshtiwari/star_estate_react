@@ -9,8 +9,8 @@ export const fetchProjects = async (id) => {
         return response.data;
        
     } catch (err) {
-        setError('Failed to fetch data');
-     
+        console.error('Unexpected error:', err);
+        throw err;
     }
 };
 
@@ -119,8 +119,15 @@ export const fetchLocalitiesByCity = async (cityId) => {
         const response = await axios.get(`${BASE_URL_CITIES}/subCity/getSubCityByCity/${cityId}`);
         return response.data;
     } catch (error) {
-        console.error('Error fetching localities:', error);
-        throw error;
+        if (error.response && error.response.status === 404) {
+            // Handle 404 error
+            console.error('City not found');
+            return false;
+        } else {
+            // Handle other errors
+            console.error('Error fetching localities:', error);
+            return false;
+        }
     }
 };
 

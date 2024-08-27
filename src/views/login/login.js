@@ -18,10 +18,12 @@ export default function Login() {
     
         // Validate inputs
         if (!username) {
+            setPasswordError('');
             setUsernameError("Username is required");
             return;
         }
         if (!password) {
+            setUsernameError('');
             setPasswordError("Password is required");
             return;
         }

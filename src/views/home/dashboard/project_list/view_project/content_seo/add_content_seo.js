@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../../../sidebar';
 import ReactQuill from 'react-quill';
 import { fetchContent, saveContentSEO } from '../../../../../../api/dashboard/project_list/view_project/content_seo_api';
@@ -11,9 +11,11 @@ export default function AddContentSEO() {
         projectname: id,
         description: ''
     });
-    const [statusMessage, setStatusMessage] = useState('');
+
     const [editorHtml, setEditorHtml] = useState('');
     const navigate = useNavigate();
+    const [validationErrors, setValidationErrors] = useState({});
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (ids !== 'add') {
@@ -28,7 +30,7 @@ export default function AddContentSEO() {
                     setEditorHtml(data[0].description || '');
                 } catch (error) {
                     console.error('Error fetching details:', error);
-                    setStatusMessage('Failed to fetch content. Please try again later.');
+                    alert('Failed to fetch content. Please try again later.');
                 }
             };
 
@@ -52,36 +54,44 @@ export default function AddContentSEO() {
         }));
     };
 
+    const validateForm = () => {
+        const errors = {};
+        if (!editorHtml) errors.description = 'Description is required';
+        return errors;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { schema, projectname, description } = formData;
-
-        if (!projectname || !description) {
-            setStatusMessage("Please fill out all required fields.");
+        const errors = validateForm();
+        if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors);
             return;
         }
+        const { schema, projectname, description } = formData;
 
+        setLoading(true);
         try {
             const response = await saveContentSEO(ids, formData);
             const result = response.data;
 
             if (result.success) {
-                setStatusMessage('ContentSEO saved successfully');
+                alert('ContentSEO saved successfully');
                 navigate(-1);
             } else {
-                setStatusMessage(`Failed to save ContentSEO: ${result.message}`);
+                alert(`Failed to save ContentSEO: ${result.message}`);
             }
         } catch (error) {
             console.error('Error submitting form:', error);
-            setStatusMessage('Error submitting form. Please try again later.');
+            alert('Error submitting form. Please try again later.');
         }
+        setLoading(false);
     };
 
     return (
         <>
-            <div >
+            <div>
                 <Sidebar />
-                <div >
+                <div>
                     <div className="midde_cont">
                         <div className="container-fluid">
                             <div className="row column_title">
@@ -95,27 +105,32 @@ export default function AddContentSEO() {
                                 <div className="col-md-12">
                                     <div className="white_shd full margin_bottom_30">
                                         <div className="full graph_head">
-                                        <button 
-                                    className="btn btn-primary btn-xs float-right"
-                                    onClick={() => navigate(-1)}
-                                >
-                                    Back
-                                </button>
+                                            <button 
+                                                className="btn btn-primary btn-xs float-right"
+                                                onClick={() => navigate(-1)}
+                                                style={{ marginTop: '10px' }}
+                                            >
+                                                Back
+                                            </button>
                                         </div>
                                         <div className="full price_table padding_infor_info">
-                                            <span className="status text-danger">{statusMessage}</span>
                                             <form method="POST" encType="multipart/form-data" onSubmit={handleSubmit}>
                                                 <div className="form-row">
-                                                    <div className="col-md-12 form-group">
+                                                    <div className="col-md-12 form-group" style={{ marginBottom: '20px' }}>
                                                         <label className="label_field">Description*</label>
                                                         <ReactQuill
                                                             value={editorHtml}
                                                             onChange={handleChange}
                                                             modules={AddContentSEO.modules}
                                                             formats={AddContentSEO.formats}
+                                                            style={{ height: '400px' }}
+                                                            className={`form-control ${validationErrors.description ? 'is-invalid' : ''}`}
                                                         />
+                                                        {validationErrors.description && (
+                                                            <div className="invalid-feedback" style={{ display: 'block' }}>{validationErrors.description}</div>
+                                                        )}
                                                     </div>
-                                                    <div className="col-md-12 form-group">
+                                                    <div className="col-md-12 form-group" style={{ marginBottom: '20px' , marginTop: '30px' }}>
                                                         <label className="label_field">Schema</label>
                                                         <input
                                                             type="text"
@@ -123,12 +138,22 @@ export default function AddContentSEO() {
                                                             className="form-control"
                                                             value={formData.schema}
                                                             onChange={handleInputChange}
+                                                            style={{ height: '150px'}} // Adjust height if needed
                                                         />
                                                     </div>
                                                 </div>
-                                                <div className="form-group margin_0">
-                                                    <button className="main_bt" type="submit">{ids === 'add' ? 'Submit' : 'Update'}</button>
-                                                </div>
+                                                <button 
+                                                    className="main_bt"
+                                                    type="submit"
+                                                    disabled={loading}
+                                                    style={{ marginTop: '10px' }}
+                                                >
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        ids === 'add' ? 'Submit' : 'Update'
+                                                    )}
+                                                </button>
                                             </form>
                                         </div>
                                     </div>

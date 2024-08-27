@@ -32,6 +32,7 @@ export const deleteSubCity = async (id) => {
 export const fetchCityDetails = async (id, ids) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/getSubCityByID/${id}/${ids}`);
+        console.log(response.data)
         return response.data;
     } catch (error) {
         throw new Error('Error fetching city details: ' + error.message);

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../../sidebar';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { fetchFAQs, updateFAQStatus, deleteFAQ } from '../../../../../../api/location/sub_city/sub_city_faq_api';
 
 export default function SubCityFooterFAQ() {
     const [faq, setFAQ] = useState([]);
+    const navigate = useNavigate();
 
     const { sub_city, content_type } = useParams();
 
@@ -59,6 +60,14 @@ export default function SubCityFooterFAQ() {
                         <div className="row column1">
                             <div className="col-md-12">
                                 <div className="white_shd full margin_bottom_30">
+                                <div className="full graph_head">
+                                    <button 
+                                    className="btn btn-primary btn-xs float-right"
+                                    onClick={() => navigate(-1)}
+                                >
+                                    Back
+                                </button>
+                                    </div>
                                     <div className="full graph_head">
                                         <Link to={`/SubCityaddFAQ/${sub_city}/add`} className="btn btn-success btn-xs">Add FAQs</Link>
                                     </div>
