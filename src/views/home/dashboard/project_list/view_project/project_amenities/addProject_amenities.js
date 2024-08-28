@@ -5,6 +5,7 @@ import { getAllTheAmenities } from '../../../../../../api/amenities/amenities_ap
 import './amenities.module.css';
 import { ProjectAmenities, getProjectAmenities } from '../../../../../../api/dashboard/project_list/view_project/project_amenity_api';
 import _ from 'lodash';
+import { imageURL } from '../../../../../../imageURL';
 
 export default function AddProjectAmenities() {
     const [details, setDetails] = useState([]);
@@ -100,21 +101,29 @@ export default function AddProjectAmenities() {
                                                     detail.status === true ?
                                                     <div className="col-lg-4 mb-4" key={detail._id}>
                                                         <div className="card amenity-card">
-                                                            <img src={`https://star-estate-api.onrender.com/uploads/amenities/${detail.image}`} alt={detail.title} className="card-img-top" />
-                                                            <div className="card-body">
-                                                                <div className="d-flex align-items-center">
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        checked={isChecked(detail._id)}
-                                                                        onChange={() => handleCheckboxChange(detail._id)}
-                                                                        className="mr-3"
-                                                                    />
-                                                                    <div>
-                                                                        <h5 className="card-title mb-1">{detail.title}</h5>
-                                                                        <p className="card-text mb-1">{detail.category}</p>
-                                                                    </div>
+                                                          
+                                                        <div className="card-body">
+                                                            <div className="d-flex align-items-center">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={isChecked(detail._id)}
+                                                                    onChange={() => handleCheckboxChange(detail._id)}
+                                                                    className="mr-3"
+                                                                />
+                                                                <img
+                                                                    src={`${imageURL}/${detail.image}`}
+                                                                    alt={detail.title}
+                                                                    width="50"
+                                                                    height="50"
+                                                                    style={{ borderRadius: '50%', marginRight: '15px' }}  
+                                                                />
+                                                                <div>
+                                                                    <h5 className="card-title mb-1">{detail.title}</h5>
+                                                                    <p className="card-text mb-1">{detail.category}</p>
                                                                 </div>
                                                             </div>
+                                                        </div>
+
                                                         </div>
                                                     </div> : ('')
                                                 ))

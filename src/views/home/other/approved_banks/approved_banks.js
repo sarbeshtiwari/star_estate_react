@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import image from '../../../../assets/images/logo.png'
 import { deleteBankList, getBankList, updateBankListStatus } from '../../../../api/bank_list/bank_list_api';
+import { imageURL } from '../../../../imageURL';
 
 export default function ApprovedBanks(){
     const [data, setData] = useState([]);
@@ -89,9 +90,16 @@ export default function ApprovedBanks(){
                                                                 <tr key={data._id}>
                                                                     <td>{index + 1}</td>
                                                                     <td>
-                                                                        
-                                                                    <img src={`https://star-estate-api.onrender.com/uploads/banks_list/${data.image}`} className="rounded-circle" style={{ objectFit: 'cover' }} alt={data.Icon} width="50" height="50" />
-                                                                    </td>
+                                                                            <img 
+                                                                            src={`${imageURL}/${data.image}`}
+
+                                                                                className="rounded-circle"
+                                                                                style={{ objectFit: 'cover' }}
+                                                                                alt={data.title}
+                                                                                width="50"
+                                                                                height="50"
+                                                                            />
+                                                                        </td>
                                                                     <td>{data.title}</td>
                                                                     
                                                                     <td>{data.alt_tag}</td>

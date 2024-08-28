@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getBrochure, updateStatus, deleteDetails } from '../../../../../../api/dashboard/project_list/view_project/brochure_walkthrough_api';
+import { imageURL } from '../../../../../../imageURL';
 
 export default function BrochureWalkthrough() {
     const { id } = useParams();
@@ -116,7 +117,7 @@ export default function BrochureWalkthrough() {
                                                                             <td>
                                                                                 <button 
                                                                                     className="btn btn-info btn-xs" 
-                                                                                    onClick={() => handleBrochureClick(detail.brochure)}
+                                                                                    onClick={() => handleBrochureClick(`${imageURL}/${detail.brochure}`)}
                                                                                 >
                                                                                     Open Brochure
                                                                                 </button>

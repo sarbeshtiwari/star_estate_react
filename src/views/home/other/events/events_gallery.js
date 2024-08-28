@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { fetchImages, updateImageStatus, deleteImage } from '../../../../api/events/events_api'; // Adjust the path as needed
 import GalleryModal from '../../../widgets/gallery_model';
 import image from '../../../../assets/images/logo.png';
+import { imageURL } from '../../../../imageURL';
 
 export default function EventsGallery() {
     const [showModal, setShowModal] = useState(false);
@@ -95,15 +96,16 @@ export default function EventsGallery() {
                                                                 <tr key={image._id}>
                                                                     <td>{index + 1}</td>
                                                                     <td>
-                                                                        <img
-                                                                            src={`https://star-estate-api.onrender.com/uploads/gallery_image${image.imagePath}`}
-                                                                            className="rounded-circle"
-                                                                            style={{ objectFit: 'cover' }}
-                                                                            alt={`Image ${index + 1}`}
-                                                                            width="50"
-                                                                            height="50"
-                                                                        />
-                                                                    </td>
+                                                                            <img 
+                                                                            src={`${imageURL}/${image.imagePath}`}
+
+                                                                                className="rounded-circle"
+                                                                                style={{ objectFit: 'cover' }}
+                                                                                
+                                                                                width="50"
+                                                                                height="50"
+                                                                            />
+                                                                        </td>
                                                                     <td>
                                                                         <ul className="list-inline d-flex justify-content-end">
                                                                             <li>

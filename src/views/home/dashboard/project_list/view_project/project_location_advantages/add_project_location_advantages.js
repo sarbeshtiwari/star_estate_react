@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getLocationAdvantages } from '../../../../../../api/location_advantages/location_advantages_api';
 import { getProjectLocationAdvantages, ProjectLocationAdvantages } from '../../../../../../api/dashboard/project_list/view_project/project_location_advantages_api';
 import _ from 'lodash';
+import { imageURL } from '../../../../../../imageURL';
 
 export default function AddProjectLocationAdvantages() {
     const [details, setDetails] = useState([]);
@@ -146,7 +147,13 @@ export default function AddProjectLocationAdvantages() {
                                                         detail.status === true ?
                                                         <div className="col-lg-2 mb-4" key={detail._id}>
                                                             <div className="card Location-card">
-                                                                <img src={`https://star-estate-api.onrender.com/uploads/location_advantages/${detail.image}`} alt={detail.title} className="card-img-top" />
+                                                            <img
+                                                                src={`${imageURL}/${detail.image}`}
+                                                                alt={detail.title}
+                                                                style={{ height: '100px', objectFit: 'cover' }}
+                                                                className="card-img-top"
+                                                            />
+
                                                                 <div className="card-body">
                                                                     <div className="d-flex align-items-center">
                                                                         <input

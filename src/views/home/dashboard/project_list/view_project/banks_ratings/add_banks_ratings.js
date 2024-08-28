@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../../../sidebar';
 import { getBankList } from '../../../../../../api/bank_list/bank_list_api';
-import { addProjectBanksRatings, getProjectBanks, ProjectBanks } from '../../../../../../api/dashboard/project_list/view_project/project_banks_api';
+import { addProjectBanksRatings, getProjectBanks, getProjectbanksRatings, ProjectBanks } from '../../../../../../api/dashboard/project_list/view_project/project_banks_api';
 import _ from 'lodash';
+import { imageURL } from '../../../../../../imageURL';
 
 export default function AddBanksandRatings() {
     const [details, setDetails] = useState([]);
     const [selectedbankList, setSelectedBankList] = useState(new Set());
-    const { id } = useParams();
+    const { id, ids } = useParams();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
      
@@ -18,10 +19,13 @@ export default function AddBanksandRatings() {
         connectivity: '',
         value_for_money: '',
     });
+    const [validationErrors, setValidationErrors] = useState({});
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         fetchDetailsHandler(id);
-    }, [id]);
+        
+    }, [id, ids]);
 
     const fetchDetailsHandler = async (id) => {
         try {
@@ -38,6 +42,9 @@ export default function AddBanksandRatings() {
                 .map(item => item.BanksId);
             // Update selectedBanks based on the fetched Banks
             setSelectedBankList(new Set(trueStatusIds));
+            const ratings = await getProjectbanksRatings(id);
+            console.log(ratings.data1[0])
+            setFormData(ratings.data1[0]);
         } catch (err) {
             console.error('Error fetching details:', err);
         }
@@ -92,10 +99,26 @@ export default function AddBanksandRatings() {
     // Helper function to check if an bank is selected
     const isChecked = (bankId) => selectedbankList.has(bankId);
 
+    const validateForm = () => {
+        const errors = {};
+        if (!formData.lifestyle) errors.lifestyle = 'Lifestyle is required';
+        if (!formData.amenities) errors.amenities = 'Amenities is required';
+        if (!formData.layout) errors.layout = 'Layout is required';
+        if (!formData.connectivity) errors.connectivity = 'Connectivity is required';
+        if (!formData.value_for_money) errors.value_for_money = 'Value for Money is required';
+        return errors;
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const errors = validateForm();
+        if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
+        setLoading(true);
         try {
-            console.log(formData)
+            
             const response = await addProjectBanksRatings(formData, id);
             if (response.success) {
                 navigate(-1);
@@ -103,6 +126,7 @@ export default function AddBanksandRatings() {
         }catch(error){
             console.error(error)
         }
+        setLoading(false);
         // Add form submission logic here
     };
 
@@ -141,10 +165,13 @@ export default function AddBanksandRatings() {
                                                         type="number"
                                                         name="lifestyle"
                                                         placeholder="eg: 80"
-                                                        className="form-control"
+                                                        className={`form-control ${validationErrors.lifestyle ? 'is-invalid' : ''}`}
                                                         value={formData.lifestyle}
                                                         onChange={handleChange}
                                                     />
+                                                    {validationErrors.lifestyle && (
+                                                            <div className="invalid-feedback">{validationErrors.lifestyle}</div>
+                                                        )}
                                                 </div>
                                                 <div className="col-md-3 form-group">
                                                     <label className="label_field">Amenities</label>
@@ -152,10 +179,13 @@ export default function AddBanksandRatings() {
                                                         type="number"
                                                         name="amenities"
                                                         placeholder="eg: 80"
-                                                        className="form-control"
+                                                        className={`form-control ${validationErrors.amenities ? 'is-invalid' : ''}`}
                                                         value={formData.amenities}
                                                         onChange={handleChange}
                                                     />
+                                                    {validationErrors.amenities && (
+                                                            <div className="invalid-feedback">{validationErrors.amenities}</div>
+                                                        )}
                                                 </div>
                                                 <div className="col-md-3 form-group">
                                                     <label className="label_field">Layout</label>
@@ -163,10 +193,13 @@ export default function AddBanksandRatings() {
                                                         type="number"
                                                         name="layout"
                                                         placeholder="eg: 80"
-                                                        className="form-control"
+                                                        className={`form-control ${validationErrors.layout ? 'is-invalid' : ''}`}
                                                         value={formData.layout}
                                                         onChange={handleChange}
                                                     />
+                                                    {validationErrors.layout && (
+                                                            <div className="invalid-feedback">{validationErrors.layout}</div>
+                                                        )}
                                                 </div>
                                                 <div className="col-md-3 form-group">
                                                     <label className="label_field">Connectivity</label>
@@ -174,10 +207,13 @@ export default function AddBanksandRatings() {
                                                         type="number"
                                                         name="connectivity"
                                                         placeholder="eg: 80"
-                                                        className="form-control"
+                                                        className={`form-control ${validationErrors.connectivity ? 'is-invalid' : ''}`}
                                                         value={formData.connectivity}
                                                         onChange={handleChange}
                                                     />
+                                                    {validationErrors.connectivity && (
+                                                            <div className="invalid-feedback">{validationErrors.connectivity}</div>
+                                                        )}
                                                 </div>
                                                 <div className="col-md-3 form-group">
                                                     <label className="label_field">Value for Money</label>
@@ -185,15 +221,36 @@ export default function AddBanksandRatings() {
                                                         type="number"
                                                         name="value_for_money"
                                                         placeholder="eg: 80"
-                                                        className="form-control"
+                                                        className={`form-control ${validationErrors.value_for_money ? 'is-invalid' : ''}`}
                                                         value={formData.value_for_money}
                                                         onChange={handleChange}
                                                     />
+                                                    {validationErrors.value_for_money && (
+                                                            <div className="invalid-feedback">{validationErrors.value_for_money}</div>
+                                                        )}
                                                 </div>
                                             </div>
+                                            {ids === 'add' ? (
                                             <div className="form-group margin_0">
-                                                <button type="submit" className="main_bt" id='submit'>Submit</button>
-                                            </div>
+                                           
+                                                    <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Submit'
+                                                    )}
+                                                </button>
+                                              
+                                            </div>): (<>
+                                            <div className="form-group margin_0">
+                                            <button className="main_bt" type="submit" disabled={loading}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Update'
+                                                    )}
+                                                </button>
+                                            </div></>)}
                                             <span id="result" className="text-danger mt-4 d-block"></span>
                                             <div className="mb-4"><h2>Approved Banks</h2></div>
                                             <div className="row">
@@ -214,7 +271,9 @@ export default function AddBanksandRatings() {
                                                                             checked={isChecked(detail._id)}
                                                                             onChange={() => handleCheckboxChange(detail._id)}
                                                                             className="mr-3"
-                                                                        /><img src={`http://localhost:3017/uploads/banks_list/${detail.image}`} alt={detail.alt_tag} sizes='5'/>
+                                                                        /><img src={`${imageURL}/${detail.image}`} alt={detail.alt_tag} width="50"
+                                                                        height="50"
+                                                                        style={{ borderRadius: '50%', marginRight: '15px' }}/>
                                                                         <div>
                                                                             <h5 className="card-title mb-1">{detail.title}</h5>
                                                                         </div>

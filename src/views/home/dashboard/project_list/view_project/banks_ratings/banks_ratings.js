@@ -81,7 +81,7 @@ export default function ProjectBanksRatings() {
                                                                     <th>Layout</th>
                                                                     <th>Connectivity</th>
                                                                     <th>Money Value</th>
-                                                                    <th>Approved Banks</th>
+                                                                    {/* <th>Approved Banks</th> */}
                                                                     <th></th>
                                                                 </tr>
                                                             </thead>
@@ -94,20 +94,20 @@ export default function ProjectBanksRatings() {
                                                                         <td>{detail.layout}</td>
                                                                         <td>{detail.connectivity}</td>
                                                                         <td>{detail.value_for_money}</td>
-                                                                        <td>{detail.approved_banks}</td>
+                                                                        {/* <td>{detail.approved_banks}</td> */}
                                                                         <td>
-                                                                            <ul className="list-inline d-flex justify-content-end">
-                                                                                <li>
+                                                                            {/* <ul className="list-inline d-flex justify-content-end"> */}
+                                                                                {/* <li>
                                                                                     {detail.status === false ? (
                                                                                         <button className="btn btn-warning btn-xs" onClick={() => handleStatusUpdate(detail._id, true)}>Deactivate</button>
                                                                                     ) : (
                                                                                         <button className="btn btn-success btn-xs" onClick={() => handleStatusUpdate(detail._id, false)}>Active</button>
                                                                                     )}
-                                                                                </li>
-                                                                                <li>
+                                                                                </li> */}
+                                                                                {/* <li> */}
                                                                                     <Link to={`/${id}/addBanksRatings/${detail._id}`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
-                                                                                </li>
-                                                                                <li>
+                                                                                {/* </li> */}
+                                                                                {/* <li>
                                                                                     <button
                                                                                         className="btn btn-danger btn-xs"
                                                                                         onClick={() => {
@@ -118,8 +118,8 @@ export default function ProjectBanksRatings() {
                                                                                     >
                                                                                         <i className="fa fa-trash"></i>
                                                                                     </button>
-                                                                                </li>
-                                                                            </ul>
+                                                                                </li> */}
+                                                                            {/* </ul> */}
                                                                         </td>
                                                                     </tr>
                                                                 ))}

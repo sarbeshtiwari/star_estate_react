@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { deleteProjectRera, getProjectReraByProject, updateProjectReraStatus } from '../../../../../../api/dashboard/project_list/view_project/project_rera_api';
+import { imageURL } from '../../../../../../imageURL';
 
 export default function ProjectRera() {
    
@@ -87,7 +88,17 @@ export default function ProjectRera() {
                                                                 {details.map((detail, index) => (
                                                                     <tr key={detail._id} className={index % 2 === 0 ? 'even' : 'odd'}>
                                                                         <td className="sorting_1">{index + 1}</td>
-                                                                        <td>{detail.image}</td>
+                                                                        <td>
+                                                                            <img 
+                                                                            src={`${imageURL}/${detail.image}`}
+
+                                                                                className="rounded-circle"
+                                                                                style={{ objectFit: 'cover' }}
+                                                                                alt={detail.title}
+                                                                                width="50"
+                                                                                height="50"
+                                                                            />
+                                                                        </td>
                                                                         <td>{detail.title}</td>
                                                                         <td>{detail.reraHeading}</td>
                                                                        <td>{detail.reraWebsite}</td>

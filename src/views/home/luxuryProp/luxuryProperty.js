@@ -1,44 +1,43 @@
 import Sidebar from "../sidebar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
+import { fetchLuxuryProperty } from "../../../api/enquiry/luxury_projects";
 
 export default function LuxuryPropery(){
-    const [luxury, setluxury] = useState([
-        {
-            id: 1,
-            Name: 'Dinesh ',
-            Email: 'dineshnegi777@yahoo.co.in',
-            Mobile: '8920279367',
-            Project_name: 'Godrej Golf Links',
-            Query: 'gsdfgds',
-            Note: 'hgfj',
-            Created_at: '2024-07-23',
-            
-        },
-        {
-            id: 2,
-            Name: 'imran',
-            Email: 'imrankhan256768@gmail.com	',
-            Mobile: '7453955006',
-            Project_name: 'ATS Pious Orchards',
-            Query: 'sdfsd',
-            Note: 'aewrwe',
-            Created_at: '2024-07-23',
-           
-        }
-    ]);
-
+    const [luxury, setluxury] = useState([]);
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await fetchUserQuery();
+        };
+        fetchData();
+    }, []);
+
+    const fetchUserQuery = async () => {
+        try {
+            setLoading(true);
+            const result = await fetchLuxuryProperty();
+            setluxury(result);
+        } catch (error) {
+            setError('Error fetching data');
+            console.error('Error fetching data:', error);
+        } finally {
+            setLoading(false);
+        }
+    };    
+
 
   // Filter data based on the search query
   const filteredLuxury = luxury.filter(item =>
     item.Name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.Email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.Mobile.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.Project_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.Query.toLowerCase().includes(searchQuery.toLowerCase())
+    item.projectName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.user_query.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
     const handleCopy = () => {
@@ -178,7 +177,7 @@ export default function LuxuryPropery(){
                                                                     Name
 
                                                                 </th>
-                                                                <th className="sorting" tabIndex="0" aria-controls="pjdataTable" rowSpan="1" colSpan="1" aria-label="Email: activate to sort column ascending" style={{width: "266px"}}>
+                                                                <th className="sorting" tabIndex="0" aria-controls="pjdataTable" rowSpan="1" colSpan="1" aria-label="Email: activate to sort column ascending" style={{width: "56px"}}>
                                                                     Email
                                                                 </th>
                                                                 <th className="sorting" tabIndex="0" aria-controls="pjdataTable" rowSpan="1" colSpan="1" aria-label="Mobile: activate to sort column ascending" style={{width: "68px"}}>
@@ -203,19 +202,19 @@ export default function LuxuryPropery(){
                                                                 <tr key={luxury.id}>
                                                                     <td>{index + 1}</td>
                                                                     <td>
-                                                                        {custom_echo(luxury.Name, 20)}
+                                                                        {luxury.Name}
                                                                     </td>
-                                                                    <td>{custom_echo(luxury.Email, 20)}</td>
-                                                                    <td>{custom_echo(luxury.Mobile, 20)}</td>
-                                                                    <td>{custom_echo(luxury.Project_name, 20)}</td>
-                                                                    <td>{custom_echo(luxury.Query, 20)}</td>
-                                                                    <td>{luxury.Created_at}</td>
+                                                                    <td>{luxury.Email}</td>
+                                                                    <td>{luxury.phoneNumber}</td>
+                                                                    <td>{luxury.projectName}</td>
+                                                                    <td>{luxury.user_query}</td>
+                                                                    <td>{luxury.created_at.slice(0,10)}</td>
                                                                     <td>
-                                                                        <ul className="list-inline d-flex justify-content-end">
+                                                                        {/* <ul className="list-inline d-flex justify-content-end"> */}
                                                                            
                                                                            
                                                                             
-                                                                            <li>
+                                                                            {/* <li> */}
                                                                                 <button
                                                                                     className="btn btn-danger btn-xs"
                                                                                     onClick={() => {
@@ -226,8 +225,8 @@ export default function LuxuryPropery(){
                                                                                 >
                                                                                     <i className="fa fa-trash"></i>
                                                                                 </button>
-                                                                            </li>
-                                                                        </ul>
+                                                                            {/* </li>
+                                                                        </ul> */}
                                                                     </td>
                                                                 </tr>
                                                             ))}
@@ -249,9 +248,4 @@ export default function LuxuryPropery(){
     )
 
     
-}
-
-// Function to truncate text
-function custom_echo(x, length) {
-    return x.length <= length ? x : `${x.substr(0, length)}...`;
 }

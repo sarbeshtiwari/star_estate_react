@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { deleteFloorPlan, getFloorPlanByProject, updateFloorPlanStatus } from '../../../../../../api/dashboard/project_list/view_project/floor_plan_api';
+import { imageURL } from '../../../../../../imageURL';
 
 export default function FloorPlan() {
     
@@ -86,7 +87,18 @@ export default function FloorPlan() {
                                                                 {details.map((detail, index) => (
                                                                     <tr key={detail._id} className={index % 2 === 0 ? 'even' : 'odd'}>
                                                                         <td className="sorting_1">{index + 1}</td>
-                                                                        <td>{detail.image}</td>
+                                                                        <td>
+                                                                            <img 
+                                                                            src={`${imageURL}/${detail.image}`}
+
+                                                                                className="rounded-circle"
+                                                                                style={{ objectFit: 'cover' }}
+                                                                                alt={detail.title}
+                                                                                width="50"
+                                                                                height="50"
+                                                                            />
+                                                                        </td>
+                                                                        
                                                                         <td>{detail.area}</td>
                                                                         <td>{detail.title}</td>
                                                                         <td>

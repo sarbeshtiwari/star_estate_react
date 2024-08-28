@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Sidebar from '../../sidebar';
 import { fetchDevelopers, updateDeveloperStatus, deleteDeveloper } from '../../../../api/developer/developer_api';
 import image from '../../../../assets/images/logo.png'; // Default image
+import { imageURL } from '../../../../imageURL';
 
 export default function Developer() {
     const [developers, setDevelopers] = useState([]);
@@ -109,7 +110,8 @@ export default function Developer() {
                                                             <td className="sorting_1">{index + 1}</td>
                                                             <td>
                                                                 <img 
-                                                                    src={developer.developerLogo ? `https://star-estate-api.onrender.com/uploads/developers/${developer.developerLogo}` : image}
+                                                                   src={`${imageURL}/${developer.developerLogo}`}
+
                                                                     className="rounded-circle"
                                                                     style={{ objectFit: 'cover' }}
                                                                     alt={developer.developerName}

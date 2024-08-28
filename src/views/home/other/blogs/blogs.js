@@ -5,6 +5,7 @@ import Sidebar from '../../sidebar';
 import { Link } from 'react-router-dom';
 import { fetchBlogs, updateBlogStatus, deleteBlog } from '../../../../api/blogs/blogs_api';
 import image from '../../../../assets/images/logo.png';
+import { imageURL } from '../../../../imageURL';
 
 export default function Blogs() {
     const [blogs, setBlogs] = useState([]);
@@ -88,15 +89,16 @@ export default function Blogs() {
                                                                     <td>{index + 1}</td>
                                                                     <td>{blog.blogsCategory}</td>
                                                                     <td>
-                                                                        <img 
-                                                                            src={blog.blogsImage ? `https://star-estate-api.onrender.com/uploads/blogs/${blog.blogsImage}` : image} 
-                                                                            className="rounded-circle" 
-                                                                            style={{ objectFit: 'cover' }} 
-                                                                            alt={blog.blogsImage} 
-                                                                            width="50" 
-                                                                            height="50" 
-                                                                        />
-                                                                    </td>
+                                                                            <img 
+                                                                            src={`${imageURL}/${blog.blogsImage}`}
+
+                                                                                className="rounded-circle"
+                                                                                style={{ objectFit: 'cover' }}
+                                                                                alt={blog.imageTitle}
+                                                                                width="50"
+                                                                                height="50"
+                                                                            />
+                                                                        </td>
                                                                     <td>{blog.blogsName}</td>
                                                                     <td>{blog.blogsBy}</td>
                                                                     <td>{blog.content.slice(0, 20)}</td>

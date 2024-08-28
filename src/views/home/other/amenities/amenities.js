@@ -2,6 +2,7 @@ import React from 'react';
 import Sidebar from '../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import useAmenities from './custom/amenitiesform'; 
+import { imageURL } from '../../../../imageURL';
 
 export default function Amenities() {
     const { id } = useParams();
@@ -53,8 +54,16 @@ export default function Amenities() {
                                                                 <tr key={amenity._id}>
                                                                     <td>{index + 1}</td>
                                                                     <td>
-                                                                        <img src={`https://star-estate-api.onrender.com/uploads/amenities/${amenity.image}`} className="rounded-circle" style={{ objectFit: 'cover' }} alt={amenity.alt_tag} width="50" height="50" />
-                                                                    </td>
+                                                                            <img 
+                                                                            src={`${imageURL}/${amenity.image}`}
+
+                                                                                className="rounded-circle"
+                                                                                style={{ objectFit: 'cover' }}
+                                                                                alt={amenity.title}
+                                                                                width="50"
+                                                                                height="50"
+                                                                            />
+                                                                        </td>
                                                                     <td>{amenity.title}</td>
                                                                     <td>{amenity.alt_tag}</td>
                                                                     <td>

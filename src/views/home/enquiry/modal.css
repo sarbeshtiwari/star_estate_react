@@ -1,0 +1,107 @@
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7); /* Slightly darker for better focus */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure modal is on top of other content */
+    transition: opacity 0.3s ease;
+    opacity: 1;
+}
+
+/* Modal Content */
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px; /* Increased max-width for more content space */
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition */
+    transform: translateY(0); /* Initial position */
+}
+
+/* Modal Enter and Exit Transitions */
+.modal-overlay.modal-enter .modal-content {
+    transform: translateY(-10px);
+    opacity: 0;
+}
+
+.modal-overlay.modal-enter-active .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.modal-overlay.modal-exit .modal-content {
+    transform: translateY(10px);
+    opacity: 0;
+}
+
+/* Textarea */
+textarea {
+    width: calc(100% - 12px); /* Adjust for padding */
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical; /* Allow vertical resizing */
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.5;
+    box-sizing: border-box; /* Include padding and border in element’s total width and height */
+}
+
+/* Buttons */
+button {
+    margin: 5px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker shade for hover effect */
+    color: #fff; /* Ensure text is readable */
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2); /* Subtle focus ring */
+}
+
+/* Submit Button */
+button.submit-btn {
+    background-color: #007bff;
+    color: #fff;
+}
+
+button.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Close Button */
+button.close-btn {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+button.close-btn:hover {
+    background-color: #c82333;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 90%; /* Make modal take more space on smaller screens */
+        max-width: none; /* Remove max-width constraint */
+    }
+}

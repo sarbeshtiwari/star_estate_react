@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../sidebar';
 import { Link } from 'react-router-dom';
 import { fetchNews, updateNewsStatus, deleteNews } from '../../../../api/news/news_api'; // Adjust the path as needed
+import { imageURL } from '../../../../imageURL';
 
 export default function NewsPaper() {
     const [news, setNews] = useState([]);
@@ -85,15 +86,16 @@ export default function NewsPaper() {
                                                                     <td>{index + 1}</td>
                                                                     <td>News Paper</td>
                                                                     <td>
-                                                                        <img
-                                                                            src={`https://star-estate-api.onrender.com/uploads/news/${newsItem.newsThumb}`}
-                                                                            className="rounded-circle"
-                                                                            style={{ objectFit: 'cover' }}
-                                                                            alt={newsItem.heading}
-                                                                            width="50"
-                                                                            height="50"
-                                                                        />
-                                                                    </td>
+                                                                            <img 
+                                                                            src={`${imageURL}/${newsItem.newsThumb}`}
+
+                                                                                className="rounded-circle"
+                                                                                style={{ objectFit: 'cover' }}
+                                                                                alt={newsItem.heading}
+                                                                                width="50"
+                                                                                height="50"
+                                                                            />
+                                                                        </td>
                                                                     <td>{newsItem.heading}</td>
                                                                     <td>{newsItem.paperName}</td>
                                                                     <td>{newsItem.newsDate}</td>

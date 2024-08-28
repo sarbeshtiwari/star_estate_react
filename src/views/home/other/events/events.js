@@ -4,6 +4,7 @@ import Sidebar from '../../sidebar';
 import GalleryModal from '../../../widgets/gallery_model';
 import image from '../../../../assets/images/logo.png';
 import { fetchEvents, updateEventStatus, deleteEvent } from '../../../../api/events/events_api';
+import { imageURL } from '../../../../imageURL';
 
 export default function Events() {
     const [showModal, setShowModal] = useState(false);
@@ -100,15 +101,16 @@ export default function Events() {
                                                                 <tr key={evt._id}>
                                                                     <td>{index + 1}</td>
                                                                     <td>
-                                                                        <img 
-                                                                            src={evt.eventImage ? `https://star-estate-api.onrender.com/uploads/events/${evt.eventImage}` : image}
-                                                                            className="rounded-circle"
-                                                                            style={{ objectFit: 'cover' }}
-                                                                            alt={evt.eventName}
-                                                                            width="50"
-                                                                            height="50"
-                                                                        />
-                                                                    </td>
+                                                                            <img 
+                                                                            src={`${imageURL}/${evt.eventImage}`}
+
+                                                                                className="rounded-circle"
+                                                                                style={{ objectFit: 'cover' }}
+                                                                                alt={evt.eventName}
+                                                                                width="50"
+                                                                                height="50"
+                                                                            />
+                                                                        </td>
                                                                     <td>{evt.eventName}</td>
                                                                     <td>
                                                                         <button className="btn btn-success btn-xs" onClick={() => openModal(evt._id)}>Add Events Gallery</button>

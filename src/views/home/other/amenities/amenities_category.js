@@ -109,9 +109,9 @@ const AmenitiesCategory = () => {
                                                                                             <button className="btn btn-success btn-xs" onClick={() => handleUpdateStatus(category._id, false)}>Active</button>
                                                                                         )}
                                                                                     </li>
-                                                                                    <li>
+                                                                                    {/* <li>
                                                                                         <Link to={`/addAmenitiesCategory/${category._id}`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
-                                                                                    </li>
+                                                                                    </li> */}
                                                                                     <li>
                                                                                         <button
                                                                                             className="btn btn-danger btn-xs"

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import image from '../../../../assets/images/logo.png'; // This can be your default image
 import { deleteProject, fetchProjects, updateProjectStatusCategory, updateStatus } from '../../../../api/dashboard/project_list/project_list_api';
 import loadingImage from '../../../../assets/images/loading.gif';
+import {imageURL} from '../../../../imageURL'
 
 export default function ProjectList() {
    
@@ -16,6 +16,7 @@ export default function ProjectList() {
     const [searchQuery, setSearchQuery] = useState('');
     useEffect(() => {
         handlefetchProjects(id);
+        console.log(imageURL)
     }, [id]);
 
   // Filter data based on the search query
@@ -80,8 +81,9 @@ export default function ProjectList() {
         try {
             await deleteProject(projectID ,image);
             // await axios.delete(`http://localhost:3010/deleteProject/${id}`, { data: { image } });
-            const data = await fetchProjects(id);
-                setProjects(data);
+            // const data = await fetchProjects(id);
+            //     setProjects(data);
+            handlefetchProjects(id);
         } catch (error) {
             console.error('Error deleting Project:', error);
         }
@@ -167,7 +169,8 @@ export default function ProjectList() {
                                                             <td className="sorting_1">{index + 1}</td>
                                                             <td>
                                                                 <img 
-                                                                    src={project.project_logo ? `http://localhost:3005/uploads/projects/${project.project_logo}` : image}
+                                                                   src={`${imageURL}/${project.project_logo}`}
+
                                                                     className="rounded-circle"
                                                                     style={{ objectFit: 'cover' }}
                                                                     alt={project.projectName}

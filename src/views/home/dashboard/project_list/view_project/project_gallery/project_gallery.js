@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { deleteProjectGallery, getProjectGalleryByProject, getProjectGalleryByID, updateProjectGalleryHomeStatus, updateProjectGalleryStatus } from '../../../../../../api/dashboard/project_list/view_project/project_gallery_api';
+import { imageURL } from '../../../../../../imageURL';
 
 export default function ProjectGallery() {
     
@@ -97,7 +98,17 @@ export default function ProjectGallery() {
                                                                 {details.map((detail, index) => (
                                                                     <tr key={detail._id} className={index % 2 === 0 ? 'even' : 'odd'}>
                                                                         <td className="sorting_1">{index + 1}</td>
-                                                                        <td>{detail.image}</td>
+                                                                        <td>
+                                                                            <img 
+                                                                            src={`${imageURL}/${detail.image}`}
+
+                                                                                className="rounded-circle"
+                                                                                style={{ objectFit: 'cover' }}
+                                                                                alt={detail.title}
+                                                                                width="50"
+                                                                                height="50"
+                                                                            />
+                                                                        </td>
                                                                         <td>{detail.title}</td>
                                                                         <td>{detail.alt}</td>
                                                                         <td>{detail.displayHome === false ? (

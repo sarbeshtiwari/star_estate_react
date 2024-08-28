@@ -3,6 +3,7 @@ import axios from 'axios';
 import Sidebar from '../../sidebar';
 import { Link } from 'react-router-dom';
 import { deleteLocationAdvantages, getLocationAdvantages, updateLocationAdvantagesStatus } from '../../../../api/location_advantages/location_advantages_api';
+import { imageURL } from '../../../../imageURL';
 
 export default function LocationAdvantages(){
     const [data, setData] = useState([]);
@@ -86,7 +87,17 @@ export default function LocationAdvantages(){
                                                                 <tr key={data._id}>
                                                                     <td>{index + 1}</td>
                                                                     <td>
-                                                                        <img src={`https://star-estate-api.onrender.com/uploads/location_advantages/${data.image}`} className="rounded-circle" style={{ objectFit: 'cover' }} alt={data.alt_tag} width="50" height="50" />
+                                                                   
+                                                                            <img 
+                                                                            src={`${imageURL}/${data.image}`}
+
+                                                                                className="rounded-circle"
+                                                                                style={{ objectFit: 'cover' }}
+                                                                                alt={data.title}
+                                                                                width="50"
+                                                                                height="50"
+                                                                            />
+                                                                      
                                                                     </td>
                                                                     
                                                                     <td>{data.title}</td>

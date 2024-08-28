@@ -3,6 +3,7 @@ import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getProjectLocationAdvantages } from '../../../../../../api/dashboard/project_list/view_project/project_location_advantages_api';
 import { getLocationAdvantages } from '../../../../../../api/location_advantages/location_advantages_api';
+import { imageURL } from '../../../../../../imageURL';
 
 export default function ProjectLocationAdvantage() {
   
@@ -115,7 +116,7 @@ export default function ProjectLocationAdvantage() {
                                                                         <td className="sorting_1">{index + 1}</td>
                                                                         <td>{detail.image ? (
                                                                             <img 
-                                                                                src={`https://star-estate-api.onrender.com/uploads/location_advantages/${detail.image}`} 
+                                                                                src={`${imageURL}/${detail.image}`} 
                                                                                 alt={detail.title}
                                                                                 style={{ width: '100px', height: 'auto' }} // Adjust size as needed
                                                                             />

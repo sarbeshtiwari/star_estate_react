@@ -124,10 +124,10 @@ export default function AddDeveloper() {
 
     const validateForm = () => {
         const errors = {};
-        if (!formData.developerName) errors.developerName = 'Location Type is required';
-        if (!formData.no_of_projects) errors.no_of_projects = 'Location is required';
-        if (!formData.establishYear) errors.establishYear = 'State is required';
-        if (!formData.description) errors.description = 'Content is required';
+        if (!formData.developerName) errors.developerName = 'Developer Name is required';
+        if (!formData.no_of_projects) errors.no_of_projects = 'No of projects is required';
+        if (!formData.establishYear) errors.establishYear = 'Establish Year is required';
+        if (!formData.description) errors.description = 'Description is required';
         if (!formData.developerLogo) errors.developerLogo = 'Image is required';
         return errors;
     };
