@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const $API_URL = `https://star-estate-api.onrender.com/projectBanks`;
+const $API_URL = `https://ecis.in/star-api/starEstate/projectBanks`;
 
 export const ProjectBanks = async (bankId, status, projectname) => {
     try{

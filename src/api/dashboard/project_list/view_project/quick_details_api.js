@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'https://star-estate-api.onrender.com/quickDetails';
+const baseURL = 'https://ecis.in/star-api/starEstate/quickDetails';
 
 export const fetchDetails = async (id) => {
     try {

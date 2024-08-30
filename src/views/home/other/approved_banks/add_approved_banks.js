@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../sidebar';
 import { addBankList, getBankListByID, updateBankList } from '../../../../api/bank_list/bank_list_api';
+import { imageURL } from '../../../../imageURL';
 
 
 const AddApprovedBanks = () => {
@@ -10,6 +11,7 @@ const AddApprovedBanks = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
+    const [previewUrl, setPreviewUrl] = useState([]);
 
     useEffect(() => {
         if(id !== 'add'){
@@ -21,6 +23,9 @@ const AddApprovedBanks = () => {
         try{
             const data = await getBankListByID(id);
             setHeadings([{ ...data}]);
+            if (data.image) {
+                setPreviewUrl([`${imageURL}/${data.image}`]);
+            }
         }catch(error){
             console.log('Error fetching data', error);
             setHeadings([{image: '', title: '', alt_tag: ''}]);
@@ -48,6 +53,9 @@ const AddApprovedBanks = () => {
                 updatedHeadings[index] = { ...updatedHeadings[index], [field]: file };
                 setHeadings(updatedHeadings);
                 setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: '' }));
+                const newPreviewUrl = [...previewUrl];
+                newPreviewUrl[index] = URL.createObjectURL(file);
+                setPreviewUrl(newPreviewUrl);
             })
             .catch((error) => {
                 setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: error }));
@@ -230,6 +238,16 @@ const handleSubmit = async (event) => {
                                                                  {validationErrors[`image${index}`] && (
                                                                         <div className="text-danger">{validationErrors[`image${index}`]}</div>
                                                                     )}
+                                                                     {previewUrl && (
+                                                                    <img
+                                                                    src={previewUrl[index]}
+                                                                        alt="Bank Image Preview"
+                                                                        className="img-thumbnail"
+                                                                        width="120"
+                                                                        height="70"
+                                                                    />
+                                                                )}
+                                                                
                                                             </div>
                                                         </div>
                                                         <div className="col-md-6 form-group remove">

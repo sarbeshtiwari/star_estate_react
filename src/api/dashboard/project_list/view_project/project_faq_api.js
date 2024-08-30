@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL for the API
-const API_URL = 'https://star-estate-api.onrender.com/projectFaq';
+const API_URL = 'https://ecis.in/star-api/starEstate/projectFaq';
 
 // Fetch FAQs by project ID
 export const fetchFAQs = async (projectId) => {

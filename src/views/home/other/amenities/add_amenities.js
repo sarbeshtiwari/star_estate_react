@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../sidebar';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { addSubAmenities, getSubAmenitiyByID, updateSubAmenity } from '../../../../api/amenities/amenities_api';
+import { imageURL } from '../../../../imageURL';
 
 const AddAmenities = () => {
     const { ids, id } = useParams(); // Assuming ids is the category
@@ -12,6 +13,7 @@ const AddAmenities = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
+    const [previewUrl, setPreviewUrl] = useState([]);
 
     useEffect(() => {
         if (id !== 'add') {
@@ -25,7 +27,11 @@ const AddAmenities = () => {
             const data = await getSubAmenitiyByID(id);
             // Ensure data is an array
         // if (Array.isArray(data)) {
+        
             setHeadings([{ ...data, category: ids }]);
+            if (data.image) {
+                setPreviewUrl([`${imageURL}/${data.image}`]);
+            }
         // } else {
         //     console.error('Data fetched is not an array:', data);
         //     setHeadings(data);
@@ -57,6 +63,9 @@ const AddAmenities = () => {
                     updatedHeadings[index] = { ...updatedHeadings[index], [field]: file };
                     setHeadings(updatedHeadings);
                     setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: '' }));
+                    const newPreviewUrl = [...previewUrl];
+                newPreviewUrl[index] = URL.createObjectURL(file);
+                setPreviewUrl(newPreviewUrl);
                 })
                 .catch((error) => {
                     setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: error }));
@@ -239,6 +248,15 @@ const AddAmenities = () => {
                                                                  {validationErrors[`image${index}`] && (
                                                                         <div className="text-danger">{validationErrors[`image${index}`]}</div>
                                                                     )}
+                                                               {previewUrl && (
+                                                        <img
+                                                        src={previewUrl[index]}
+                                                            alt="Amenity Image Preview"
+                                                            className="img-thumbnail"
+                                                            width="120"
+                                                            height="70"
+                                                        />
+                                                    )}
                                                             </div>
                                                         </div>
                                                         <div className="col-md-6 form-group remove">

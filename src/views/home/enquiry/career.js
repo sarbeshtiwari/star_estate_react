@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Sidebar from '../sidebar';
 import Modal from './modal'; // Import the modal component
 import { deleteCareer, fetchCareer, updateCareer } from '../../../api/enquiry/career';
+import { imageURL } from '../../../imageURL';
 
 
 
@@ -109,7 +110,7 @@ const Career = () => {
                                                                 <th>Resume</th>
 
                                                                 <th>Created at</th>
-                                                                <th>Note</th>
+                                                                {/* <th>Note</th> */}
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
@@ -123,11 +124,20 @@ const Career = () => {
                                                                     <th>{item.category}</th>
                                                                     <th>{item.location}</th>
                                                                     <th>{item.job_type}</th>
-                                                                    <th>{item.resume ? 'Download' : ''}</th>
+                                                                    <th>
+                                                                        {item.resume ? (
+                                                                            <a href={`${imageURL}/${item.resume}`} target="_blank" rel="noopener noreferrer">
+                                                                            Open
+                                                                            </a>
+                                                                        ) : (
+                                                                            ''
+                                                                        )}
+                                                                        </th>
+
 
                                                                     
                                                                     <td>{item.created_at.slice(0,10)}</td>
-                                                                    <td>{item.note ? item.note.slice(0,20) : item.note}</td>
+                                                                    {/* <td>{item.note ? item.note.slice(0,20) : item.note}</td> */}
                                                                     <td>
                                                                         <ul className="list-inline d-flex justify-content">
                                                                             <li>

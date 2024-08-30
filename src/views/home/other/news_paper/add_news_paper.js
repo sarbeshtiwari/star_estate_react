@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../sidebar';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { fetchNewsById, addNews, updateNews } from '../../../../api/news/news_api'; // Adjust the path as needed
+import { imageURL } from '../../../../imageURL';
 
 export default function AddNewsPaper() {
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    // const [sidebarOpen, setSidebarOpen] = useState(true);
     const navigate = useNavigate();
     const { id } = useParams();
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
-    const [previewUrl, setPreviewUrl] = useState('');
+    const [homepreviewUrl, setHomePreviewUrl] = useState('');
+    const [thumbpreviewUrl, setThumbPreviewUrl] = useState('');
 
     const [formData, setFormData] = useState({
         metaTitle: '',
@@ -35,6 +37,10 @@ export default function AddNewsPaper() {
             setLoading(true)
             const response = await fetchNewsById(id);
             setFormData(response.data);
+            if (response.data.newsThumb || response.data.newsImage) {
+                setThumbPreviewUrl(`${imageURL}/${response.data.newsThumb}`);
+                setHomePreviewUrl(`${imageURL}/${response.data.newsImage}`);
+            }
         } catch (err) {
             console.error('Failed to fetch data:', err);
         }
@@ -58,7 +64,8 @@ export default function AddNewsPaper() {
     
                 // Clear any previous validation errors for this file
                 setValidationErrors(prevErrors => ({ ...prevErrors, [name]: '' }));
-                setPreviewUrl(URL.createObjectURL(file));
+                {[name] == 'newsThumb' ? setThumbPreviewUrl(URL.createObjectURL(file)) : setHomePreviewUrl(URL.createObjectURL(file));}
+
             } catch (error) {
                 // Handle validation error
                 setValidationErrors(prevErrors => ({ ...prevErrors, [name]: error }));
@@ -316,7 +323,7 @@ export default function AddNewsPaper() {
                                                     />
                                                     {formData.newsThumb && (
                                                         <img
-                                                            src={previewUrl}
+                                                            src={thumbpreviewUrl}
                                                             alt="Thumbnail Preview"
                                                             className="img-thumbnail mt-2"
                                                             width="120"
@@ -338,8 +345,8 @@ export default function AddNewsPaper() {
                                                     />
                                                     {formData.newsImage && (
                                                         <img
-                                                            src={previewUrl}
-                                                            alt="Image Preview"
+                                                            src={homepreviewUrl}
+                                                            alt="Home Preview"
                                                             className="img-thumbnail mt-2"
                                                             width="120"
                                                             height="70"

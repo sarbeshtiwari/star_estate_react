@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://star-estate-api.onrender.com/projectFloorPlan';
+const BASE_URL = 'https://ecis.in/star-api/starEstate/projectFloorPlan';
 
 export const addFloorPlan = async (formData) => {
     try {

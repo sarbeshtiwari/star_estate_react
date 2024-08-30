@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../sidebar';
 import axios from 'axios';
 import { addLocationAdvantages, getLocationAdvantagesByID, updateLocationAdvantages } from '../../../../api/location_advantages/location_advantages_api';
+import { imageURL } from '../../../../imageURL';
 
 const AddLocationAdvantages = () => {
     const [headings, setHeadings] = useState([{ image: '', title: '', alt_tag: ''}]);
@@ -10,6 +11,7 @@ const AddLocationAdvantages = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
+    const [previewUrl, setPreviewUrl] = useState([]);
 
     useEffect(() => {
         if(id !== 'add'){
@@ -21,6 +23,9 @@ const AddLocationAdvantages = () => {
         try{
             const data = await getLocationAdvantagesByID(id);
             setHeadings([{ ...data}]);
+            if (data.image) {
+                setPreviewUrl([`${imageURL}/${data.image}`]);
+            }
         }catch(error){
             console.log('Error fetching data', error);
             setHeadings([{image: '', title: '', alt_tag: ''}]);
@@ -48,6 +53,9 @@ const AddLocationAdvantages = () => {
                 updatedHeadings[index] = { ...updatedHeadings[index], [field]: file };
                 setHeadings(updatedHeadings);
                 setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: '' }));
+                const newPreviewUrl = [...previewUrl];
+                newPreviewUrl[index] = URL.createObjectURL(file);
+                setPreviewUrl(newPreviewUrl);
             })
             .catch((error) => {
                 setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: error }));
@@ -230,6 +238,15 @@ const AddLocationAdvantages = () => {
                                                                 />
                                                                 {validationErrors[`image${index}`] && (
                                                                         <div className="text-danger">{validationErrors[`image${index}`]}</div>
+                                                                    )}
+                                                                    {previewUrl && (
+                                                                        <img
+                                                                        src={previewUrl[index]}
+                                                                            alt="Location Image Preview"
+                                                                            className="img-thumbnail"
+                                                                            width="120"
+                                                                            height="70"
+                                                                        />
                                                                     )}
                                                             </div>
                                                         </div>

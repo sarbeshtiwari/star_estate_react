@@ -214,7 +214,7 @@ const ContactUs = () => {
                                                                 <th>Query</th>
 
                                                                 <th>Created at</th>
-                                                                <th>Note</th>
+                                                                {/* <th>Note</th> */}
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
@@ -229,7 +229,7 @@ const ContactUs = () => {
 
                                                                     <td>{item.user_query}</td>
                                                                     <td>{item.created_at.slice(0, 10)}</td>
-                                                                    <td>{item.note ? item.note.slice(0,20) : item.note}</td>
+                                                                    {/* <td>{item.note ? item.note.slice(0,20) : item.note}</td> */}
                                                                     <td>
                                                                         <ul className="list-inline d-flex justify-content">
                                                                             <li>

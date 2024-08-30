@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import Sidebar from '../../sidebar';
 import { fetchDeveloperById, addDeveloper, updateDeveloper } from '../../../../api/developer/developer_api';
+import { imageURL } from '../../../../imageURL';
 
 export default function AddDeveloper() {
     const navigate = useNavigate();
@@ -21,16 +22,22 @@ export default function AddDeveloper() {
     });
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
+    const [previewUrl, setPreviewUrl] = useState('');
 
     useEffect(() => {
         if (id !== 'add') {
             const loadDeveloper = async () => {
                 try {
                     const data = await fetchDeveloperById(id);
+                    
+                    
                     setFormData({
                         ...data,
-                        developerLogo: null // Reset logo file
+                        // developerLogo: data.developerLogo ? data.developerLogo : null
                     });
+                    if (data.developerLogo) {
+                        setPreviewUrl(`${imageURL}/${data.developerLogo}`);
+                    }
                 } catch (error) {
                     console.error('Error fetching developer:', error.message);
                 } finally {
@@ -67,6 +74,7 @@ export default function AddDeveloper() {
                 
                 // Clear any previous validation errors
                 setValidationErrors(prevErrors => ({ ...prevErrors, developerLogo: '' }));
+                setPreviewUrl(URL.createObjectURL(file));
             } catch (error) {
                 // Handle validation error
                 setValidationErrors(prevErrors => ({ ...prevErrors, developerLogo: error }));
@@ -170,9 +178,9 @@ export default function AddDeveloper() {
     };
 
     // Helper function to create a URL for the image preview
-    const getLogoPreviewUrl = () => {
-        return formData.developerLogo ? URL.createObjectURL(formData.developerLogo) : '';
-    };
+    // const getLogoPreviewUrl = () => {
+    //     return formData.developerLogo ? URL.createObjectURL(formData.developerLogo) : '';
+    // };
 
 
     return (
@@ -340,12 +348,13 @@ export default function AddDeveloper() {
                                                     {validationErrors.developerLogo && (
                                                             <div className="invalid-feedback">{validationErrors.developerLogo}</div>
                                                         )}
-                                                    {formData.developerLogo && (
+                                                    {previewUrl && (
                                                         <img
-                                                            src={getLogoPreviewUrl()}
-                                                            alt="Developer Logo"
-                                                            className="img-thumbnail mt-2"
-                                                            style={{ maxWidth: '200px', maxHeight: '200px' }}
+                                                            src={previewUrl}
+                                                            alt="Developer Image Preview"
+                                                            className="img-thumbnail"
+                                                            width="120"
+                                                            height="70"
                                                         />
                                                     )}
                                                 </div>

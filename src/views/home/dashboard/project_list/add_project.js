@@ -9,6 +9,7 @@ import {
     addProject,
     updateProject
 } from '../../../../api/dashboard/project_list/project_list_api'; 
+import { imageURL } from "../../../../imageURL";
 
 export default function AddProject() {
     const { id, id1 } = useParams();
@@ -551,6 +552,15 @@ export default function AddProject() {
                                             {validationErrors.project_logo && (
                                                 <div className="invalid-feedback">{validationErrors.project_logo}</div>
                                             )}
+                                            {formData.project_logo ?  <img 
+                                                                   src={`${imageURL}/${formData.project_logo}`}
+
+                                                                   
+                                                                    style={{ objectFit: 'cover' }}
+                                                                    alt={formData.projectName}
+                                                                    width="100"
+                                                                    height="100"
+                                                                /> : ''}
                                         </div>
                                         <div className="col-md-12 form-group">
                                         {id === 'add' ? ( 

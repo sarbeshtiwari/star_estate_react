@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'https://star-estate-api.onrender.com/projectContentSEO';
+const baseURL = 'https://ecis.in/star-api/starEstate/projectContentSEO';
 
 export const fetchDetails = async (id) => {
     try {

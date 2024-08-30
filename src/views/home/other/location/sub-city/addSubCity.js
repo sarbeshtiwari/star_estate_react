@@ -21,6 +21,7 @@ export default function AddSubCity() {
     const [image, setImage] = useState(null);
     const [validationErrors, setValidationErrors] = useState({});
     const [loading, setLoading] = useState(false);
+    const [previewUrl, setPreviewUrl] = useState('');
 
     const navigate = useNavigate();
     const { id, ids } = useParams();
@@ -47,6 +48,13 @@ export default function AddSubCity() {
                                 ctcontent: specificDataItem.ctcontent || '',
                                 schema: specificDataItem.schema || '',
                             });
+                        }
+                        setImage({
+                            image: specificDataItem.image ? specificDataItem.image : null
+                        })
+                        if (specificDataItem.image) {
+                            setPreviewUrl(`${specificDataItem.image}`);
+                            
                         }
                     }
                 }
@@ -78,6 +86,7 @@ export default function AddSubCity() {
                 
                 // Clear any previous validation errors
                 setValidationErrors(prevErrors => ({ ...prevErrors, image: '' }));
+                setPreviewUrl(URL.createObjectURL(file));
             } catch (error) {
                 // Handle validation error
                 setValidationErrors(prevErrors => ({ ...prevErrors, image: error }));
@@ -278,6 +287,15 @@ export default function AddSubCity() {
                                                         {validationErrors.image && (
                                                             <div className='invalid-feedback'>{validationErrors.image}</div>
                                                         )}
+                                                        {previewUrl && (
+                                                        <img
+                                                            src={previewUrl}
+                                                            alt="City Image Preview"
+                                                            className="img-thumbnail"
+                                                            width="120"
+                                                            height="70"
+                                                        />
+                                                    )}
                                                     </div>
                                                     <div className="col-md-12 form-group">
                                                         <label className="label_field">Content</label>

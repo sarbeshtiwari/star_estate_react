@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import Sidebar from "../../../../sidebar";
 import { addBrochure, getBrochureByID, updateBrochure } from "../../../../../../api/dashboard/project_list/view_project/brochure_walkthrough_api";
+import { imageURL } from "../../../../../../imageURL";
 
 export default function AddBrochureWalkthrough() {
     const {id, ids} = useParams();
@@ -219,6 +220,15 @@ return (
                                             {validationErrors.brochure && (
                                                 <div className="text-danger">{validationErrors.brochure}</div>
                                             )}
+                                            {formData.brochure ? (<img
+                                                src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGAA4Wd4bco5Xv33GasXrnDdQT5OFXwa3HUQ&s'}
+                                                width="50"
+                                                height="50"
+                                                style={{}}
+                                                title="Embedded PDF"
+                                                onClick={() => window.open(`${imageURL}/${formData.brochure}`, '_blank')}
+                                            />
+                                            ): ('')}
                                         </div>
                                     </div>
                                     {ids === 'add' ? (

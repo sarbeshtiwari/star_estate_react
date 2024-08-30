@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = `https://star-estate-api.onrender.com/projectBrochureWalkthrough`;
+const API_URL = `https://ecis.in/star-api/starEstate/projectBrochureWalkthrough`;
 
 export const addBrochure = async (projectname, formData) => {
     try {

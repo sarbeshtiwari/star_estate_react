@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://star-estate-api.onrender.com';
+const API_URL = 'https://ecis.in/star-api/starEstate';
 
 // Fetch all blogs
 export const fetchBlogs = async () => {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import Sidebar from '../../sidebar';
 import { fetchBlogById, addBlog, updateBlog } from '../../../../api/blogs/blogs_api';
+import { imageURL } from '../../../../imageURL';
 
 export default function AddBlogs() {
     const navigate = useNavigate();
@@ -34,6 +35,9 @@ export default function AddBlogs() {
         try {
             const blog = await fetchBlogById(id);
             setFormData(blog);
+            if (blog.blogsImage) {
+                setPreviewUrl(`${imageURL}/${blog.blogsImage}`);
+            }
         } catch (err) {
             console.error('Failed to fetch data:', err.message);
         }
@@ -294,11 +298,11 @@ export default function AddBlogs() {
                                                         onChange={handleFileChange}
                                                         className={`form-control ${validationErrors.blogsImage ? 'is-invalid' : ''}`}
                                                     />
-                                                    {formData.blogsImage && (
+                                                   {previewUrl && (
                                                         <img
                                                             src={previewUrl}
-                                                            alt="Blogs Image"
-                                                            className="img-thumbnail mt-2"
+                                                            alt="Blog Image Preview"
+                                                            className="img-thumbnail"
                                                             width="120"
                                                             height="70"
                                                         />

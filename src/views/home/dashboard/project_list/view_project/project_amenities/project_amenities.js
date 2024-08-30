@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 // import { fetchDetails } from '../../../../../../api/dashboard/project_list/view_project/quick_details_api';
 import { getProjectAmenities } from '../../../../../../api/dashboard/project_list/view_project/project_amenity_api';
 import { getAllTheAmenities } from '../../../../../../api/amenities/amenities_api';
+import { imageURL } from '../../../../../../imageURL';
 
 export default function ProjectAmenities() {
     const [details, setDetails] = useState([]);
@@ -32,9 +33,12 @@ export default function ProjectAmenities() {
             const amenitiesMap = new Map(allAmenitiesResponse.map(amenity => [amenity._id, amenity]));
             const matchedAmenities = activeAmenities.map(amenity => amenitiesMap.get(amenity.amenityId)).filter(Boolean);
 
+            const finalAmenities = matchedAmenities
+            .filter(amenity => amenity.status === true);
+
             // Update state with matched amenities
             setDetails(activeAmenities);
-            setAmenities(matchedAmenities);
+            setAmenities(finalAmenities);
 
         } catch (err) {
             console.error('Error fetching details:', err);
@@ -94,7 +98,15 @@ export default function ProjectAmenities() {
                                                                         <tr key={amenity._id} className={index % 2 === 0 ? 'even' : 'odd'}>
                                                                             <td className="sorting_1">{index + 1}</td>
                                                                             <td>{amenity.category}</td>
-                                                                            <td>{amenity.image}</td>
+                                                                            <td> <img 
+                                                                   src={`${imageURL}/${amenity.image}`}
+
+                                                                    className="rounded-circle"
+                                                                    style={{ objectFit: 'cover' }}
+                                                                    alt={''}
+                                                                    width="50"
+                                                                    height="50"
+                                                                /></td>
                                                                             <td>{amenity.title}</td>
                                                                         </tr>
                                                                     ))

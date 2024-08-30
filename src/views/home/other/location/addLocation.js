@@ -23,6 +23,8 @@ export default function AddLocation() {
     const [image, setImage] = useState(null);
     const [validationErrors, setValidationErrors] = useState({});
     const [loading, setLoading] = useState(false);
+    const [previewUrl, setPreviewUrl] = useState('');
+
 
     useEffect(() => {
         if (id !== 'add') {
@@ -43,7 +45,17 @@ export default function AddLocation() {
                                 ctcontent: specificDataItem.ctcontent || '',
                                 schema: specificDataItem.schema || '',
                                 content_above_faqs: specificDataItem.content_above_faqs || ''
+                                
                             });
+                            
+                            setImage({
+                                image: specificDataItem.image ? specificDataItem.image : null
+                            })
+                            if (specificDataItem.image) {
+                                setPreviewUrl(`${specificDataItem.image}`);
+                                
+                            }
+                            
                         } else {
                             console.error('Specific data item not found');
                         }
@@ -74,6 +86,7 @@ export default function AddLocation() {
                 
                 // Clear any previous validation errors
                 setValidationErrors(prevErrors => ({ ...prevErrors, image: '' }));
+                setPreviewUrl(URL.createObjectURL(file));
             } catch (error) {
                 // Handle validation error
                 setValidationErrors(prevErrors => ({ ...prevErrors, image: error }));
@@ -293,6 +306,15 @@ export default function AddLocation() {
                                                         {validationErrors.image && (
                                                             <div className="invalid-feedback">{validationErrors.image}</div>
                                                         )}
+                                                        {previewUrl && (
+                                                        <img
+                                                            src={previewUrl}
+                                                            alt="City Image Preview"
+                                                            className="img-thumbnail"
+                                                            width="120"
+                                                            height="70"
+                                                        />
+                                                    )}
                                                     </div>
                                                     <div className="col-md-12 form-group">
                                                         <label className="label_field">Content</label>

@@ -23,7 +23,7 @@ export default function ProjectLocationAdvantage() {
             const projectLocationAdvantages = Array.isArray(projectResponse.data) ? projectResponse.data : [];
             
             // Filter LocationAdvantages where status is true
-            const activeLocationAdvantages = projectLocationAdvantages.filter(LocationAdv => LocationAdv.status === true);
+            const activeLocationAdvantages = await projectLocationAdvantages.filter(LocationAdv => LocationAdv.status === true);
             
             // Fetch all LocationAdvantages
             const allLocationAdvantagesResponse = await getLocationAdvantages();
@@ -31,11 +31,17 @@ export default function ProjectLocationAdvantage() {
 
             // Map IDs of active LocationAdvantages to their details from all LocationAdvantages
             const LocationAdvantagesMap = new Map(allLocationAdvantagesResponse.map(LocationAdv => [LocationAdv._id, LocationAdv]));
-            const matchedLocationAdvantages = activeLocationAdvantages.map(LocationAdv => LocationAdvantagesMap.get(LocationAdv.LocationAdvantagesId)).filter(Boolean);
+            // const matchedLocationAdvantages = await activeLocationAdvantages.map(LocationAdv => LocationAdvantagesMap.get(LocationAdv.LocationAdvantagesId)).filter(Boolean);
+            const matchedLocationAdvantages = await activeLocationAdvantages.map(LocationAdv => LocationAdvantagesMap.get(LocationAdv.LocationAdvantagesId)).filter(Boolean);
+
+            const finalLocationAdvantages = matchedLocationAdvantages
+            .filter(LocationAdv => LocationAdv.status === true);
 
             // Update state with matched LocationAdvantages
             setDetails(activeLocationAdvantages);
-            setLocationAdvantages(matchedLocationAdvantages);
+      
+           
+            setLocationAdvantages(finalLocationAdvantages);
 
         } catch (err) {
             console.error('Error fetching details:', err);
@@ -118,13 +124,13 @@ export default function ProjectLocationAdvantage() {
                                                                             <img 
                                                                                 src={`${imageURL}/${detail.image}`} 
                                                                                 alt={detail.title}
-                                                                                style={{ width: '100px', height: 'auto' }} // Adjust size as needed
+                                                                                style={{ width: '70px', height: '50px' }} // Adjust size as needed
                                                                             />
                                                                         ) : (
                                                                             <span>No Image Available</span>
                                                                         )}</td>
                                                                         <td>{detail.title}</td>
-                                                                        <td>{detail.proximity}</td>
+                                                                        <td>{details[index].proximity} {details[index].unit}</td>
                                                                         {/* <td>
                                                                             <ul className="list-inline d-flex justify-content-end">
                                                                                 <li>

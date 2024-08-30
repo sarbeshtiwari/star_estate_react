@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../sidebar';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchEventById, addEvent, updateEvent } from '../../../../api/events/events_api'; // Adjust the path as needed
+import { imageURL } from '../../../../imageURL';
 
 export default function AddEvents() {
     const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function AddEvents() {
             const response = await fetchEventById(id);
             setFormData(response.data);
             if (response.data.eventImage) {
-                setPreviewUrl(`https://star-estate-api.onrender.com/uploads/events/${response.data.eventImage}`);
+                setPreviewUrl(`${imageURL}/${response.data.eventImage}`);
             }
         } catch (err) {
             console.error('Failed to fetch data:', err);

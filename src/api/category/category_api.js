@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = `https://star-estate-api.onrender.com`;
+const API_BASE_URL = `https://ecis.in/star-api/starEstate`;
 // const API_BASE_URL = 'http://localhost:1000';
 
 // Add categories

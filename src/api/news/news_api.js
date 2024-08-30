@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://star-estate-api.onrender.com/news';
+const API_URL = 'https://ecis.in/star-api/starEstate/news';
 
 export const fetchNews = async () => {
     return axios.get(`${API_URL}/getNews`);

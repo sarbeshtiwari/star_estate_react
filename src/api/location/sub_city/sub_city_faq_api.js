@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://star-estate-api.onrender.com';
+const API_BASE_URL = 'https://ecis.in/star-api/starEstate';
 
 export const fetchFAQs = async (sub_city, content_type) => {
     try {

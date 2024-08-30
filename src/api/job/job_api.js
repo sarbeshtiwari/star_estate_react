@@ -1,7 +1,7 @@
 // apiService.js
 import axios from 'axios';
 
-const BASE_URL = 'https://star-estate-api.onrender.com';
+const BASE_URL = 'https://ecis.in/star-api/starEstate';
 
 // Fetch all jobs
 export const fetchJobs = async () => {

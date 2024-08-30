@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://star-estate-api.onrender.com/projectGallery';
+const BASE_URL = 'https://ecis.in/star-api/starEstate/projectGallery';
 
 export const addProjectGallery = async (formData) => {
     try {

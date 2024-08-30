@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://star-estate-api.onrender.com/subAmenities';
+const BASE_URL = 'https://ecis.in/star-api/starEstate/subAmenities';
 
 // Fetch amenities by category ID
 export const fetchAmenityData = async (id) => {

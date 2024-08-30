@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = 'https://star-estate-api.onrender.com/addProjects';
+const API_BASE_URL = 'https://ecis.in/star-api/starEstate/addProjects';
 
 export const fetchProjects = async (id) => {
     try {
@@ -86,8 +86,8 @@ export const updateProject = async (id, formData) => {
     }
 };
 
-const BASE_URL_CITIES = 'https://star-estate-api.onrender.com';
-const BASE_URL_DEVELOPERS = 'https://star-estate-api.onrender.com/developers';
+const BASE_URL_CITIES = 'https://ecis.in/star-api/starEstate';
+const BASE_URL_DEVELOPERS = 'https://ecis.in/star-api/starEstate/developers';
 
 
 

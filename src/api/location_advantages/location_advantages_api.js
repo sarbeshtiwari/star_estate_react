@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://star-estate-api.onrender.com';
+const BASE_URL = 'https://ecis.in/star-api/starEstate';
 
 export const addLocationAdvantages = async (formData) => {
     try {

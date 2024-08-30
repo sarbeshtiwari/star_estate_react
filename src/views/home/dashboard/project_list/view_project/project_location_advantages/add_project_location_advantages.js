@@ -11,6 +11,7 @@ export default function AddProjectLocationAdvantages() {
     const [selectedLocation, setSelectedLocation] = useState(new Set());
     const [textBoxValues, setTextBoxValues] = useState({});
     const [proximityUnits, setProximityUnits] = useState({});
+    const [loading , setLoading] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -79,6 +80,7 @@ export default function AddProjectLocationAdvantages() {
     };
 
     const handleProximityUnitChange = (id, unit) => {
+        console.log(`Updating ${id} proximity unit with value: ${unit}`);
         setProximityUnits((prev) => ({
             ...prev,
             [id]: unit
@@ -89,6 +91,7 @@ export default function AddProjectLocationAdvantages() {
         const title = textBoxValues[locationId]?.title || '';
         const proximity = textBoxValues[locationId]?.proximity || '';
         const unit = proximityUnits[locationId] || '';
+
     
         if (!unit && proximity) {
             alert('Please select a proximity unit.');
@@ -99,16 +102,17 @@ export default function AddProjectLocationAdvantages() {
             alert("Title is mandatory");
             return;
         }
+        setLoading(true);
     
         try {
             const isExisting = selectedLocation.has(locationId);
             const response = await ProjectLocationAdvantages(locationId, isExisting, id, title, proximity, unit);
-            console.log(response);
             alert(isExisting ? 'Data updated successfully.' : 'Data added successfully.');
         } catch (error) {
             console.error('Error adding/updating data:', error);
             alert('Failed to add/update data.');
         }
+        setLoading(false);
     };
     
     const isChecked = (locationId) => selectedLocation.has(locationId);
@@ -190,67 +194,30 @@ export default function AddProjectLocationAdvantages() {
                                                                             className="form-control"
                                                                         />
                                                                         <div className="form-check">
-                                                                            <div className="d-flex align-items-center">
-                                                                                <div className="d-flex align-items-center mr-4">
+                                                                            {['km', 'm', 'hr', 'min'].map(unit => (
+                                                                                <div className="d-flex align-items-center mr-4" key={unit}>
                                                                                     <input
                                                                                         type="radio"
-                                                                                        id={`km-${detail._id}`}
+                                                                                        id={`${unit}-${detail._id}`}
                                                                                         name={`proximity-unit-${detail._id}`}
-                                                                                        value="km"
-                                                                                        checked={proximityUnits[detail._id] === 'km'}
-                                                                                        onChange={() => handleProximityUnitChange(detail._id, 'km')}
-                                                                                        disabled={!isChecked(detail._id)}
+                                                                                        value={unit}
+                                                                                        checked={proximityUnits[detail._id] === unit}
+                                                                                        onChange={() => handleProximityUnitChange(detail._id, unit)}
                                                                                         className=""
                                                                                     />
-                                                                                    <label htmlFor={`km-${detail._id}`} className="form-check-label ml-2">KM</label>
+                                                                                    <label htmlFor={`${unit}-${detail._id}`} className="form-check-label ml-2">{unit.toUpperCase()}</label>
                                                                                 </div>
-                                                                                <div className="d-flex align-items-center mr-4">
-                                                                                    <input
-                                                                                        type="radio"
-                                                                                        id={`m-${detail._id}`}
-                                                                                        name={`proximity-unit-${detail._id}`}
-                                                                                        value="m"
-                                                                                        checked={proximityUnits[detail._id] === 'm'}
-                                                                                        onChange={() => handleProximityUnitChange(detail._id, 'm')}
-                                                                                        disabled={!isChecked(detail._id)}
-                                                                                        className=""
-                                                                                    />
-                                                                                    <label htmlFor={`m-${detail._id}`} className="form-check-label ml-2">M</label>
-                                                                                </div>
-                                                                                <div className="d-flex align-items-center mr-4">
-                                                                                    <input
-                                                                                        type="radio"
-                                                                                        id={`hr-${detail._id}`}
-                                                                                        name={`proximity-unit-${detail._id}`}
-                                                                                        value="hr"
-                                                                                        checked={proximityUnits[detail._id] === 'hr'}
-                                                                                        onChange={() => handleProximityUnitChange(detail._id, 'hr')}
-                                                                                        disabled={!isChecked(detail._id)}
-                                                                                        className=""
-                                                                                    />
-                                                                                    <label htmlFor={`hr-${detail._id}`} className="form-check-label ml-2">Hr</label>
-                                                                                </div>
-                                                                                <div className="d-flex align-items-center">
-                                                                                    <input
-                                                                                        type="radio"
-                                                                                        id={`min-${detail._id}`}
-                                                                                        name={`proximity-unit-${detail._id}`}
-                                                                                        value="min"
-                                                                                        checked={proximityUnits[detail._id] === 'min'}
-                                                                                        onChange={() => handleProximityUnitChange(detail._id, 'min')}
-                                                                                        disabled={!isChecked(detail._id)}
-                                                                                        className=""
-                                                                                    />
-                                                                                    <label htmlFor={`min-${detail._id}`} className="form-check-label ml-2">Min</label>
-                                                                                </div>
-                                                                            </div>
+                                                                            ))}
                                                                         </div>
                                                                         <button 
                                                                             className="btn btn-secondary btn-xs float-right"
                                                                             onClick={() => handleAddClick(detail._id)}
-                                                                            disabled={!isChecked(detail._id)}
+                                                                            disabled={!isChecked(detail._id) || loading}
+                                                                            
                                                                         >
-                                                                            {isChecked(detail._id) ? 'Update' : ''}
+                                                                            {isChecked(detail._id) ? (<>
+                                                                            {loading ? (<span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>): 'Update'}
+                                                                            </>) : ''}
                                                                         </button>
                                                                     </div>
                                                                 </div>

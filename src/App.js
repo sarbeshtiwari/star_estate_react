@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './views/login/login';
 import Dashboard from './views/home/dashboard/dashboard';
 import Footer from './views/widgets/footer';
@@ -67,7 +67,7 @@ import Sidebar from './views/home/sidebar';
 
 function App() {
   return (
-    <HashRouter>
+    <BrowserRouter basename="/starEstate">
     {/* <ProtectedRoute element ={<Sidebar></Sidebar>}/> */}
       <Routes>
         {/* Default route */}
@@ -154,7 +154,7 @@ function App() {
         <Route path="/career" element = {<ProtectedRoute element ={<Career/>}/>}/>
       </Routes>
       <Footer/>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 

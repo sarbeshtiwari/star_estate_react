@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-news paper not updating
+"homepage": "https://ecis.in/starEstate",
 
 In the project directory, you can run:
 

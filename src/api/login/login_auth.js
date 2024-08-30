@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
 
-const API_URL = `https://star-estate-api.onrender.com/auth`
+const API_URL = `https://ecis.in/star-api/starEstate/auth`
 
 export const verifyLogin = async (email, password) => {
   console.log('called')
