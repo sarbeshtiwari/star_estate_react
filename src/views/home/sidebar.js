@@ -144,7 +144,7 @@
 // }
 
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Button, Offcanvas } from 'react-bootstrap';
 import logo from '../../assets/images/logo.png';
 import Cookies from 'js-cookie';
@@ -152,15 +152,18 @@ import Cookies from 'js-cookie';
 export default function Sidebar() {
     const [showSidebar, setShowSidebar] = useState(false);
     const [showOther, setShowOther] = useState(false);
+    const [showMedia, setShowMedia] = useState(false);
     const [showEnquiry, setShowEnquiry] = useState(false);
 
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
     const [warningMessage, setWarningMessage] = useState('');
     
+    const location = useLocation();
     const navigate = useNavigate();
 
     const toggleSidebar = () => setShowSidebar(!showSidebar);
     const toggleOther = () => setShowOther(!showOther);
+    const toggleMedia = () => setShowMedia(!showMedia);
     const toggleEnquiry = () => setShowEnquiry(!showEnquiry);
 
     useEffect(() => {
@@ -182,6 +185,15 @@ export default function Sidebar() {
 
         return () => clearInterval(countdown);
     }, []);
+
+    useEffect(() => {
+        // Show sidebar by default on Dashboard route
+        if (location.pathname === '/dashboard') {
+            setShowSidebar(true);
+        } else {
+            setShowSidebar(false);
+        }
+    }, [location]);
 
     const formatTime = (seconds) => {
         if (seconds <= 0) return '0m 0s';
@@ -254,14 +266,7 @@ export default function Sidebar() {
                          }}>
                             Category
                         </Nav.Link>
-                        <Nav.Link as={Link} to="/luxuryProp"  style={{  backgroundColor: '#7EA700', 
-                            borderColor: '#7EA700',
-                            color: '#fff',
-                            borderRadius: 5,
-                            marginBottom: 10
-                         }}>
-                            Luxury Property Show
-                        </Nav.Link>
+                        
                         <Nav.Link as={Link} to="/jobPost"  style={{  backgroundColor: '#7EA700', 
                             borderColor: '#7EA700',
                             color: '#fff',
@@ -284,15 +289,12 @@ export default function Sidebar() {
                                  }}
                                 // className="bg-secondary text-white p-2 rounded mb-1"
                             >
-                                Other
+                                Others
                             </Nav.Link>
                             {showOther && (
                                 <Nav className="flex-column bg-light p-2 rounded" id="other-items">
                                     <Nav.Link as={Link} to="/amenities_category" className="text-dark">
                                         Amenities
-                                    </Nav.Link>
-                                    <Nav.Link as={Link} to="/category" className="text-dark">
-                                        Category
                                     </Nav.Link>
                                     <Nav.Link as={Link} to="/location" className="text-dark">
                                         Location
@@ -306,6 +308,36 @@ export default function Sidebar() {
                                     <Nav.Link as={Link} to="/developer" className="text-dark">
                                         Developer
                                     </Nav.Link>
+                                    {/* <Nav.Link as={Link} to="/blogs" className="text-dark">
+                                        Blogs
+                                    </Nav.Link>
+                                    <Nav.Link as={Link} to="/events" className="text-dark">
+                                        Events
+                                    </Nav.Link>
+                                    <Nav.Link as={Link} to="/newsPaper" className="text-dark">
+                                        News Paper
+                                    </Nav.Link> */}
+                                </Nav>
+                            )}
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link 
+                                onClick={toggleMedia}
+                                aria-controls="media-items"
+                                aria-expanded={showMedia}
+                                style={{  backgroundColor: '#2F2F2F', 
+                                    borderColor: '#7EA700',
+                                    color: '#fff',
+                                    borderRadius: 5,
+                                    marginBottom: 10
+                                 }}
+                                // className="bg-secondary text-white p-2 rounded mb-1"
+                            >
+                                Media
+                            </Nav.Link>
+                            {showMedia && (
+                                <Nav className="flex-column bg-light p-2 rounded" id="media-items">
+                                    
                                     <Nav.Link as={Link} to="/blogs" className="text-dark">
                                         Blogs
                                     </Nav.Link>
@@ -336,6 +368,9 @@ export default function Sidebar() {
                             </Nav.Link>
                             {showEnquiry && (
                                 <Nav className="flex-column bg-light p-2 rounded" id="enquiry-items">
+                                    <Nav.Link as={Link} to="/luxuryProp" className="text-dark">
+                                        Luxury Property Show
+                                    </Nav.Link>
                                     <Nav.Link as={Link} to="/ProjectQueries" className="text-dark">
                                         Project Queries
                                     </Nav.Link>
@@ -347,6 +382,7 @@ export default function Sidebar() {
                                     </Nav.Link>
                                 </Nav>
                             )}
+                            
                         </Nav.Item>
                     </Nav>
                 </Offcanvas.Body>
