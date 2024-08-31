@@ -77,9 +77,9 @@ const AddAmenities = () => {
     };
 
     const validateImage = (file) => {
-        const allowedTypes = ["image/png", "image/webp", "image/jpeg"];
+        const allowedTypes = ["image/png", "image/webp", "image/jpeg", "image/svg+xml"];
         const reader = new FileReader();
-
+    
         return new Promise((resolve, reject) => {
             reader.onloadend = () => {
                 const arr = new Uint8Array(reader.result).subarray(0, 4);
@@ -87,7 +87,7 @@ const AddAmenities = () => {
                 for (let i = 0; i < arr.length; i++) {
                     header += arr[i].toString(16);
                 }
-
+    
                 let fileType = "";
                 switch (header) {
                     case "89504e47":
@@ -103,22 +103,26 @@ const AddAmenities = () => {
                     case "ffd8ffe8":
                         fileType = "image/jpeg";
                         break;
+                    case "3c3f786d": 
+                        fileType = "image/svg+xml";
+                        break;
                     default:
                         fileType = "unknown";
                         break;
                 }
-
+    
                 if (!allowedTypes.includes(fileType)) {
-                    reject("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
+                    reject("Only JPG, JPEG, WEBP, PNG, and SVG formats are allowed.");
                 } else {
                     resolve(file);
                 }
             };
-
+    
             reader.onerror = () => reject("Error reading file.");
             reader.readAsArrayBuffer(file);
         });
     };
+    
 
     const validateForm = () => {
         const errors = {};

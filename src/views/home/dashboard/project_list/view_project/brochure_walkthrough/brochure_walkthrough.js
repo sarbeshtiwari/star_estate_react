@@ -7,10 +7,10 @@ import { imageURL } from '../../../../../../imageURL';
 export default function BrochureWalkthrough() {
     const { id } = useParams();
     const [details, setDetails] = useState([]);
+    const [popupContent, setPopupContent] = useState(null); // State to hold popup content
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(id);
         fetchDetailsHandler();
     }, [id]);
 
@@ -45,29 +45,43 @@ export default function BrochureWalkthrough() {
         }
     };
 
+    // Handle showing brochure in a popup
     const handleBrochureClick = (url) => {
-        if (url) {
-            const fileExtension = url.split('.').pop().toLowerCase();
-            if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
-                // Image
-                window.open(url, '_blank');
-            } else if (['pdf'].includes(fileExtension)) {
-                // PDF
-                window.open(url, '_blank');
-            } else if (['doc', 'docx'].includes(fileExtension)) {
-                // Document
-                window.open(url, '_blank');
-            } else {
-                // Other file types or unknown
-                window.open(url, '_blank');
-            }
+        const fileExtension = url.split('.').pop().toLowerCase();
+        let content;
+        if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+            content = <img src={url} alt="Brochure" style={{ width: '100%', height: 'auto' }} />;
+        } else if (['pdf'].includes(fileExtension)) {
+            content = <iframe src={url} title="Brochure PDF" style={{ width: '100%', height: '600px' }} />;
+        } else {
+            window.open(url, '_blank');
+            return;
         }
+        setPopupContent(content);
+    };
+
+    // Handle showing walkthrough in a popup
+    const handleWalkthroughClick = (url) => {
+        setPopupContent(
+            <iframe
+                src={url}
+                title="Walkthrough Video"
+                frameBorder="0"
+                allowFullScreen
+                style={{ width: '100%', height: '500px' }}
+            />
+        );
+    };
+
+    // Close the popup
+    const closePopup = () => {
+        setPopupContent(null);
     };
 
     return (
-        <div >
+        <div>
             <Sidebar />
-            <div >
+            <div>
                 <div className="midde_cont">
                     <div className="container-fluid">
                         <div className="row column_title">
@@ -81,15 +95,19 @@ export default function BrochureWalkthrough() {
                             <div className="col-md-12">
                                 <div className="white_shd full margin_bottom_30">
                                     <div className="full graph_head">
-                                        {details.length === 0 || details[0].status === false ? (<Link to={`/${id}/addBrochureWalkthrough/add`} className="btn btn-success btn-xs">Add Brochure And Walkthrough</Link>):
-                                        ('')}
-                                        
-                                        <button 
-                                    className="btn btn-primary btn-xs float-right"
-                                    onClick={() => navigate(-1)}
-                                >
-                                    Back
-                                </button>
+                                    {details.length === 0 || details.every(detail => detail.status === false) ? (
+                                        <Link to={`/${id}/addBrochureWalkthrough/add`} className="btn btn-success btn-xs">
+                                            Add Brochure And Walkthrough
+                                        </Link>
+                                    ) : (
+                                        ''
+                                    )} 
+                                     <button
+                                            className="btn btn-primary btn-xs float-right"
+                                            onClick={() => navigate(-1)}
+                                        >
+                                            Back
+                                        </button>
                                     </div>
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
                                         <div className="full price_table padding_infor_info">
@@ -123,14 +141,12 @@ export default function BrochureWalkthrough() {
                                                                                 </button>
                                                                             </td>
                                                                             <td>
-                                                                                <Link 
-                                                                                    to={detail.walkthrough} 
-                                                                                    target="_blank" 
-                                                                                    rel="noopener noreferrer"
+                                                                                <button
                                                                                     className="btn btn-primary btn-xs"
+                                                                                    onClick={() => handleWalkthroughClick(detail.walkthrough)}
                                                                                 >
                                                                                     Open Walkthrough
-                                                                                </Link>
+                                                                                </button>
                                                                             </td>
                                                                             <td>
                                                                                 <ul className="list-inline d-flex justify-content-end">
@@ -168,6 +184,14 @@ export default function BrochureWalkthrough() {
                                                     </div>
                                                 </div>
                                             </div>
+                                            {popupContent && (
+                                                <div className="popup-container">
+                                                    <div className="popup-content">
+                                                        <button className="close-btn" onClick={closePopup}>X</button>
+                                                        {popupContent}
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -176,6 +200,40 @@ export default function BrochureWalkthrough() {
                     </div>
                 </div>
             </div>
+
+            {/* Popup Styles */}
+            <style jsx>{`
+                .popup-container {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.8);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                }
+                .popup-content {
+                    background: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    position: relative;
+                    max-width: 100%;
+                    max-height: 80%;
+                    overflow: auto;
+                }
+                .close-btn {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    background: none;
+                    border: none;
+                    font-size: 24px;
+                    cursor: pointer;
+                }
+            `}</style>
         </div>
     );
 }
