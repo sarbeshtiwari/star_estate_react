@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = `https://ecis.in/star-api/starEstate/projectBrochureWalkthrough`;
+const API_URL = `https://ecis.in/apis/star-estate-API/projectBrochureWalkthrough`;
 
 export const addBrochure = async (projectname, formData) => {
     try {

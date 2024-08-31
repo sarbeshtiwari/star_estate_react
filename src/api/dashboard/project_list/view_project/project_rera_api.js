@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://ecis.in/star-api/starEstate/projectRera';
+const BASE_URL = 'https://ecis.in/apis/star-estate-API/projectRera';
 
 export const addProjectRera = async (formData) => {
     try {

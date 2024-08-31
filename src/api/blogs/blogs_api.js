@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://ecis.in/star-api/starEstate';
+const API_URL = 'https://ecis.in/apis/star-estate-API';
 
 // Fetch all blogs
 export const fetchBlogs = async () => {

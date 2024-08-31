@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://ecis.in/star-api/starEstate/subAmenities';
+const BASE_URL = 'https://ecis.in/apis/star-estate-API/subAmenities';
 
 // Fetch amenities by category ID
 export const fetchAmenityData = async (id) => {

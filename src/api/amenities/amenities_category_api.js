@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const API_BASE_URL = 'https://ecis.in/star-api/starEstate/amenities';
+const API_BASE_URL = 'https://ecis.in/apis/star-estate-API/amenities';
 
 export const getAmenitiesCategories = async () => {
     try {

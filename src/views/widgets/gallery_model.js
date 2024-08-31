@@ -19,7 +19,7 @@ const GalleryModal = ({ showModal, handleClose, handleFormSubmit, eventId }) => 
         setLoading(true);
 
         try {
-            await axios.post(`https://ecis.in/star-api/starEstate/images/uploadEventImages/${eventId}`, formData, {
+            await axios.post(`https://ecis.in/apis/star-estate-API/images/uploadEventImages/${eventId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

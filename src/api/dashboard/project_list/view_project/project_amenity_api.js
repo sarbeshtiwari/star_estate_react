@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const $API_URL = `https://ecis.in/star-api/starEstate/projectAmenities`;
+const $API_URL = `https://ecis.in/apis/star-estate-API/projectAmenities`;
 
 export const ProjectAmenities = async (amenityId, status, projectname) => {
     try{

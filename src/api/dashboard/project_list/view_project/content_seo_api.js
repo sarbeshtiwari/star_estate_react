@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'https://ecis.in/star-api/starEstate/projectContentSEO';
+const baseURL = 'https://ecis.in/apis/star-estate-API/projectContentSEO';
 
 export const fetchDetails = async (id) => {
     try {

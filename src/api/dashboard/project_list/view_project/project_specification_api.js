@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://ecis.in/star-api/starEstate/projectSpecifications';
+const API_URL = 'https://ecis.in/apis/star-estate-API/projectSpecifications';
 
 // Fetch project specifications by project ID
 export const fetchSpecificationsByProjectId = async (projectId) => {

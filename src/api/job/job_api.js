@@ -1,7 +1,7 @@
 // apiService.js
 import axios from 'axios';
 
-const BASE_URL = 'https://ecis.in/star-api/starEstate';
+const BASE_URL = 'https://ecis.in/apis/star-estate-API';
 
 // Fetch all jobs
 export const fetchJobs = async () => {
