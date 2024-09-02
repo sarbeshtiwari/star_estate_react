@@ -25,6 +25,7 @@ export default function AddProjectAmenities() {
 
             // Fetch project amenities
             const projectAmenities = await getProjectAmenities(id);
+            console.log(projectAmenities)
 
             // Extract IDs with status true
             const trueStatusIds = projectAmenities.data

@@ -5,7 +5,6 @@ import { addBannerImage } from '../../api/bannerImage/bannerImage';
 
 export default function AddBannerImage() {
     const navigate = useNavigate();
-    const { id } = useParams();
 
     const [banners, setBanners] = useState([{
         desktop_image_path: '',
@@ -14,8 +13,8 @@ export default function AddBannerImage() {
         alt_tag_desktop: '',
         alt_tag_mobile: '',
         alt_tag_tablet: '',
-        pageType: id
     }]);
+    const [loading, setLoading] = useState(false);
 
     const [validationErrors, setValidationErrors] = useState({});
 
@@ -145,6 +144,8 @@ export default function AddBannerImage() {
             }
         });
 
+        setLoading(true);
+
         try {
             await addBannerImage(formDataToSend);
             alert('Banner saved successfully');
@@ -153,6 +154,7 @@ export default function AddBannerImage() {
             console.error('Error submitting form:', error);
             alert(`Failed to save banner: ${error.message}`);
         }
+        setLoading(false);
     };
 
     return (
@@ -294,8 +296,12 @@ export default function AddBannerImage() {
                                             </div>
                                         )}
                                         <div className="form-group margin_0">
-                                            <button className="main_bt" type="submit">
-                                                Add Banner
+                                            <button className="main_bt" type="submit" disabled={loading}>
+                                            {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Add Banner'
+                                                    )}
                                             </button>
                                         </div>
                                     </form>

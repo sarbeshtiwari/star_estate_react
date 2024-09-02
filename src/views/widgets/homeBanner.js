@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '../home/sidebar';
+import { deleteBanner, fetchBannerByID } from '../../api/bannerImage/bannerImage';
+import { imageURL } from '../../imageURL';
 // import image from '../../../assets/images/logo.png';
 // import { fetchHomeBanner, updateHomeBannerStatus, deleteHomeBanner, globals } from '../../api/bannerImage/bannerImage';
 // import ImageModal from '../../widgets/imageModel';
@@ -21,20 +23,20 @@ export default function HomeBanner() {
     const handleClose = () => setShowModal(false);
 
     useEffect(() => {
-        // const loadHomeBanner = async () => {
-        //     try {
-        //         setLoading(true);
-        //         const homeBannerData = await fetchHomeBanner();
-        //         setHomeBanner(homeBannerData);
-        //     } catch (err) {
-        //         setError('Failed to load data');
-        //         console.log('Failed to fetch data:', err);
-        //     } finally {
-        //         setLoading(false);
-        //     }
-        // };
+        const loadHomeBanner = async () => {
+            try {
+                setLoading(true);
+                const homeBannerData = await fetchBannerByID();
+                setHomeBanner(homeBannerData);
+            } catch (err) {
+                setError('Failed to load data');
+                console.log('Failed to fetch data:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-        // loadHomeBanner();
+        loadHomeBanner();
     }, []);
 
     const handleUpdateStatus = async (id, currentStatus) => {
@@ -56,18 +58,18 @@ export default function HomeBanner() {
     };
 
     const handleDeleteHomeBanner = async (id) => {
-        // try {
-        //     const result = await deleteHomeBanner(id);
-        //     if (result.success) {
-        //         alert('Banner deleted successfully');
-        //         setHomeBanner(prevHomeBanner => prevHomeBanner.filter(homeBanner => homeBanner.id !== id));
-        //     } else {
-        //         alert(`Error: ${result.message}`);
-        //     }
-        // } catch (error) {
-        //     console.error('Error deleting home banner:', error);
-        //     alert(`Error: ${error.message}`);
-        // }
+        try {
+            const result = await deleteBanner(id);
+            if (result.success) {
+                alert('Banner deleted successfully');
+                loadHomeBanner();
+            } else {
+                alert(`Error: ${result.message}`);
+            }
+        } catch (error) {
+            console.error('Error deleting home banner:', error);
+            alert(`Error: ${error.message}`);
+        }
     };
 
     return (
@@ -116,50 +118,50 @@ export default function HomeBanner() {
                                                         </thead>
                                                         <tbody>
                                                             {homeBanner.map((banner, index) => (
-                                                                <tr key={banner.id}>
+                                                                <tr key={banner._id}>
                                                                     <td>{index + 1}</td>
                                                                    
                                                                     <td>
                                                                 <img
-                                                                    src={banner.desktop_image_path ? `${banner.desktop_image_path}` : '/path/to/default/image'}
+                                                                    src={banner.desktop_image_url ? `${banner.desktop_image_url}` : '/url/to/default/image'}
                                                                     className="rounded-circle"
                                                                     style={{ objectFit: 'cover' }}
                                                                     alt={banner.alt_tag}
                                                                     width="50"
                                                                     height="50"
-                                                                    onClick={() => handleShow(`${banner.desktop_image_path}`, banner.alt_tag)}
+                                                                    onClick={() => handleShow(`${banner.desktop_image_url}`, banner.alt_tag)}
                                                                 />
                                                             </td>
                                                             <td>
                                                                 <img
-                                                                    src={banner.tablet_image_path ? `${banner.tablet_image_path}` : '/path/to/default/image'}
+                                                                    src={banner.tablet_image_url ? `${banner.tablet_image_url}` : '/url/to/default/image'}
                                                                     className="rounded-circle"
                                                                     style={{ objectFit: 'cover' }}
                                                                     alt={banner.alt_tag}
                                                                     width="50"
                                                                     height="50"
-                                                                    onClick={() => handleShow(`${banner.tablet_image_path}`, banner.alt_tag)}
+                                                                    onClick={() => handleShow(`${banner.tablet_image_url}`, banner.alt_tag)}
                                                                 />
                                                             </td>
                                                             <td>
                                                                 <img
-                                                                    src={banner.mobile_image_path ? `${banner.mobile_image_path}` : '/path/to/default/image'}
+                                                                    src={banner.mobile_image_url ? `${banner.mobile_image_url}` : '/url/to/default/image'}
                                                                     className="rounded-circle"
                                                                     style={{ objectFit: 'cover' }}
                                                                     alt={banner.alt_tag}
                                                                     width="50"
                                                                     height="50"
-                                                                    onClick={() => handleShow(`${banner.mobile_image_path}`, banner.alt_tag)}
+                                                                    onClick={() => handleShow(`${banner.mobile_image_url}`, banner.alt_tag)}
                                                                 />
                                                             </td>
                                                                     {/* <td>{banner.alt_tag_desktop}</td> */}
                                                                     <td>
                                                                         
                                                                           
-                                                                                {banner.status === 0 ? (
-                                                                                    <button className="btn btn-warning btn-xs" onClick={() => handleUpdateStatus(banner.id, 1)}>Deactive</button>
+                                                                                {banner.status === false ? (
+                                                                                    <button className="btn btn-warning btn-xs" onClick={() => handleUpdateStatus(banner._id, true)}>Deactive</button>
                                                                                 ) : (
-                                                                                    <button className="btn btn-success btn-xs" onClick={() => handleUpdateStatus(banner.id, 0)}>Active</button>
+                                                                                    <button className="btn btn-success btn-xs" onClick={() => handleUpdateStatus(banner._id, false)}>Active</button>
                                                                                 )}
                                                                           
                                                                        
@@ -174,7 +176,7 @@ export default function HomeBanner() {
                                                                                     className="btn btn-danger btn-xs"
                                                                                     onClick={() => {
                                                                                         if (window.confirm('Are you sure you want to delete this home banner?')) {
-                                                                                            handleDeleteHomeBanner(banner.id);
+                                                                                            handleDeleteHomeBanner(banner._id);
                                                                                         }
                                                                                     }}
                                                                                 >

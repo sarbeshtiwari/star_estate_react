@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://ecis.in/apis/ikigai-wellness-API/bannerImage';
+const API_URL = 'http://localhost:3000/bannerImages';
 
 export const deleteBanner = async (id) => {
     try {
@@ -13,9 +13,9 @@ export const deleteBanner = async (id) => {
 };
 
 
-export const fetchBannerByID = async (id) => {
+export const fetchBannerByID = async () => {
     try {
-        const response = await axios.get(`${API_URL}/getBanner/${id}`);      
+        const response = await axios.get(`${API_URL}/get`);      
         return response.data;
     } catch (error) {
         console.error('Error fetching  banner data:', error);
@@ -25,7 +25,7 @@ export const fetchBannerByID = async (id) => {
 
 export const addBannerImage = async (formDataToSend) => {
     try {
-        const url = `${API_URL}/saveBanner`;
+        const url = `${API_URL}/addImages`;
         const response = await axios.post(url, formDataToSend, {
             headers: {
                 'Content-Type': 'multipart/form-data'
