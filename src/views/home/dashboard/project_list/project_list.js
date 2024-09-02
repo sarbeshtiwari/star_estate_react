@@ -179,7 +179,7 @@ export default function ProjectList() {
                                                                 />
                                                             </td>
                                                             <td>{project.projectName}</td>
-                                                            <td></td>
+                                                            <td>{project.slugURL}</td>
                                                             <td>{project.projectBy}</td>
                                                             <td>{project.projectConfiguration}</td>
                                                             <td>{project.projectType}</td>

@@ -14,6 +14,7 @@ export default function FooterFAQ() {
         if (city && projectType) {
             fetchFAQsData(city, projectType);
         }
+        console.log(projectType)
     }, [city, projectType]);
 
     const fetchFAQsData = async (city, projectType) => {

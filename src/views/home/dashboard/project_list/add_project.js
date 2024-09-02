@@ -18,7 +18,9 @@ export default function AddProject() {
     const [locality, setLocality] = useState([]);
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
-   
+    const [priceUnit, setPriceUnit] = useState('Cr');
+    const [isPriceRevealingSoon, setIsPriceRevealingSoon] = useState(false); // New state for checkbox
+
     const [formData, setFormData] = useState({
         metaTitle: '',
         metaKeyword: '',
@@ -91,12 +93,20 @@ export default function AddProject() {
                 setValidationErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
             }
         } else if (type === 'checkbox') {
-            setFormData({
-                ...formData,
-                project_status: checked
-                    ? [...formData.project_status, value]
-                    : formData.project_status.filter(status => status !== value)
-            });
+            if (name === 'isPriceRevealingSoon') {
+                setIsPriceRevealingSoon(checked);
+                if (checked) {
+                    // Clear project price if "Price Revealing Soon" is checked
+                    setFormData({ ...formData, projectPrice: '' });
+                }
+            } else {
+                setFormData({
+                    ...formData,
+                    project_status: checked
+                        ? [...formData.project_status, value]
+                        : formData.project_status.filter(status => status !== value)
+                });
+            }
         } else {
             setFormData({
                 ...formData,
@@ -153,6 +163,15 @@ export default function AddProject() {
         });
     };
 
+    
+
+    // Handler for dropdown change
+    const handleUnitChange = (event) => {
+        setPriceUnit(event.target.value);
+        // Optionally, you can update formData if needed
+        // handleChange({ target: { name: 'projectPriceUnit', value: event.target.value } });
+    };
+
     const validateForm = () => {
         const errors = {};
         if (!formData.projectName) errors.projectName = 'Project Name is required';
@@ -161,8 +180,8 @@ export default function AddProject() {
         if (!formData.projectLocality) errors.projectLocality = 'Project Locality is required';
         if (!formData.projectConfiguration) errors.projectConfiguration = 'Project Configuration is required';
         if (!formData.projectBy) errors.projectBy = 'Developer is required';
-        if (!formData.projectType) errors.projectType = 'Project Type is required';
-        if (!formData.projectPrice) errors.projectPrice = 'Project Price is required';
+        // if (!formData.projectType) errors.projectType = 'Project Type is required';
+        if (!formData.projectPrice && !isPriceRevealingSoon) errors.projectPrice = 'Project Price is required';
         if (!formData.rera_no) errors.rera_no = 'Rera No is required';
         if (!formData.locationMap) errors.locationMap = 'Project Location is required';
         if (!formData.project_logo) errors.project_logo = 'Project Logo is required';
@@ -185,6 +204,7 @@ export default function AddProject() {
         setLoading(true);
 
         try {
+            console.log('true')
             if (id === 'add') {
                 await addProject(formData);
             } else {
@@ -325,18 +345,26 @@ export default function AddProject() {
                                         </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">Project Configuration</label>
-                                            <input
-                                                type="text"
+                                            <select
                                                 name="projectConfiguration"
-                                                placeholder="3 &amp; 4 BHK"
                                                 className={`form-control ${validationErrors.projectConfiguration ? 'is-invalid' : ''}`}
                                                 value={formData.projectConfiguration}
                                                 onChange={handleChange}
-                                            />
+                                            >
+                                                <option value="">Select Configuration</option>
+                                                <option value="2 BHK">2 BHK</option>
+                                                <option value="3 BHK">3 BHK</option>
+                                                <option value="4 BHK">4 BHK</option>
+                                                <option value="5 BHK">5 BHK</option>
+                                                <option value="Villa">Villa</option>
+                                                <option value="Independent Homes">Independent Homes</option>
+                                                <option value="Penthouse">Penthouse</option>
+                                            </select>
                                             {validationErrors.projectConfiguration && (
                                                 <div className="invalid-feedback">{validationErrors.projectConfiguration}</div>
                                             )}
                                         </div>
+
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">Project BY</label>
                                             <select
@@ -354,7 +382,7 @@ export default function AddProject() {
                                                 <div className="invalid-feedback">{validationErrors.projectBy}</div>
                                             )}
                                         </div>
-                                        <div className="col-md-3 form-group">
+                                        {/* <div className="col-md-3 form-group">
                                             <label className="label_field">Project Type</label>
                                             <input
                                                 type="text"
@@ -367,21 +395,48 @@ export default function AddProject() {
                                             {validationErrors.projectType && (
                                                 <div className="invalid-feedback">{validationErrors.projectType}</div>
                                             )}
-                                        </div>
+                                        </div> */}
                                         <div className="col-md-3 form-group">
-                                            <label className="label_field">Project Price</label>
-                                            <input
-                                                type="text"
-                                                name="projectPrice"
-                                                placeholder="Ex - 4 Cr/Lakhs/K"
-                                                className={`form-control ${validationErrors.projectPrice ? 'is-invalid' : ''}`}
-                                                value={formData.projectPrice}
-                                                onChange={handleChange}
-                                            />
-                                            {validationErrors.projectPrice && (
-                                                <div className="invalid-feedback">{validationErrors.projectPrice}</div>
-                                            )}
-                                        </div>
+                                                <label className="label_field">Project Price</label>
+                                                <div className="d-flex">
+                                                    <input
+                                                        type="text"
+                                                        name="projectPrice"
+                                                        placeholder={`Ex - 4 ${priceUnit}/Lakhs/K`}
+                                                        className={`form-control ${validationErrors.projectPrice ? 'is-invalid' : ''}`}
+                                                        value={formData.projectPrice}
+                                                        onChange={handleChange}
+                                                        disabled={isPriceRevealingSoon} // Disable if checkbox is checked
+                                                    />
+                                                    <select
+                                                        name="projectPriceUnit"
+                                                        value={priceUnit}
+                                                        onChange={handleUnitChange}
+                                                        className={`form-control ml-2 ${validationErrors.projectPriceUnit ? 'is-invalid' : ''}`}
+                                                    >
+                                                        <option value="Cr">Cr</option>
+                                                        <option value="Lakh">Lakh</option>
+                                                        <option value="K">K</option>
+                                                    </select>
+                                                </div>
+                                                {validationErrors.projectPrice && (
+                                                    <div className="invalid-feedback">{validationErrors.projectPrice}</div>
+                                                )}
+                                                
+                                            </div>
+
+                                            <div className="col-md-3 form-group">
+                                                <div className="form-check">
+                                                    <input
+                                                        type="checkbox"
+                                                        name="isPriceRevealingSoon"
+                                                        className="form-check-input"
+                                                        checked={isPriceRevealingSoon}
+                                                        onChange={handleChange}
+                                                    />
+                                                    <label className="form-check-label">Price Revealing Soon</label>
+                                                </div>
+                                            </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">IVR Number</label>
                                             <input

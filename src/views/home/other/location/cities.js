@@ -72,8 +72,8 @@ export default function Cities() {
                                                         <th>State</th>
                                                         <th>Priority</th>
                                                         <th>Sub City</th>
-                                                        {/* <th>City Configuration</th>
-                                                        <th>FAQs</th> */}
+                                                        <th>City By Keywords</th>
+                                                        <th>FAQs</th>
                                                         <th>Footer FAQs</th>
                                                         <th>Content Type</th>
                                                         <th></th>
@@ -91,19 +91,19 @@ export default function Cities() {
                                                                     <li><Link to={`/subCities/${city.location}`} className="btn btn-success btn-xs">Go</Link></li>
                                                                 </ul>
                                                             </td>
-                                                            {/* <td>
+                                                            <td>
                                                                 <ul className="list-inline d-flex justify-content-center">
-                                                                    <li><Link to={'/'} className="btn btn-success btn-xs">Go</Link></li>
+                                                                    <li><Link to={`/projects/${city.location}`} className="btn btn-success btn-xs">Open</Link></li>
                                                                 </ul>
                                                             </td>
                                                             <td>
                                                                 <ul className="list-inline d-flex justify-content-center">
-                                                                    <li><Link to={'/'} className="btn btn-success btn-xs">Go</Link></li>
+                                                                    <li><Link to={`/footerFAQ/${city.location}/Common`} className="btn btn-success btn-xs">Go</Link></li>
                                                                 </ul>
-                                                            </td> */}
+                                                            </td>
                                                             <td>
                                                                 <ul className="list-inline d-flex justify-content-center">
-                                                                    <li><Link to={`/footerFAQ/${city.location}/New`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
+                                                                    <li><Link to={`/footerFAQ/${city.location}/new`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
                                                                     <li><Link to={`/footerFAQ/${city.location}/commercial`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Commercial</Link></li>
                                                                     <li><Link to={`/footerFAQ/${city.location}/flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
                                                                     <li><Link to={`/footerFAQ/${city.location}/apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>

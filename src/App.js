@@ -64,6 +64,10 @@ import ProjectBanksRatings from './views/home/dashboard/project_list/view_projec
 import AddBanksandRatings from './views/home/dashboard/project_list/view_project/banks_ratings/add_banks_ratings';
 import ProtectedRoute from './PrivateRoute';
 import Sidebar from './views/home/sidebar';
+import ProjectConfiguration from './views/home/other/location/projectConfiguration';
+import AddConfiguration from './views/home/other/location/addConfiguration';
+import HomeBanner from './views/widgets/homeBanner';
+import AddBannerImage from './views/widgets/bannerImage';
 
 function App() {
   return (
@@ -122,6 +126,10 @@ function App() {
         <Route path="/addLocation/:ids/:id" element={<ProtectedRoute element ={<AddLocation/>}/>}/>
         <Route path="/subCities/:id" element={<ProtectedRoute element ={<SubCities/>}/>}/>
         <Route path="/addSubCities/:id/:ids" element={<ProtectedRoute element ={<AddSubCity/>}/>}/>
+        <Route path="/projects/:id" element={<ProtectedRoute element={<ProjectConfiguration/>}/>}/>
+        <Route path='/:ids/addConfiguration/:id' element={<ProtectedRoute element={<AddConfiguration/>}/>}/>
+
+
 
         <Route path = "/SubCityfooterFAQ/:sub_city/:content_type" element = {<ProtectedRoute element ={<SubCityFooterFAQ/>}/>}/>
         <Route path = "/SubCityaddFAQ/:ids/:id" element = {<ProtectedRoute element ={<SubCityAddFAQ/>}/>}/>
@@ -147,6 +155,11 @@ function App() {
 
         <Route path="/newsPaper" element = {<ProtectedRoute element ={<NewsPaper/>}/>}/>
         <Route path="/addNewsPaper/:id" element = {<ProtectedRoute element ={<AddNewsPaper/>}/>}/>
+
+        <Route path="/bannerImage" element = {<ProtectedRoute element={ <HomeBanner/>}/>}/>
+        <Route path='/addHomeBanner' element = {<ProtectedRoute element={<AddBannerImage/>}/>}/>
+
+
 
         {/* Enquiry */}
         <Route path="/ProjectQueries" element = {<ProtectedRoute element ={<ProjectQueries/>}/>}/>

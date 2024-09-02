@@ -258,6 +258,17 @@ export default function Sidebar() {
                         >
                             Dashboard
                         </Nav.Link>
+                        <Nav.Link as={Link} to="/bannerImage" 
+                        // className="bg-primary text-white p-2 rounded mb-2"
+                        style={{  backgroundColor: '#7EA700', 
+                            borderColor: '#7EA700',
+                            color: '#fff',
+                            borderRadius: 5,
+                            marginBottom: 10
+                         }}
+                        >
+                            Banner Image
+                        </Nav.Link>
                         <Nav.Link as={Link} to="/category"  style={{  backgroundColor: '#7EA700', 
                             borderColor: '#7EA700',
                             color: '#fff',
