@@ -68,6 +68,8 @@ import ProjectConfiguration from './views/home/other/location/projectConfigurati
 import AddConfiguration from './views/home/other/location/addConfiguration';
 import HomeBanner from './views/widgets/homeBanner';
 import AddBannerImage from './views/widgets/bannerImage';
+import StarRera from './views/home/other/starEstate_rera/rera';
+import AddStarRERA from './views/home/other/starEstate_rera/addRera';
 
 function App() {
   return (
@@ -117,10 +119,10 @@ function App() {
         <Route path="/AddCareer/:id" element = {<ProtectedRoute element ={<AddCareer/>}/>}/>
         <Route path="/logout" element ={<ProtectedRoute element ={<LogoutComponent/>}/>}/>
         {/* Others */}
-        <Route path="/amenities_category" element={<ProtectedRoute element ={<AmenitiesCategory/>}/>}/>
-        <Route path="/addAmenitiesCategory/:id" element={<ProtectedRoute element ={<AddAminitiesCategory/>}/>}/>
-        <Route path="/Amenities/:id" element={<ProtectedRoute element ={<Amenities/>}/>}/>
-        <Route path="/addAmenities/:ids/:id" element={<ProtectedRoute element ={<AddAmenities/>}/>}/>
+        {/* <Route path="/amenities_category" element={<ProtectedRoute element ={<AmenitiesCategory/>}/>}/>
+        <Route path="/addAmenitiesCategory/:id" element={<ProtectedRoute element ={<AddAminitiesCategory/>}/>}/> */}
+        <Route path="/Amenities" element={<ProtectedRoute element ={<Amenities/>}/>}/>
+        <Route path="/addAmenities/:id" element={<ProtectedRoute element ={<AddAmenities/>}/>}/>
 
         <Route path="/location" element={<ProtectedRoute element ={<Cities/>}/>}/>
         <Route path="/addLocation/:ids/:id" element={<ProtectedRoute element ={<AddLocation/>}/>}/>
@@ -159,6 +161,8 @@ function App() {
         <Route path="/bannerImage" element = {<ProtectedRoute element={ <HomeBanner/>}/>}/>
         <Route path='/addHomeBanner' element = {<ProtectedRoute element={<AddBannerImage/>}/>}/>
 
+        <Route path='/starRera' element={<ProtectedRoute element={<StarRera/>}/>}/>
+        <Route path='/addStarRera/:id' element={<ProtectedRoute element={<AddStarRERA/>}/>}/>
 
 
         {/* Enquiry */}

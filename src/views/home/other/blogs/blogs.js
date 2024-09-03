@@ -99,7 +99,7 @@ export default function Blogs() {
                                                                                 height="50"
                                                                             />
                                                                         </td>
-                                                                    <td>{blog.blogsName}</td>
+                                                                    <td>{blog.blogsName.slice(0, 20)}</td>
                                                                     <td>{blog.blogsBy}</td>
                                                                     <td>{blog.content.slice(0, 20)}</td>
                                                                     <td>{blog.blogsDate}</td>

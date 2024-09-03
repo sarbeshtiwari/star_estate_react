@@ -23,21 +23,23 @@ export default function HomeBanner() {
     const handleClose = () => setShowModal(false);
 
     useEffect(() => {
-        const loadHomeBanner = async () => {
-            try {
-                setLoading(true);
-                const homeBannerData = await fetchBannerByID();
-                setHomeBanner(homeBannerData);
-            } catch (err) {
-                setError('Failed to load data');
-                console.log('Failed to fetch data:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
+        
 
         loadHomeBanner();
     }, []);
+    
+    const loadHomeBanner = async () => {
+        try {
+            setLoading(true);
+            const homeBannerData = await fetchBannerByID();
+            setHomeBanner(homeBannerData);
+        } catch (err) {
+            setError('Failed to load data');
+            console.log('Failed to fetch data:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleUpdateStatus = async (id, currentStatus) => {
         // try {
@@ -112,7 +114,7 @@ export default function HomeBanner() {
                                                                 <th>Image Mobile</th>
 
                                                                 {/* <th>Alt Tag</th> */}
-                                                                <th>Current Status</th>
+                                                                {/* <th>Current Status</th> */}
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
@@ -155,7 +157,7 @@ export default function HomeBanner() {
                                                                 />
                                                             </td>
                                                                     {/* <td>{banner.alt_tag_desktop}</td> */}
-                                                                    <td>
+                                                                    {/* <td>
                                                                         
                                                                           
                                                                                 {banner.status === false ? (
@@ -165,7 +167,7 @@ export default function HomeBanner() {
                                                                                 )}
                                                                           
                                                                        
-                                                                    </td>
+                                                                    </td> */}
                                                                     <td>
                                                                         <ul className="list-inline d-flex justify-content-center">
                                                                             {/* <li>

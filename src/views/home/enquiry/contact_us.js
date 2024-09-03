@@ -201,7 +201,16 @@ const ContactUs = () => {
                                                     {error && <div className="alert alert-danger">{error}</div>}
 
                                                     <div id="pjdataTable_filter" className="dataTables_filter">
-                                                        <label>Search:<input type="search" placeholder="" aria-controls="pjdataTable" /></label>
+                                                        <label>
+                                                            Search:
+                                                            <input
+                                                                type="search"
+                                                                value={searchQuery}
+                                                                onChange={(e) => setSearchQuery(e.target.value)}
+                                                                placeholder=""
+                                                                aria-controls="pjdataTable"
+                                                            />
+                                                        </label>
                                                     </div>
                                                     <table id="pjdataTable" className="table table-striped projects display dataTable no-footer" style={{ width: '100%' }}>
                                                         <thead className="thead-dark">

@@ -20,32 +20,37 @@ export default function ProjectAmenities() {
         try {
             // Fetch project amenities
             const projectResponse = await getProjectAmenities(id);
-            const projectAmenities = Array.isArray(projectResponse.data) ? projectResponse.data : [];
+            // Ensure projectResponse.data is an array
+            const projectAmenities = Array.isArray(projectResponse.data.data) ? projectResponse.data.data : [];
             
             // Filter amenities where status is true
             const activeAmenities = projectAmenities.filter(amenity => amenity.status === true);
             
             // Fetch all amenities
             const allAmenitiesResponse = await getAllTheAmenities();
-            // const allAmenities = Array.isArray(allAmenitiesResponse.data) ? allAmenitiesResponse.data : [];
-
+            // Ensure allAmenitiesResponse.data is an array
+            let allAmenities = Array.isArray(allAmenitiesResponse.data) ? allAmenitiesResponse.data : [];
+            
+            console.log('Active Amenities:', activeAmenities);
+            console.log('All Amenities:', allAmenities);
+    
             // Map IDs of active amenities to their details from all amenities
-            const amenitiesMap = new Map(allAmenitiesResponse.map(amenity => [amenity._id, amenity]));
+            const amenitiesMap = new Map(allAmenities.map(amenity => [amenity._id, amenity]));
             const matchedAmenities = activeAmenities.map(amenity => amenitiesMap.get(amenity.amenityId)).filter(Boolean);
-
-            const finalAmenities = matchedAmenities
-            .filter(amenity => amenity.status === true);
-
+    
             // Update state with matched amenities
+            console.log('Matched Amenities:', matchedAmenities);
             setDetails(activeAmenities);
-            setAmenities(finalAmenities);
-
+            setAmenities(matchedAmenities);
+    
         } catch (err) {
             console.error('Error fetching details:', err);
             setDetails([]);
             setAmenities([]);
         }
     };
+    
+    
 
     return (
         <div>

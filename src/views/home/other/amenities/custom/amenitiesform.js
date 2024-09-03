@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { fetchAmenityData, updateAmenityStatus, deleteAmenity } from '../../../../../api/amenities/amenities_api'; 
+import { fetchAmenityData, updateAmenityStatus, deleteAmenity, getAllTheAmenities } from '../../../../../api/amenities/amenities_api'; 
 
-const useAmenities = (id) => {
+const useAmenities = () => {
     const [amenities, setAmenities] = useState([]);
     const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await fetchAmenityData(id);
+                const data = await getAllTheAmenities();
                 if (data && Array.isArray(data.data)) {
                     setAmenities(data.data);
                 } else {
@@ -20,7 +20,7 @@ const useAmenities = (id) => {
         };
 
         fetchData();
-    }, [id]);
+    }, []);
 
     const handleUpdateStatus = async (cat_id, status) => {
         try {

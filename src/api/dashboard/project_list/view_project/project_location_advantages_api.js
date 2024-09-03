@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const $API_URL = `https://ecis.in/apis/star-estate-API/projectLocationAdvantages`;
+const $API_URL = 'https://ecis.in/apis/star-estate-API/projectLocationAdvantages';
 
 export const ProjectLocationAdvantages = async (locationId, status, projectname, title, proximity, unit) => {
     try{

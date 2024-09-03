@@ -85,7 +85,7 @@ export default function Dashboard() {
                                 </div>
                             </div>
                             {/* Total Leads */}
-                            <div className="row column1">
+                            {/* <div className="row column1">
                                 <div className="col-md-12">
                                     <div className="white_shd full margin_bottom_30">
                                         <div className="full graph_head">
@@ -111,7 +111,7 @@ export default function Dashboard() {
                                                                     </div>
                                                                     <div className="counter_no">
                                                                         <div>
-                                                                            <p className="total_no">{/* Render your report count here */}</p>
+                                                                            <p className="total_no"></p>
                                                                             <p className="head_couter">{category.category}</p>
                                                                         </div>
                                                                     </div>
@@ -124,9 +124,9 @@ export default function Dashboard() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             {/* Latest Leads */}
-                            <div className="row column1">
+                            {/* <div className="row column1">
                                 <div className="col-md-12">
                                     <div className="white_shd full margin_bottom_30">
                                         <div className="full graph_head">
@@ -172,7 +172,7 @@ export default function Dashboard() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

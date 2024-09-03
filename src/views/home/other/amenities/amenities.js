@@ -5,8 +5,7 @@ import useAmenities from './custom/amenitiesform';
 import { imageURL } from '../../../../imageURL';
 
 export default function Amenities() {
-    const { id } = useParams();
-    const { amenities, error, handleUpdateStatus, handleDeleteAmenity } = useAmenities(id);
+    const { amenities, error, handleUpdateStatus, handleDeleteAmenity } = useAmenities();
     const navigate = useNavigate();
 
     return (
@@ -26,13 +25,13 @@ export default function Amenities() {
                             <div className="col-md-12">
                                 <div className="white_shd full margin_bottom_30">
                                     <div className="full graph_head">
-                                        <Link to={`/addAmenities/${id}/add`} className="btn btn-success btn-xs">Add Amenities</Link>
-                                        <button 
+                                        <Link to={`/addAmenities/add`} className="btn btn-success btn-xs">Add Amenities</Link>
+                                        {/* <button 
                                     className="btn btn-primary btn-xs float-right"
                                     onClick={() => navigate(-1)}
                                 >
                                     Back
-                                </button>
+                                </button> */}
                                     </div>
                                     <div className="full price_table padding_infor_info">
                                         {error && <div className="alert alert-danger">{error}</div>}
@@ -77,7 +76,7 @@ export default function Amenities() {
                                                                                 )}
                                                                             </li>
                                                                             <li>
-                                                                                <Link to={`/addAmenities/${id}/${amenity._id}`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
+                                                                                <Link to={`/addAmenities/${amenity._id}`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
                                                                             </li>
                                                                             <li>
                                                                                 <button

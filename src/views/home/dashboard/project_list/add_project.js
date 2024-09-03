@@ -31,7 +31,7 @@ export default function AddProject() {
         projectLocality: '',
         projectConfiguration: '',
         projectBy: '',
-        projectType: '',
+        // projectType: '',
         projectPrice: '',
         ivr_no: '',
         locationMap: '',
@@ -96,7 +96,10 @@ export default function AddProject() {
             if (name === 'isPriceRevealingSoon') {
                 setIsPriceRevealingSoon(checked);
                 if (checked) {
-                    // Clear project price if "Price Revealing Soon" is checked
+                    // Set project price to "Price Revealing Soon" if checked
+                    setFormData({ ...formData, projectPrice: 'Price Revealing Soon' });
+                } else {
+                    // Optionally, handle the case where it's unchecked, e.g., clear the price or revert it
                     setFormData({ ...formData, projectPrice: '' });
                 }
             } else {
@@ -202,6 +205,7 @@ export default function AddProject() {
         }
 
         setLoading(true);
+        console.log(formData)
 
         try {
             console.log('true')

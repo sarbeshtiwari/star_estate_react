@@ -3,7 +3,7 @@ import Sidebar from '../../../../sidebar';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAllTheAmenities } from '../../../../../../api/amenities/amenities_api';
 import './amenities.module.css';
-import { ProjectAmenities, getProjectAmenities } from '../../../../../../api/dashboard/project_list/view_project/project_amenity_api';
+import { ProjectAmenities, getProjectAmenities, projectAmenitiesContent } from '../../../../../../api/dashboard/project_list/view_project/project_amenity_api';
 import _ from 'lodash';
 import { imageURL } from '../../../../../../imageURL';
 
@@ -12,6 +12,12 @@ export default function AddProjectAmenities() {
     const [selectedAmenities, setSelectedAmenities] = useState(new Set()); // Set to manage selected amenities
     const { id } = useParams();
     const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+     
+        amenityContent: ''
+    });
+    const [validationErrors, setValidationErrors] = useState({});
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         fetchDetailsHandler(id);
@@ -21,14 +27,15 @@ export default function AddProjectAmenities() {
         try {
             // Fetch all amenities
             const amenities = await getAllTheAmenities();
-            setDetails(amenities);
+         
+            setDetails(amenities.data);
+            
 
             // Fetch project amenities
             const projectAmenities = await getProjectAmenities(id);
-            console.log(projectAmenities)
-
+            setFormData(projectAmenities.data.data1[0]);
             // Extract IDs with status true
-            const trueStatusIds = projectAmenities.data
+            const trueStatusIds = projectAmenities.data.data
                 .filter(item => item.status)
                 .map(item => item.amenityId);
 
@@ -38,6 +45,43 @@ export default function AddProjectAmenities() {
             console.error('Error fetching details:', err);
         }
     };
+
+    const validateForm = () => {
+        const errors = {};
+        if (!formData.amenityContent) errors.amenityContent = 'amenityContent is required';
+        
+        return errors;
+    };
+
+    const handleChange = async (e) => {
+        const { name, value} = e.target;
+            setFormData({
+                ...formData,
+                [name]: value
+            });
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const errors = validateForm();
+        if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
+        setLoading(true);
+        try {
+            
+            const response = await projectAmenitiesContent(formData, id);
+            if (response.success) {
+                navigate(-1);
+            }
+        }catch(error){
+            console.error(error)
+        }
+        setLoading(false);
+        // Add form submission logic here
+    };
+
 
     const handleCheckboxChange = (amenityId) => {
         setSelectedAmenities((prevSelected) => {
@@ -95,6 +139,38 @@ export default function AddProjectAmenities() {
                                 <div id="subct_wrapper" className="dataTables_wrapper no-footer">
                                     <div className="full price_table padding_infor_info">
                                         <div className="row">
+                                        <form onSubmit={handleSubmit} id="submit" encType="multipart/form-data">
+                                            <h2>Amenity Content</h2>
+                                            <div className="form-row">
+                                            <div className="col-md-12 form-group">
+                                                <label className="label_field">Amenity Content</label>
+                                                <textarea
+                                                    name="amenityContent"
+                                                    className={`form-control ${validationErrors.amenityContent ? 'is-invalid' : ''}`}
+                                                    value={formData.amenityContent}
+                                                    onChange={handleChange}
+                                                    rows="4" // Adjust the number of rows as needed
+                                                />
+                                                {validationErrors.amenityContent && (
+                                                    <div className="invalid-feedback">{validationErrors.amenityContent}</div>
+                                                )}
+                                            </div>
+
+                                                
+                                            </div>
+                                            
+                                            <div className="form-group margin_0">
+                                           
+                                                    <button className="main_bt" type="submit" disabled={loading} style={{ marginBottom: '20px' }}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Submit'
+                                                    )}
+                                                </button>
+                                              
+                                            </div>
+                                            </form>
                                             {details.length === 0 ? (
                                                 <div className="col-lg-12 text-center">No Amenities Found</div>
                                             ) : (
@@ -129,6 +205,7 @@ export default function AddProjectAmenities() {
                                                     </div> : ('')
                                                 ))
                                             )}
+                                            
                                         </div>
                                     </div>
                                 </div>

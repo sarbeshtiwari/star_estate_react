@@ -304,7 +304,7 @@ export default function Sidebar() {
                             </Nav.Link>
                             {showOther && (
                                 <Nav className="flex-column bg-light p-2 rounded" id="other-items">
-                                    <Nav.Link as={Link} to="/amenities_category" className="text-dark">
+                                    <Nav.Link as={Link} to="/Amenities" className="text-dark">
                                         Amenities
                                     </Nav.Link>
                                     <Nav.Link as={Link} to="/location" className="text-dark">
@@ -318,6 +318,9 @@ export default function Sidebar() {
                                     </Nav.Link>
                                     <Nav.Link as={Link} to="/developer" className="text-dark">
                                         Developer
+                                    </Nav.Link>
+                                    <Nav.Link as={Link} to="/starRera" className="text-dark">
+                                        Star Rera Details
                                     </Nav.Link>
                                     {/* <Nav.Link as={Link} to="/blogs" className="text-dark">
                                         Blogs

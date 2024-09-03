@@ -107,7 +107,7 @@ export const updateSubAmenity = async (id, formData) => {
 export const getAllTheAmenities = async () => {
     try{
         const response = await axios.get(`${BASE_URL}/getAllTheAmenities`);
-        return response.data;
+        return response;
     } catch (error) {
         console.error('Error:', error.response ? error.response.data : error.message);
         throw error; // Rethrow to handle in the component
