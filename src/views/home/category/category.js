@@ -80,7 +80,7 @@ const Category = () => {
                                                                 <th>No</th>
                                                                 <th>Category</th>
                                                                 <th>Category URL</th>
-                                                                <th>Added on</th>
+                                                                {/* <th>Added on</th> */}
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
@@ -89,8 +89,8 @@ const Category = () => {
                                                                 <tr key={category._id}>
                                                                     <td>{index + 1}</td>
                                                                     <td>{category.category}</td>
-                                                                    <td>{category.category}</td>
-                                                                    <td>{category.category}</td>
+                                                                    <td>{category.slugURL}</td>
+                                                                    {/* <td>{category.category}</td> */}
                                                                     <td>
                                                                         <ul className="list-inline d-flex justify-content-end">
                                                                             <li>

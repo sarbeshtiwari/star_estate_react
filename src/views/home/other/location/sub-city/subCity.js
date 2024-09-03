@@ -125,21 +125,21 @@ export default function SubCities() {
                                                                     <td>{subCity.priority}</td>
                                                                     <td>
                                                                         <ul className="list-inline d-flex justify-content-center">
-                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.city}/New`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
-                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.city}/Residential`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
-                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.city}/flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
-                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.city}/apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
-                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.city}/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
-                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.city}/residential`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
+                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/New`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
+                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/Residential`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
+                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
+                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
+                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
+                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/residential`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
                                                                         </ul>
                                                                     </td>
                                                                     <td>
                                                                         <ul className="list-inline d-flex justify-content-center">
-                                                                            <li><Link to={`/addSubCities/${subCity.city}/New Projects`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
-                                                                            <li><Link to={`/addSubCities/${subCity.city}/Residential`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
-                                                                            <li><Link to={`/addSubCities/${subCity.city}/Flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
-                                                                            <li><Link to={`/addSubCities/${subCity.city}/Apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
-                                                                            <li><Link to={`/addSubCities/${subCity.city}/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
+                                                                            <li><Link to={`/addSubCities/${subCity.slugURL}/New Projects`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
+                                                                            <li><Link to={`/addSubCities/${subCity.slugURL}/Residential`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
+                                                                            <li><Link to={`/addSubCities/${subCity.slugURL}/Flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
+                                                                            <li><Link to={`/addSubCities/${subCity.slugURL}/Apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
+                                                                            <li><Link to={`/addSubCities/${subCity.slugURL}/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
                                                                         </ul>
                                                                     </td>
                                                                     <td>
@@ -152,7 +152,7 @@ export default function SubCities() {
                                                                                 )}
                                                                             </li>
                                                                             <li>
-                                                                                <Link to={`/addSubCities/${subCity.city}/Common`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
+                                                                                <Link to={`/addSubCities/${subCity.slugURL}/Common`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
                                                                             </li>
                                                                             <li>
                                                                                 <button

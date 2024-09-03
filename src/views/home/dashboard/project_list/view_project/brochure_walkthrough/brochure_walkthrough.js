@@ -118,7 +118,7 @@ export default function BrochureWalkthrough() {
                                                             <thead className="thead-dark">
                                                                 <tr>
                                                                     <th>No</th>
-                                                                    <th>Brochure</th>
+                                                                    {/* <th>Brochure</th> */}
                                                                     <th>Walkthrough</th>
                                                                     <th></th>
                                                                 </tr>
@@ -132,22 +132,24 @@ export default function BrochureWalkthrough() {
                                                                     details.map((detail, index) => (
                                                                         <tr key={detail._id} className={index % 2 === 0 ? 'even' : 'odd'}>
                                                                             <td className="sorting_1">{index + 1}</td>
-                                                                            <td>
-                                                                                <button 
+                                                                            {/* <td> */}
+                                                                                
+                                                                                {/* <button 
                                                                                     className="btn btn-info btn-xs" 
                                                                                     onClick={() => handleBrochureClick(`${imageURL}/${detail.brochure}`)}
                                                                                 >
                                                                                     Open Brochure
-                                                                                </button>
-                                                                            </td>
-                                                                            <td>
+                                                                                </button> */}
+                                                                            {/* </td> */}
+                                                                            {detail.walkthrough}
+                                                                            {/* <td>
                                                                                 <button
                                                                                     className="btn btn-primary btn-xs"
                                                                                     onClick={() => handleWalkthroughClick(detail.walkthrough)}
                                                                                 >
                                                                                     Open Walkthrough
                                                                                 </button>
-                                                                            </td>
+                                                                            </td> */}
                                                                             <td>
                                                                                 <ul className="list-inline d-flex justify-content-end">
                                                                                     <li>

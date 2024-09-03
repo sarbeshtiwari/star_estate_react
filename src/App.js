@@ -70,6 +70,12 @@ import HomeBanner from './views/widgets/homeBanner';
 import AddBannerImage from './views/widgets/bannerImage';
 import StarRera from './views/home/other/starEstate_rera/rera';
 import AddStarRERA from './views/home/other/starEstate_rera/addRera';
+import Advertisements from './views/home/other/advertisements/advertisements';
+import AddAdvertisements from './views/home/other/advertisements/addAdvertisements';
+import Awards from './views/home/other/awards/awards';
+import AddAwards from './views/home/other/awards/addAwards';
+import ClientSpeak from './views/home/other/clientsSpeak/client_speak';
+import AddClientSpeak from './views/home/other/clientsSpeak/addClientSpeak';
 
 function App() {
   return (
@@ -163,6 +169,19 @@ function App() {
 
         <Route path='/starRera' element={<ProtectedRoute element={<StarRera/>}/>}/>
         <Route path='/addStarRera/:id' element={<ProtectedRoute element={<AddStarRERA/>}/>}/>
+
+        <Route path='/advertisements' element={<ProtectedRoute element={<Advertisements/>}/>}/>
+        <Route path='/addAdvertisements' element={<ProtectedRoute element={<AddAdvertisements/>}/>}/>
+
+        <Route path='/awards' element={<ProtectedRoute element={<Awards/>}/>}/>
+        <Route path='/addAwards' element={<ProtectedRoute element={<AddAwards/>}/>}/>
+
+        <Route path='/clientSpeak' element={<ProtectedRoute element={<ClientSpeak/>}/>}/>
+        <Route path='/addClientSpeak/:id' element={<ProtectedRoute element={<AddClientSpeak/>}/>}/>
+
+
+
+
 
 
         {/* Enquiry */}

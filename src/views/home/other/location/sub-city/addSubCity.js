@@ -263,7 +263,7 @@ export default function AddSubCity() {
                                                         <select name="city" id="city" value={formData.city} onChange={handleInputChange} className={`form-control ${validationErrors.city ? 'is-invalid' : ''}`}>
                                                             <option value="">Select city</option>
                                                             {cities.map(city => (
-                                                                <option key={city._id} value={city.location}>{city.location}</option>
+                                                                <option key={city._id} value={city.slugURL}>{city.location}</option>
                                                             ))}
                                                         </select>
                                                         {validationErrors.city && (

@@ -14,6 +14,7 @@ export default function ProjectConfiguration() {
     const loadProjectConfiguration = async (id) => {
         try {
             const data = await fetchProjectConfiguration(id);
+            console.log(data)
             setProjectConfiguration(data);
         } catch (error) {
             console.error('Error loading Project Configuration:', error);

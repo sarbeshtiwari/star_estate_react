@@ -322,6 +322,9 @@ export default function Sidebar() {
                                     <Nav.Link as={Link} to="/starRera" className="text-dark">
                                         Star Rera Details
                                     </Nav.Link>
+                                    <Nav.Link as={Link} to="/clientSpeak" className="text-dark">
+                                        Client's Speak
+                                    </Nav.Link>
                                     {/* <Nav.Link as={Link} to="/blogs" className="text-dark">
                                         Blogs
                                     </Nav.Link>
@@ -360,6 +363,12 @@ export default function Sidebar() {
                                     </Nav.Link>
                                     <Nav.Link as={Link} to="/newsPaper" className="text-dark">
                                         News Paper
+                                    </Nav.Link>
+                                    <Nav.Link as={Link} to="/advertisements" className="text-dark">
+                                        Advertisements
+                                    </Nav.Link>
+                                    <Nav.Link as={Link} to="/awards" className="text-dark">
+                                        Awards
                                     </Nav.Link>
                                 </Nav>
                             )}

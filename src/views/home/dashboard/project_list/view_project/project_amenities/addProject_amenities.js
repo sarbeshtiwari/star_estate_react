@@ -48,7 +48,7 @@ export default function AddProjectAmenities() {
 
     const validateForm = () => {
         const errors = {};
-        if (!formData.amenityContent) errors.amenityContent = 'amenityContent is required';
+        if (!formData.amenityContent) errors.amenityContent = 'Amenity Content is required';
         
         return errors;
     };

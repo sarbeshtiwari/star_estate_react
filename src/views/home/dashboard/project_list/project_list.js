@@ -153,7 +153,7 @@ export default function ProjectList() {
                                                         <th>Project URI</th>
                                                         <th>Project By</th>
                                                         <th>Project Configuration</th>
-                                                        <th>Project Type</th>
+                                                        {/* <th>Project Type</th> */}
                                                         <th>Project Address</th>
                                                         <th>Project Price</th>
                                                         <th>Project Details</th>
@@ -182,11 +182,11 @@ export default function ProjectList() {
                                                             <td>{project.slugURL}</td>
                                                             <td>{project.projectBy}</td>
                                                             <td>{project.projectConfiguration}</td>
-                                                            <td>{project.projectType}</td>
+                                                            {/* <td>{project.projectType}</td> */}
                                                             <td>{project.projectAddress}</td>
                                                             <td>{project.projectPrice}</td>
                                                             <td> 
-                                                                <Link to= {`viewProject/${project.projectName}`} className='btn btn-primary btn-xs'>View Project</Link>
+                                                                <Link to= {`viewProject/${project.slugURL}`} className='btn btn-primary btn-xs'>View Project</Link>
                                                                 {/* <button className="btn btn-primary btn-xs" onClick={() => `viewProject/${project.projectName}`}>View Project</button> */}
                                                                 </td>
                                                             <td>{!project.project_status.includes('Featured') ? (

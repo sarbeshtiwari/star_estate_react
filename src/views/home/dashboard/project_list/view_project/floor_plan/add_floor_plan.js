@@ -187,6 +187,7 @@ const validateForm = () => {
                                     </div>
                                     <div className="full price_table padding_infor_info">
                                         <span className="status text-danger"></span>
+                                        
                                         <form onSubmit={handleSubmit} id="gallerImage" encType="multipart/form-data">
                                             <div className="more_fields_container">
                                                 {headings.map((heading, index) => (

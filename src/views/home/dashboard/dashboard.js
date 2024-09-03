@@ -55,7 +55,7 @@ export default function Dashboard() {
                                                 {categories.map((category, index) => (
                                                     <div key={index} className="col-md-6 col-lg-3">
                                                         {category.status === true ? (
-                                                            <Link to={`ProjectType/${category.category}`}>
+                                                            <Link to={`ProjectType/${category.slugURL}`}>
                                                                 <div className="full counter_section margin_bottom_30">
                                                                     <div className="couter_icon">
                                                                         <div>

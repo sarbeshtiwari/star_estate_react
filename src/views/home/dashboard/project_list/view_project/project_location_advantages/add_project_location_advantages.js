@@ -14,6 +14,11 @@ export default function AddProjectLocationAdvantages() {
     const [loading , setLoading] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+     
+        locationContent: ''
+    });
+    const [validationErrors, setValidationErrors] = useState({});
 
     useEffect(() => {
         fetchDetailsHandler(id);
@@ -25,6 +30,7 @@ export default function AddProjectLocationAdvantages() {
             setDetails(Location);
             
             const projectLocation = await getProjectLocationAdvantages(id);
+            setFormData(projectLocation.data.data1[0]);
             const trueStatusIds = projectLocation.data
                 .filter(item => item.status)
                 .map(item => item.LocationAdvantagesId);
@@ -117,6 +123,42 @@ export default function AddProjectLocationAdvantages() {
     
     const isChecked = (locationId) => selectedLocation.has(locationId);
 
+    const handleChange = async (e) => {
+        const { name, value} = e.target;
+            setFormData({
+                ...formData,
+                [name]: value
+            });
+    };
+
+    const validateForm = () => {
+        const errors = {};
+        if (!formData.locationContent) errors.locationContent = 'Location Content is required';
+        
+        return errors;
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const errors = validateForm();
+        if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
+        setLoading(true);
+        try {
+            
+            // const response = await projectAmenitiesContent(formData, id);
+            // if (response.success) {
+            //     navigate(-1);
+            // }
+        }catch(error){
+            console.error(error)
+        }
+        setLoading(false);
+        // Add form submission logic here
+    };
+
     return (
         <div>
             <Sidebar />
@@ -144,6 +186,38 @@ export default function AddProjectLocationAdvantages() {
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
                                         <div className="full price_table padding_infor_info">
                                             <div className="row">
+                                            <form onSubmit={handleSubmit} id="submit" encType="multipart/form-data">
+                                            <h2>Location Content</h2>
+                                            <div className="form-row">
+                                            <div className="col-md-12 form-group">
+                                                <label className="label_field">Location Content</label>
+                                                <textarea
+                                                    name="locationContent"
+                                                    className={`form-control ${validationErrors.locationContent ? 'is-invalid' : ''}`}
+                                                    value={formData.locationContent}
+                                                    onChange={handleChange}
+                                                    rows="4" // Adjust the number of rows as needed
+                                                />
+                                                {validationErrors.locationContent && (
+                                                    <div className="invalid-feedback">{validationErrors.locationContent}</div>
+                                                )}
+                                            </div>
+
+                                                
+                                            </div>
+                                            
+                                            <div className="form-group margin_0">
+                                           
+                                                    <button className="main_bt" type="submit" disabled={loading} style={{ marginBottom: '20px' }}>
+                                                    {loading ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    ) : (
+                                                        'Submit'
+                                                    )}
+                                                </button>
+                                              
+                                            </div>
+                                            </form>
                                                 {details.length === 0 ? (
                                                     <div className="col-lg-12 text-center">No Data Found</div>
                                                 ) : (

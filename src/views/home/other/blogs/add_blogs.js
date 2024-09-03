@@ -273,8 +273,8 @@ export default function AddBlogs() {
                                                     >
                                                         <option value="">Select category</option>
                                                         <option value="blog">Blog</option>
-                                                        <option value="news">News</option>
-                                                        <option value="research">Research</option>
+                                                       
+                                                        
                                                     </select>
                                                     {validationErrors.blogsCategory && (
                                                             <div className="invalid-feedback">{validationErrors.blogsCategory}</div>

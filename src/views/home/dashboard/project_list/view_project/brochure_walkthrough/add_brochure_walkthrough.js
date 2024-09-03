@@ -8,7 +8,7 @@ export default function AddBrochureWalkthrough() {
     const { id, ids } = useParams();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        brochure: null,
+        // brochure: null,
         walkthrough: '',
         projectname: id
     });
@@ -39,67 +39,67 @@ export default function AddBrochureWalkthrough() {
         });
     };
 
-    const handleBrochureChange = async (e) => {
-        const file = e.target.files[0];
+    // const handleBrochureChange = async (e) => {
+    //     const file = e.target.files[0];
 
-        if (file) {
-            try {
-                await validateFile(file);
-                setFormData(prevState => ({
-                    ...prevState,
-                    brochure: file
-                }));
-                setValidationErrors(prevErrors => ({ ...prevErrors, brochure: '' }));
-            } catch (error) {
-                setValidationErrors(prevErrors => ({ ...prevErrors, brochure: error }));
-            }
-        } else {
-            setValidationErrors(prevErrors => ({ ...prevErrors, brochure: 'No file selected.' }));
-        }
-    };
+    //     if (file) {
+    //         try {
+    //             await validateFile(file);
+    //             setFormData(prevState => ({
+    //                 ...prevState,
+    //                 brochure: file
+    //             }));
+    //             setValidationErrors(prevErrors => ({ ...prevErrors, brochure: '' }));
+    //         } catch (error) {
+    //             setValidationErrors(prevErrors => ({ ...prevErrors, brochure: error }));
+    //         }
+    //     } else {
+    //         setValidationErrors(prevErrors => ({ ...prevErrors, brochure: 'No file selected.' }));
+    //     }
+    // };
 
-    const validateFile = (file) => {
-        const allowedTypes = [
-            "application/pdf",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        ];
+    // const validateFile = (file) => {
+    //     const allowedTypes = [
+    //         "application/pdf",
+    //         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    //     ];
 
-        return new Promise((resolve, reject) => {
-            if (!allowedTypes.includes(file.type)) {
-                return reject("Only PDF and DOCX formats are allowed.");
-            }
+    //     return new Promise((resolve, reject) => {
+    //         if (!allowedTypes.includes(file.type)) {
+    //             return reject("Only PDF and DOCX formats are allowed.");
+    //         }
 
-            const maxSize = 5 * 1024 * 1024; // 5 MB in bytes
-            if (file.size > maxSize) {
-                return reject("File size must be less than 5 MB.");
-            }
+    //         const maxSize = 5 * 1024 * 1024; // 5 MB in bytes
+    //         if (file.size > maxSize) {
+    //             return reject("File size must be less than 5 MB.");
+    //         }
 
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const arrayBuffer = reader.result;
-                const dataView = new DataView(arrayBuffer);
+    //         const reader = new FileReader();
+    //         reader.onloadend = () => {
+    //             const arrayBuffer = reader.result;
+    //             const dataView = new DataView(arrayBuffer);
 
-                const isPDF = dataView.getUint8(0) === 0x25 &&
-                    dataView.getUint8(1) === 0x50 &&
-                    dataView.getUint8(2) === 0x44 &&
-                    dataView.getUint8(3) === 0x46;
+    //             const isPDF = dataView.getUint8(0) === 0x25 &&
+    //                 dataView.getUint8(1) === 0x50 &&
+    //                 dataView.getUint8(2) === 0x44 &&
+    //                 dataView.getUint8(3) === 0x46;
 
-                const isDOCX = dataView.getUint8(0) === 0x50 &&
-                    dataView.getUint8(1) === 0x4b &&
-                    dataView.getUint8(2) === 0x03 &&
-                    dataView.getUint8(3) === 0x04;
+    //             const isDOCX = dataView.getUint8(0) === 0x50 &&
+    //                 dataView.getUint8(1) === 0x4b &&
+    //                 dataView.getUint8(2) === 0x03 &&
+    //                 dataView.getUint8(3) === 0x04;
 
-                if (isPDF || isDOCX) {
-                    resolve(file);
-                } else {
-                    reject("Invalid file format.");
-                }
-            };
+    //             if (isPDF || isDOCX) {
+    //                 resolve(file);
+    //             } else {
+    //                 reject("Invalid file format.");
+    //             }
+    //         };
 
-            reader.onerror = () => reject("Error reading file.");
-            reader.readAsArrayBuffer(file);
-        });
-    };
+    //         reader.onerror = () => reject("Error reading file.");
+    //         reader.readAsArrayBuffer(file);
+    //     });
+    // };
 
     const validateForm = () => {
         const errors = {};
@@ -107,9 +107,9 @@ export default function AddBrochureWalkthrough() {
         if (!formData.walkthrough) {
             errors.walkthrough = 'Walkthrough is required';
         }
-        if (!formData.brochure) {
-            errors.brochure = 'Brochure is required';
-        }
+        // if (!formData.brochure) {
+        //     errors.brochure = 'Brochure is required';
+        // }
 
         setValidationErrors(errors);
         return Object.keys(errors).length === 0;
@@ -125,13 +125,16 @@ export default function AddBrochureWalkthrough() {
         setLoading(true);
 
         // Convert YouTube URL to embed link
-        const youtubeEmbedLink = convertToEmbedLink(formData.walkthrough);
+        // const youtubeEmbedLink = convertToEmbedLink(formData.walkthrough);
 
         try {
             if (ids !== 'add') {
-                await updateBrochure(ids, { ...formData, walkthrough: youtubeEmbedLink });
+                console.log(formData)
+                await updateBrochure(ids, formData)
+                // await updateBrochure(ids, { ...formData, walkthrough: youtubeEmbedLink });
             } else {
-                await addBrochure(id, { ...formData, walkthrough: youtubeEmbedLink });
+                await addBrochure(id, formData)
+                // await addBrochure(id, { ...formData, walkthrough: youtubeEmbedLink });
             }
             navigate(-1);
         } catch (error) {
@@ -140,17 +143,17 @@ export default function AddBrochureWalkthrough() {
         setLoading(false);
     };
 
-    const convertToEmbedLink = (url) => {
-        const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)|youtu\.be\/([^?&]+)/;
-        const match = url.match(regex);
+    // const convertToEmbedLink = (url) => {
+    //     const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)|youtu\.be\/([^?&]+)/;
+    //     const match = url.match(regex);
 
-        if (match && (match[1] || match[2])) {
-            const videoID = match[1] || match[2];
-            return `https://www.youtube.com/embed/${videoID}`;
-        }
+    //     if (match && (match[1] || match[2])) {
+    //         const videoID = match[1] || match[2];
+    //         return `https://www.youtube.com/embed/${videoID}`;
+    //     }
 
-        return url; // Return the original URL if it doesn't match the YouTube format
-    };
+    //     return url; // Return the original URL if it doesn't match the YouTube format
+    // };
 
     return (
         <div>
@@ -180,7 +183,22 @@ export default function AddBrochureWalkthrough() {
                                     <div className="full price_table padding_infor_info">
                                         <form onSubmit={handleSubmit} encType="multipart/form-data">
                                             <div className="form-row">
-                                                <div className="col-md-6 form-group">
+                                                <div className="col-md-12 form-group">
+                                                    <label className="label_field">Walkthrough Content</label>
+                                                    <textarea
+                                                        type="text"
+                                                        rows={5}
+                                                        name="walkthrough"
+                                                        id="walkthrough"
+                                                        value={formData.walkthrough}
+                                                        onChange={handleWalkthroughChange}
+                                                        className={`form-control ${validationErrors.walkthrough ? 'is-invalid' : ''}`}
+                                                    />
+                                                    {validationErrors.walkthrough && (
+                                                        <div className="text-danger">{validationErrors.walkthrough}</div>
+                                                    )}
+                                                </div>
+                                                {/* <div className="col-md-6 form-group">
                                                     <label className="label_field">Walkthrough URL</label>
                                                     <input
                                                         type="text"
@@ -193,8 +211,8 @@ export default function AddBrochureWalkthrough() {
                                                     {validationErrors.walkthrough && (
                                                         <div className="text-danger">{validationErrors.walkthrough}</div>
                                                     )}
-                                                </div>
-                                                <div className="col-md-6 form-group">
+                                                </div> */}
+                                                {/* <div className="col-md-6 form-group">
                                                     <label className="label_field">Brochure</label>
                                                     <input
                                                         type="file"
@@ -216,7 +234,7 @@ export default function AddBrochureWalkthrough() {
                                                             onClick={() => window.open(`${imageURL}/${formData.brochure}`, '_blank')}
                                                         />
                                                     ) : ('')}
-                                                </div>
+                                                </div> */}
                                             </div>
                                             <div className="form-group margin_0">
                                                 <button className="main_bt" type="submit" disabled={loading}>

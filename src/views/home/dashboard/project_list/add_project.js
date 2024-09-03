@@ -45,6 +45,7 @@ export default function AddProject() {
         commercial_priority: '',
         project_status: [],
         project_logo: null,
+        project_thumbnail: null,
         property_type: id1
     });
 
@@ -188,6 +189,7 @@ export default function AddProject() {
         if (!formData.rera_no) errors.rera_no = 'Rera No is required';
         if (!formData.locationMap) errors.locationMap = 'Project Location is required';
         if (!formData.project_logo) errors.project_logo = 'Project Logo is required';
+        if (!formData.project_thumbnail) errors.project_thumbnail = 'Project Image is required';
         return errors;
     };
     
@@ -323,7 +325,7 @@ export default function AddProject() {
                                             >
                                                 <option value="">Select City</option>
                                                 {cities.map(city => (
-                                                    <option key={city._id} value={city.location}>{city.location}</option>
+                                                    <option key={city._id} value={city.slugURL}>{city.location}</option>
                                                 ))}
                                             </select>
                                             {validationErrors.cityLocation && (
@@ -600,7 +602,7 @@ export default function AddProject() {
                                             
                                            
                                         </div>
-                                        <div className="col-md-12 form-group">
+                                        <div className="col-md-6 form-group">
                                             <label className="label_field">Project Logo</label>
                                             <input
                                                 type="file"
@@ -613,6 +615,27 @@ export default function AddProject() {
                                             )}
                                             {formData.project_logo ?  <img 
                                                                    src={`${imageURL}/${formData.project_logo}`}
+
+                                                                   
+                                                                    style={{ objectFit: 'cover' }}
+                                                                    alt={formData.projectName}
+                                                                    width="100"
+                                                                    height="100"
+                                                                /> : ''}
+                                        </div>
+                                        <div className="col-md-6 form-group">
+                                            <label className="label_field">Project Thumbnail</label>
+                                            <input
+                                                type="file"
+                                                name="project_thumbnail"
+                                                className={`form-control ${validationErrors.project_thumbnail ? 'is-invalid' : ''}`}
+                                                onChange={handleChange}
+                                            />
+                                            {validationErrors.project_thumbnail && (
+                                                <div className="invalid-feedback">{validationErrors.project_thumbnail}</div>
+                                            )}
+                                            {formData.project_thumbnail ?  <img 
+                                                                   src={`${imageURL}/${formData.project_thumbnail}`}
 
                                                                    
                                                                     style={{ objectFit: 'cover' }}

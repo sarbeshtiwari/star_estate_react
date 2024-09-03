@@ -1,18 +1,21 @@
 import axios from 'axios';
 
-const API_URL = `https://ecis.in/apis/star-estate-API/projectBrochureWalkthrough`;
+// const API_URL = `https://ecis.in/apis/star-estate-API/projectBrochureWalkthrough`;
+const API_URL = `http://localhost:3000/projectBrochureWalkthrough`;
+
 
 export const addBrochure = async (projectname, formData) => {
     try {
-        const response = await axios.post(`${API_URL}/addBrochure_Walkthrough/${projectname}`, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        console.log(formData)
+        const response = await axios.post(`${API_URL}/addBrochure_Walkthrough/${projectname}`, formData);
         return response.data;
     } catch (error) {
         console.error("Error adding brochure:", error);
         throw new Error('Failed to fetch details: ' + error.message);
     }
 };
+
+
 
 export const getBrochure = async (projectname) => {
     try {
@@ -54,7 +57,29 @@ export const getBrochureByID = async (id) => {
 
 export const updateBrochure = async (id, formData) => {
     try {
+        const response = await axios.put(`${API_URL}/updateBrochure_Walkthrough/${id}`, formData);
+        return response.data;
+    } catch (error) {
+        console.error("Error adding brochure:", error);
+        throw new Error('Failed to fetch details: ' + error.message);
+    }
+};
+
+export const updateBrochureOLD = async (id, formData) => {
+    try {
         const response = await axios.put(`${API_URL}/updateBrochure_Walkthrough/${id}`, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error adding brochure:", error);
+        throw new Error('Failed to fetch details: ' + error.message);
+    }
+};
+
+export const addBrochureOld = async (projectname, formData) => {
+    try {
+        const response = await axios.post(`${API_URL}/addBrochure_Walkthrough/${projectname}`, formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         });
         return response.data;
