@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const API_BASE_URL = 'https://ecis.in/apis/star-estate-API/addProjects';
-const API_BASE_URL = 'http://localhost:3000/addProjects'
+const API_BASE_URL = 'https://ecis.in/apis/star-estate-API/addProjects';
+// const API_BASE_URL = 'http://localhost:3000/addProjects'
 export const fetchProjects = async (id) => {
     try {
         

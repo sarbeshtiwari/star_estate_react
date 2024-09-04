@@ -117,28 +117,29 @@ export default function AddContentSEO() {
                                             <form method="POST" encType="multipart/form-data" onSubmit={handleSubmit}>
                                                 <div className="form-row">
                                                     <div className="col-md-12 form-group" style={{ marginBottom: '20px' }}>
-                                                        <label className="label_field">Description*</label>
+                                                        <label className="label_field">Description</label>
+                                                        {validationErrors.description && (
+                                                            <div className="invalid-feedback" style={{ display: 'block' }}>{validationErrors.description}</div>
+                                                        )}
                                                         <ReactQuill
                                                             value={editorHtml}
                                                             onChange={handleChange}
                                                             modules={AddContentSEO.modules}
                                                             formats={AddContentSEO.formats}
                                                             style={{ height: '400px' }}
-                                                            className={`form-control ${validationErrors.description ? 'is-invalid' : ''}`}
+                                                            // className={`form-control ${validationErrors.description ? 'is-invalid' : ''}`}
                                                         />
-                                                        {validationErrors.description && (
-                                                            <div className="invalid-feedback" style={{ display: 'block' }}>{validationErrors.description}</div>
-                                                        )}
+                                                        
                                                     </div>
                                                     <div className="col-md-12 form-group" style={{ marginBottom: '20px' , marginTop: '30px' }}>
                                                         <label className="label_field">Schema</label>
-                                                        <input
+                                                        <textarea
                                                             type="text"
                                                             name="schema"
                                                             className="form-control"
                                                             value={formData.schema}
                                                             onChange={handleInputChange}
-                                                            style={{ height: '150px'}} // Adjust height if needed
+                                                            rows={5}
                                                         />
                                                     </div>
                                                 </div>

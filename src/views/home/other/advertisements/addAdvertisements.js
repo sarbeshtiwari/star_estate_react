@@ -14,29 +14,12 @@ export default function AddAdvertisements() {
         advertisementType: '',
         advertisementDate: '',
         advertisementLocation: '',
+        videoURL: '',
         advertisementImage: null
     });
     const [previewUrl, setPreviewUrl] = useState('');
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
-
-    // useEffect(() => {
-    //     if (id !== 'add') {
-    //         fetchEvent(id);
-    //     }
-    // }, [id]);
-
-    // const fetchEvent = async (id) => {
-    //     try {
-    //         const response = await fetchAdvertisementById(id);
-    //         setFormData(response.data);
-    //         if (response.data.advertisementImage) {
-    //             setPreviewUrl(`${imageURL}/${response.data.advertisementImage}`);
-    //         }
-    //     } catch (err) {
-    //         console.error('Failed to fetch data:', err);
-    //     }
-    // };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -45,8 +28,6 @@ export default function AddAdvertisements() {
             [name]: value
         }));
     };
-
-  
 
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
@@ -64,9 +45,7 @@ export default function AddAdvertisements() {
                 // Clear any previous validation errors
                 setValidationErrors(prevErrors => ({ ...prevErrors, advertisementImage: '' }));
                 setPreviewUrl(URL.createObjectURL(file));
-            } 
-                
-            catch (error) {
+            } catch (error) {
                 // Handle validation error
                 setValidationErrors(prevErrors => ({ ...prevErrors, advertisementImage: error }));
             }
@@ -122,10 +101,18 @@ export default function AddAdvertisements() {
 
     const validateForm = () => {
         const errors = {};
-        if (!formData.advertisementType) errors.advertisementType = 'Event Name is required';
+        if (!formData.advertisementType) errors.advertisementType = 'Advertisement Type is required';
         if (!formData.advertisementDate) errors.advertisementDate = 'Date is required';
-        if (!formData.advertisementLocation) errors.advertisementLocation = 'Location is requierd';
-        if (!formData.advertisementImage) errors.advertisementImage = 'Image is required';
+        if (!formData.advertisementLocation) errors.advertisementLocation = 'Location is required';
+
+        if (formData.advertisementType !== 'radio' && !formData.advertisementImage) {
+            errors.advertisementImage = 'Image is required';
+        }
+
+        if (formData.advertisementType === 'radio' && !formData.videoURL) {
+            errors.videoURL = 'Video URL is required';
+        }
+
         return errors;
     };
 
@@ -149,11 +136,7 @@ export default function AddAdvertisements() {
 
         try {
             let response;
-            // if (id !== 'add') {
-            //     response = await updateAdvertisement(id, data);
-            // } else {
-                response = await addAdvertisement(data);
-            // }
+            response = await addAdvertisement(data);
             console.log('Success:', response.data);
             navigate(-1);
         } catch (error) {
@@ -188,7 +171,7 @@ export default function AddAdvertisements() {
                                         </button>
                                     </div>
                                     <div className="full price_table padding_infor_info">
-                                        <form onSubmit={handleSubmit} id="add_eventsform" encType="multipart/form-data">
+                                        <form onSubmit={handleSubmit} id="add_advertisementsform" encType="multipart/form-data">
                                             <div className="form-row">
                                                 <div className="col-md-6 form-group">
                                                     <label className="label_field">Meta Title</label>
@@ -224,7 +207,7 @@ export default function AddAdvertisements() {
                                                     ></textarea>
                                                 </div>
                                                 <div className="col-md-6 form-group">
-                                                    <label className="label_field">Advertitement Type</label>
+                                                    <label className="label_field">Advertisement Type</label>
                                                     <select
                                                         name="advertisementType"
                                                         className={`form-control ${validationErrors.advertisementType ? 'is-invalid' : ''}`}
@@ -235,27 +218,12 @@ export default function AddAdvertisements() {
                                                         <option value="print">Print</option>
                                                         <option value="outdoor">Outdoor</option>
                                                         <option value="radio">Radio</option>
-                                                       
-                                                        
                                                     </select>
                                                     {validationErrors.advertisementType && (
                                                         <div className="invalid-feedback">{validationErrors.advertisementType}</div>
                                                     )}
                                                 </div>
-                                                {/* <div className="col-md-6 form-group">
-                                                    <label className="label_field">Event Name</label>
-                                                    <input
-                                                        type="text"
-                                                        name="advertisementType"
-                                                        id="advertisementType"
-                                                        className={`form-control ${validationErrors.advertisementType ? 'is-invalid' : ''}`}
-                                                        value={formData.advertisementType}
-                                                        onChange={handleInputChange}
-                                                    />
-                                                    {validationErrors.advertisementType && (
-                                                        <div className="invalid-feedback">{validationErrors.advertisementType}</div>
-                                                    )}
-                                                </div> */}
+
                                                 <div className="col-md-6 form-group">
                                                     <label className="label_field">Advertisement Date</label>
                                                     <input
@@ -284,40 +252,53 @@ export default function AddAdvertisements() {
                                                         <div className="invalid-feedback">{validationErrors.advertisementLocation}</div>
                                                     )}
                                                 </div>
-                                                <div className="col-md-6 form-group">
-                                                    <label className="label_field">Advertisement Image</label>
-                                                    <input
-                                                        type="file"
-                                                        name="advertisementImage"
-                                                        id="advertisementImage"
-                                                        className={`form-control ${validationErrors.advertisementImage ? 'is-invalid' : ''}`}
-                                                        onChange={handleFileChange}
-                                                    />
-                                                    {previewUrl && (
-                                                        <img
-                                                            src={previewUrl}
-                                                            alt="Event Image Preview"
-                                                            className="img-thumbnail"
-                                                            width="120"
-                                                            height="70"
+
+                                                {/* Conditionally render Video URL or Image Upload */}
+                                                {formData.advertisementType === 'radio' ? (
+                                                    <div className="col-md-6 form-group">
+                                                        <label className="label_field">Video URL</label>
+                                                        <input
+                                                            type="text"
+                                                            name="videoURL"
+                                                            id="videoURL"
+                                                            className={`form-control ${validationErrors.videoURL ? 'is-invalid' : ''}`}
+                                                            value={formData.videoURL}
+                                                            onChange={handleInputChange}
                                                         />
-                                                    )}
-                                                    {validationErrors.advertisementImage && (
-                                                        <div className="invalid-feedback">{validationErrors.advertisementImage}</div>
-                                                    )}
-                                                </div>
+                                                        {validationErrors.videoURL && (
+                                                            <div className="invalid-feedback">{validationErrors.videoURL}</div>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    <div className="col-md-6 form-group">
+                                                        <label className="label_field">Advertisement Image</label>
+                                                        <input
+                                                            type="file"
+                                                            name="advertisementImage"
+                                                            id="advertisementImage"
+                                                            className={`form-control ${validationErrors.advertisementImage ? 'is-invalid' : ''}`}
+                                                            onChange={handleFileChange}
+                                                        />
+                                                        {validationErrors.advertisementImage && (
+                                                            <div className="invalid-feedback">{validationErrors.advertisementImage}</div>
+                                                        )}
+                                                    </div>
+                                                )}
+
+                                                {/* Image Preview */}
+                                                {previewUrl && (
+                                                    <div className="col-md-6 form-group">
+                                                        <img src={previewUrl} alt="Advertisement Preview" style={{ maxHeight: '200px' }} />
+                                                    </div>
+                                                )}
                                             </div>
-                                            <div className="form-group margin_0">
-                                                <button className="main_bt" type="submit" disabled={loading}>
-                                                    {loading ? (
-                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                    ) : (
-                                                        // id === 'add' ? 
-                                                        'Submit' 
-                                                        // : 'Update'
-                                                    )}
-                                                </button>
-                                            </div>
+                                            <button
+                                                type="submit"
+                                                className="main_bt"
+                                                disabled={loading}
+                                            >
+                                                {loading ? 'Loading...' : 'Submit'}
+                                            </button>
                                         </form>
                                     </div>
                                 </div>

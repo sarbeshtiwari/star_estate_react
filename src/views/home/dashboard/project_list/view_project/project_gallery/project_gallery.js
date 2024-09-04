@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { deleteProjectGallery, getProjectGalleryByProject, getProjectGalleryByID, updateProjectGalleryHomeStatus, updateProjectGalleryStatus } from '../../../../../../api/dashboard/project_list/view_project/project_gallery_api';
+import { deleteProjectGallery, getProjectGalleryByProject, getProjectGalleryByID, updateProjectGalleryHomeStatus, updateProjectGalleryStatus, getGalleryContent, projectGalleryContent } from '../../../../../../api/dashboard/project_list/view_project/project_gallery_api';
 import { imageURL } from '../../../../../../imageURL';
+import Modal from '../../../../enquiry/modal';
 
 export default function ProjectGallery() {
     
     const [details, setDetails] = useState([]);
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [selectedItemId, setSelectedItemId] = useState(null); // Track selected item ID
+    const [noteText, setNoteText] = useState(''); // Track the note text
+    const [formData, setFormData] = useState({
+     
+        projectGalleryContent: ''
+    });
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -53,7 +61,41 @@ export default function ProjectGallery() {
         }
     };
 
+    const handleOpenModal = async () => {
+        setSelectedItemId(id); // Set selected item ID
+        const data = await getGalleryContent(id);
+        
+        setNoteText(data.projectGalleryContent || ''); // Prefill note text or set empty string
+        setModalOpen(true);
+    };
+
+    const handleModalSubmit = async (text) => {
+        if (selectedItemId !== null) {
+            try {
+                // Update formData with the note text from the modal
+                setFormData({
+                    ...formData,
+                    projectGalleryContent: text, // Assuming the text corresponds to `projectGalleryContent`
+                });
+    
+                console.log('Submitted text:', { ...formData, projectGalleryContent: text }, id);
+    
+                await projectGalleryContent(id, { ...formData, projectGalleryContent: text }); // Pass the updated formData to the API
+    
+                // Close the modal and reset the state
+                setModalOpen(false);
+                setSelectedItemId(null);
+                setNoteText('');
+            } catch (error) {
+                console.error('Error saving query:', error);
+            }
+        } else {
+            console.error('No item selected for saving.');
+        }
+    };
+
     return (
+        <>
         <div >
             <Sidebar />
             <div >
@@ -70,7 +112,14 @@ export default function ProjectGallery() {
                             <div className="col-md-12">
                                 <div className="white_shd full margin_bottom_30">
                                     <div className="full graph_head">
-                                        <Link to={`/${id}/addProjectGallery/add`} className="btn btn-success btn-xs">Add Gallery</Link>
+                                        <Link to={`/${id}/addProjectGallery/add`} className="btn btn-success btn-xs me-2">Add Gallery</Link>
+                                        <button 
+                                            className="btn btn-primary btn-xs me-2" 
+                                            onClick={() => handleOpenModal(id)} // Pass item to handleOpenModal
+                                        >
+                                            <i className="fa fa-plus"></i> 
+                                            {' Add Content'}
+                                        </button>
                                         <button 
                                     className="btn btn-primary btn-xs float-right"
                                     onClick={() => navigate(-1)}
@@ -158,5 +207,17 @@ export default function ProjectGallery() {
                 </div>
             </div>
         </div>
+        <Modal
+            isOpen={isModalOpen}
+            onClose={() => {
+                setModalOpen(false);
+                setSelectedItemId(null); // Reset selected item ID on modal close
+                setNoteText(''); // Reset note text on modal close
+            }}
+            value={formData.projectgalleryContent}
+            onSubmit={(text) => handleModalSubmit(text)} // Pass the submitted text to the handler
+            text={noteText} // Pass the note text to the modal
+        />
+    </>
     );
 }

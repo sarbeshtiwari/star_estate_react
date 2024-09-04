@@ -256,7 +256,7 @@ export default function Sidebar() {
                             marginBottom: 10
                          }}
                         >
-                            Dashboard
+                            Projects
                         </Nav.Link>
                         <Nav.Link as={Link} to="/bannerImage" 
                         // className="bg-primary text-white p-2 rounded mb-2"
@@ -320,7 +320,7 @@ export default function Sidebar() {
                                         Developer
                                     </Nav.Link>
                                     <Nav.Link as={Link} to="/starRera" className="text-dark">
-                                        Star Rera Details
+                                        Star RERA Details
                                     </Nav.Link>
                                     <Nav.Link as={Link} to="/clientSpeak" className="text-dark">
                                         Client's Speak

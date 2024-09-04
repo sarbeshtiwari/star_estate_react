@@ -27,13 +27,13 @@ export default function AddProjectAmenities() {
         try {
             // Fetch all amenities
             const amenities = await getAllTheAmenities();
-         
+            
             setDetails(amenities.data);
             
 
             // Fetch project amenities
             const projectAmenities = await getProjectAmenities(id);
-            setFormData(projectAmenities.data.data1[0]);
+            setFormData(projectAmenities.data.data1[0] ? projectAmenities.data.data1[0] : '');
             // Extract IDs with status true
             const trueStatusIds = projectAmenities.data.data
                 .filter(item => item.status)

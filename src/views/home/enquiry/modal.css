@@ -5,31 +5,30 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7); /* Slightly darker for better focus */
+    background: rgba(0, 0, 0, 0.75); /* Darker background for better contrast */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Ensure modal is on top of other content */
-    transition: opacity 0.3s ease;
-    opacity: 1;
+    z-index: 1000;
+    transition: opacity 0.3s ease-in-out;
 }
 
 /* Modal Content */
 .modal-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 500px; /* Increased max-width for more content space */
+    background-color: #fff;
+    padding: 25px; /* Increased padding for better spacing */
+    border-radius: 10px; /* Softer corners */
+    width: 90%;
+    max-width: 500px;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-    transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition */
-    transform: translateY(0); /* Initial position */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transform: translateY(0);
 }
 
-/* Modal Enter and Exit Transitions */
+/* Enter and Exit Transitions */
 .modal-overlay.modal-enter .modal-content {
-    transform: translateY(-10px);
+    transform: translateY(-20px);
     opacity: 0;
 }
 
@@ -39,43 +38,41 @@
 }
 
 .modal-overlay.modal-exit .modal-content {
-    transform: translateY(10px);
+    transform: translateY(20px);
     opacity: 0;
 }
 
 /* Textarea */
 textarea {
-    width: calc(100% - 12px); /* Adjust for padding */
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    resize: vertical; /* Allow vertical resizing */
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
     margin-bottom: 20px;
-    font-size: 14px;
-    line-height: 1.5;
-    box-sizing: border-box; /* Include padding and border in element’s total width and height */
+    font-size: 16px; /* Slightly larger font for better readability */
+    line-height: 1.6;
+    box-sizing: border-box;
 }
 
 /* Buttons */
 button {
-    margin: 5px;
-    padding: 10px 15px;
+    padding: 12px 20px;
     border: none;
-    border-radius: 4px;
-    font-size: 14px;
+    border-radius: 5px;
+    font-size: 16px; /* Increased font size for accessibility */
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 button:hover {
-    background-color: #0056b3; /* Darker shade for hover effect */
-    color: #fff; /* Ensure text is readable */
+    filter: brightness(0.9); /* Simpler hover effect */
 }
 
 button:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2); /* Subtle focus ring */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Improved focus ring for accessibility */
 }
 
 /* Submit Button */
@@ -101,7 +98,7 @@ button.close-btn:hover {
 /* Responsive Adjustments */
 @media (max-width: 600px) {
     .modal-content {
-        width: 90%; /* Make modal take more space on smaller screens */
-        max-width: none; /* Remove max-width constraint */
+        width: 95%; /* Utilize more screen space on mobile */
+        max-width: none;
     }
 }

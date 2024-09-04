@@ -21,3 +21,14 @@ export const getProjectLocationAdvantages = async (projectname) => {
         throw error;
     }
 }
+
+export const projectLocationContent = async(formData, projectname) => {
+    try {
+        const response = await axios.post(`${$API_URL}/projectsLocationContent/${projectname}`, formData);
+        return response.data;
+
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}

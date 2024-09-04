@@ -15,13 +15,7 @@ export default function AddBannerImage() {
         alt_tag_tablet: '',
     }]);
     const [loading, setLoading] = useState(false);
-
     const [validationErrors, setValidationErrors] = useState({});
-
-    // useEffect(() => {
-    //     if (id) {
-    //     }
-    // }, [id]);
 
     const handleInputChange = (index, e) => {
         const { name, value } = e.target;
@@ -30,18 +24,42 @@ export default function AddBannerImage() {
         setBanners(updatedBanners);
     };
 
-    const validateImage = (file) => {
+    const validateImage = (file, type) => {
         const allowedTypes = ["image/png", "image/webp", "image/jpeg"];
         const maxSize = 2 * 1024 * 1024;
 
-        
         const reader = new FileReader();
 
         return new Promise((resolve, reject) => {
             if (file.size > maxSize) {
                 alert("File size exceeds 2 MB");
-                return;
+                return reject(new Error("File size exceeds 2 MB"));
             }
+
+            const img = new Image();
+            img.onload = () => {
+                let isValidResolution = false;
+
+                if (type === 'desktop' && img.width === 1920 && img.height === 1080) {
+                    isValidResolution = true;
+                } else if (type === 'mobile' && img.width === 375 && img.height === 667) {
+                    isValidResolution = true;
+                } else if (type === 'tablet' && img.width === 768 && img.height === 1024) {
+                    isValidResolution = true;
+                }
+
+                if (!isValidResolution) {
+                    alert(`Invalid resolution for ${type} image. Expected resolution is: ${
+                        type === 'desktop' ? '1920x1080' :
+                        type === 'mobile' ? '375x667' :
+                        '768x1024'
+                    }`);
+                    return reject(new Error(`Invalid resolution for ${type} image.`));
+                }
+
+                resolve(file);
+            };
+
             reader.onloadend = () => {
                 const arr = new Uint8Array(reader.result).subarray(0, 4);
                 let header = "";
@@ -71,8 +89,9 @@ export default function AddBannerImage() {
 
                 if (!allowedTypes.includes(fileType)) {
                     alert("Only JPG, JPEG, WEBP, and PNG formats are allowed.");
+                    return reject(new Error("Invalid file type."));
                 } else {
-                    resolve(file);
+                    img.src = URL.createObjectURL(file);
                 }
             };
 
@@ -81,13 +100,16 @@ export default function AddBannerImage() {
         });
     };
 
-    const handleFileChange = async (index, e, key) => {
+    const handleFileChange = async (index, e, key, type) => {
         const file = e.target.files[0];
-        const valid = await validateImage(file);
-        if (valid){const updatedBanners = [...banners];
+        try {
+            await validateImage(file, type);
+            const updatedBanners = [...banners];
             updatedBanners[index][key] = file;
-            setBanners(updatedBanners);}
-        
+            setBanners(updatedBanners);
+        } catch (error) {
+            console.error('Invalid image:', error.message);
+        }
     };
 
     const validateForm = () => {
@@ -187,11 +209,11 @@ export default function AddBannerImage() {
                                                 <div className="col-md-4">
                                                     <div className="card mb-3">
                                                         <div className="card-body">
-                                                            <label className="label_field">Desktop Image</label>
+                                                            <label className="label_field">Desktop Image (1920x1080, Max 2MB)</label>
                                                             <input
                                                                 type="file"
                                                                 name={`desktop_image`}
-                                                                onChange={(e) => handleFileChange(index, e, 'desktop_image_path')}
+                                                                onChange={(e) => handleFileChange(index, e, 'desktop_image_path', 'desktop')}
                                                                 className={`form-control ${validationErrors[`desktop_image`] ? 'is-invalid' : ''}`}
                                                             />
                                                             {banner.desktop_image_path && (
@@ -222,11 +244,11 @@ export default function AddBannerImage() {
                                                 <div className="col-md-4">
                                                     <div className="card mb-3">
                                                         <div className="card-body">
-                                                            <label className="label_field">Mobile Image</label>
+                                                            <label className="label_field">Mobile Image (375x667, Max 2MB)</label>
                                                             <input
                                                                 type="file"
                                                                 name={`mobile_image`}
-                                                                onChange={(e) => handleFileChange(index, e, 'mobile_image_path')}
+                                                                onChange={(e) => handleFileChange(index, e, 'mobile_image_path', 'mobile')}
                                                                 className={`form-control ${validationErrors[`mobile_image`] ? 'is-invalid' : ''}`}
                                                             />
                                                             {banner.mobile_image_path && (
@@ -257,11 +279,11 @@ export default function AddBannerImage() {
                                                 <div className="col-md-4">
                                                     <div className="card mb-3">
                                                         <div className="card-body">
-                                                            <label className="label_field">Tablet Image</label>
+                                                            <label className="label_field">Tablet Image (768x1024, Max 2MB)</label>
                                                             <input
                                                                 type="file"
                                                                 name={`tablet_image`}
-                                                                onChange={(e) => handleFileChange(index, e, 'tablet_image_path')}
+                                                                onChange={(e) => handleFileChange(index, e, 'tablet_image_path', 'tablet')}
                                                                 className={`form-control ${validationErrors[`tablet_image`] ? 'is-invalid' : ''}`}
                                                             />
                                                             {banner.tablet_image_path && (
@@ -297,11 +319,11 @@ export default function AddBannerImage() {
                                         )}
                                         <div className="form-group margin_0">
                                             <button className="main_bt" type="submit" disabled={loading}>
-                                            {loading ? (
-                                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                    ) : (
-                                                        'Add Banner'
-                                                    )}
+                                                {loading ? (
+                                                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                ) : (
+                                                    'Add Banner'
+                                                )}
                                             </button>
                                         </div>
                                     </form>

@@ -84,6 +84,7 @@ export default function Advertisements() {
                                                             {event.map((evt, index) => (
                                                                 <tr key={evt._id}>
                                                                     <td>{index + 1}</td>
+                                                                    
                                                                     <td>
                                                                             <img 
                                                                             src={`${imageURL}/${evt.advertisementImage}`}

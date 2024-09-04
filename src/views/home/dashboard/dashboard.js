@@ -39,7 +39,7 @@ export default function Dashboard() {
                             <div className="row column_title">
                                 <div className="col-md-12">
                                     <div className="page_title">
-                                        <h2>Dashboard</h2>
+                                        <h2>Projects</h2>
                                     </div>
                                 </div>
                             </div>
@@ -58,15 +58,16 @@ export default function Dashboard() {
                                                             <Link to={`ProjectType/${category.slugURL}`}>
                                                                 <div className="full counter_section margin_bottom_30">
                                                                     <div className="couter_icon">
-                                                                        <div>
-                                                                            {category.category === 'Commercial' ? (
-                                                                                <i className="fa fa-building orange_color"></i>
-                                                                            ) : category.category === 'Residential' ? (
-                                                                                <i className="fa fa-home blue1_color"></i>
-                                                                            ) : category.category === 'Retail' ? (
-                                                                                <i className="fa fa-hotel red_color"></i>
-                                                                            ) : null}
-                                                                        </div>
+                                                                    <div>
+                                                                        {category.category === 'Residential' ? (
+                                                                            <i className="fa fa-home blue1_color"></i>
+                                                                        ) : category.category === 'Retail' ? (
+                                                                            <i className="fa fa-hotel red_color"></i>
+                                                                        ) : category.category === 'Commercial' ? (
+                                                                            <i className="fa fa-building orange_color"></i>
+                                                                        ) : null}
+                                                                    </div>
+
                                                                     </div>
                                                                     <div className="counter_no">
                                                                         <div>

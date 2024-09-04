@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { deleteFloorPlan, getFloorPlanByProject, updateFloorPlanStatus } from '../../../../../../api/dashboard/project_list/view_project/floor_plan_api';
+import { deleteFloorPlan, getFloorContent, getFloorPlanByProject, projectFloorContent, updateFloorPlanStatus } from '../../../../../../api/dashboard/project_list/view_project/floor_plan_api';
 import { imageURL } from '../../../../../../imageURL';
+import Modal from '../../../../enquiry/modal';
 
 export default function FloorPlan() {
     
     const [details, setDetails] = useState([]);
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [selectedItemId, setSelectedItemId] = useState(null); // Track selected item ID
+    const [noteText, setNoteText] = useState(''); // Track the note text
     const { id } = useParams();
     const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+     
+        floorPlanContent: ''
+    });
 
     useEffect(() => {
         fetchDetailsHandler();
@@ -43,7 +51,41 @@ export default function FloorPlan() {
         }
     };
 
+    const handleOpenModal = async () => {
+        setSelectedItemId(id); // Set selected item ID
+        const data = await getFloorContent(id);
+        
+        setNoteText(data.floorPlanContent || ''); // Prefill note text or set empty string
+        setModalOpen(true);
+    };
+
+    const handleModalSubmit = async (text) => {
+        if (selectedItemId !== null) {
+            try {
+                // Update formData with the note text from the modal
+                setFormData({
+                    ...formData,
+                    floorPlanContent: text, // Assuming the text corresponds to `floorPlanContent`
+                });
+    
+                console.log('Submitted text:', { ...formData, floorPlanContent: text }, id);
+    
+                await projectFloorContent(id, { ...formData, floorPlanContent: text }); // Pass the updated formData to the API
+    
+                // Close the modal and reset the state
+                setModalOpen(false);
+                setSelectedItemId(null);
+                setNoteText('');
+            } catch (error) {
+                console.error('Error saving query:', error);
+            }
+        } else {
+            console.error('No item selected for saving.');
+        }
+    };
+
     return (
+        <>
         <div >
             <Sidebar />
             <div >
@@ -59,15 +101,25 @@ export default function FloorPlan() {
                         <div className="row column1">
                             <div className="col-md-12">
                                 <div className="white_shd full margin_bottom_30">
-                                    <div className="full graph_head">
-                                        <Link to={`/${id}/addFloorPlan/add`} className="btn btn-success btn-xs">Add Floor Plan</Link>
+                                <div className="full graph_head">
+                                        <Link to={`/${id}/addFloorPlan/add`} className="btn btn-success btn-xs me-2">
+                                            Add Floor Plan
+                                        </Link>
                                         <button 
-                                    className="btn btn-primary btn-xs float-right"
-                                    onClick={() => navigate(-1)}
-                                >
-                                    Back
-                                </button>
+                                            className="btn btn-primary btn-xs me-2" 
+                                            onClick={() => handleOpenModal(id)}
+                                        >
+                                            <i className="fa fa-plus"></i> 
+                                            {' Add Content'}
+                                        </button>
+                                        <button 
+                                            className="btn btn-primary btn-xs float-right" 
+                                            onClick={() => navigate(-1)}
+                                        >
+                                            Back
+                                        </button>
                                     </div>
+
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
                                         <div className="full price_table padding_infor_info">
                                             <div className="row">
@@ -143,5 +195,17 @@ export default function FloorPlan() {
                 </div>
             </div>
         </div>
+        <Modal
+            isOpen={isModalOpen}
+            onClose={() => {
+                setModalOpen(false);
+                setSelectedItemId(null); // Reset selected item ID on modal close
+                setNoteText(''); // Reset note text on modal close
+            }}
+            value={formData.floorPlanContent}
+            onSubmit={(text) => handleModalSubmit(text)} // Pass the submitted text to the handler
+            text={noteText} // Pass the note text to the modal
+        />
+    </>
     );
 }

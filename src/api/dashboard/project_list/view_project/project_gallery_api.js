@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const BASE_URL = 'https://ecis.in/apis/star-estate-API/projectGallery';
+// const BASE_URL = 'http://localhost:3000/projectGallery';
 
 export const addProjectGallery = async (formData) => {
     try {
@@ -74,5 +75,34 @@ export const deleteProjectGallery = async (cat_id) => {
         await axios.delete(`${BASE_URL}/deleteProjectGallery/${cat_id}`);
     } catch (error) {
         throw new Error('Error deleting Location Advantages.');
+    }
+};
+
+
+export const projectGalleryContent = async( projectname, formData) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/projectsGalleryContent/${projectname}`, formData);
+        return response.data;
+
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}
+
+
+export const getGalleryContent = async (project) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/getGalleryContent/${project}`);
+
+        // Safely check if response.data and response.data.data exist before trying to access the first item
+        if (response.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
+            return response.data.data[0];
+        } else {
+            return ''; // Return an empty string if no data is found
+        }
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+        throw error; // Rethrow to handle in the component
     }
 };

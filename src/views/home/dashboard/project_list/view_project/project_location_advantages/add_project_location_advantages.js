@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getLocationAdvantages } from '../../../../../../api/location_advantages/location_advantages_api';
-import { getProjectLocationAdvantages, ProjectLocationAdvantages } from '../../../../../../api/dashboard/project_list/view_project/project_location_advantages_api';
+import { getProjectLocationAdvantages, ProjectLocationAdvantages, projectLocationContent } from '../../../../../../api/dashboard/project_list/view_project/project_location_advantages_api';
 import _ from 'lodash';
 import { imageURL } from '../../../../../../imageURL';
 
@@ -30,7 +30,8 @@ export default function AddProjectLocationAdvantages() {
             setDetails(Location);
             
             const projectLocation = await getProjectLocationAdvantages(id);
-            setFormData(projectLocation.data.data1[0]);
+            console.log(projectLocation)
+            setFormData(projectLocation.data1[0] ? projectLocation.data1[0] : '');
             const trueStatusIds = projectLocation.data
                 .filter(item => item.status)
                 .map(item => item.LocationAdvantagesId);
@@ -148,10 +149,10 @@ export default function AddProjectLocationAdvantages() {
         setLoading(true);
         try {
             
-            // const response = await projectAmenitiesContent(formData, id);
-            // if (response.success) {
-            //     navigate(-1);
-            // }
+            const response = await projectLocationContent(formData, id);
+            if (response.success) {
+                navigate(-1);
+            }
         }catch(error){
             console.error(error)
         }

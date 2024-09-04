@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://ecis.in/apis/star-estate-API';
 
 // Fetch all ClientWords
 export const fetchClientWords = async () => {

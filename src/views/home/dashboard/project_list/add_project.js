@@ -33,6 +33,7 @@ export default function AddProject() {
         projectBy: '',
         // projectType: '',
         projectPrice: '',
+        projectPriceUnit: 'Cr',
         ivr_no: '',
         locationMap: '',
         rera_no: '',
@@ -171,10 +172,14 @@ export default function AddProject() {
 
     // Handler for dropdown change
     const handleUnitChange = (event) => {
-        setPriceUnit(event.target.value);
-        // Optionally, you can update formData if needed
-        // handleChange({ target: { name: 'projectPriceUnit', value: event.target.value } });
+        const newPriceUnit = event.target.value;
+        setPriceUnit(newPriceUnit);
+        setFormData({
+            ...formData,
+            projectPriceUnit: newPriceUnit // Update formData with the new unit
+        });
     };
+    
 
     const validateForm = () => {
         const errors = {};
@@ -206,15 +211,27 @@ export default function AddProject() {
             return;
         }
 
+        // Concatenate the project price with the selected price unit
+            const formattedPrice = isPriceRevealingSoon
+            ? 'Price Revealing Soon'
+            : `${formData.projectPrice} ${priceUnit}`;
+
+        // Update formData with the formatted price
+        const updatedFormData = {
+            ...formData,
+            projectPrice: formattedPrice,
+        };
+
+
         setLoading(true);
         console.log(formData)
 
         try {
             console.log('true')
             if (id === 'add') {
-                await addProject(formData);
+                await addProject(updatedFormData);
             } else {
-                await updateProject(id, formData);
+                await updateProject(id, updatedFormData);
             }
             alert('Project saved successfully!');
             navigate(-1); // Redirect or clear form as needed
@@ -259,7 +276,7 @@ export default function AddProject() {
                                             <input
                                                 type="text"
                                                 name="metaTitle"
-                                                placeholder="Meta Title"
+                                                
                                                 className="form-control"
                                                 value={formData.metaTitle}
                                                 onChange={handleChange}
@@ -270,7 +287,7 @@ export default function AddProject() {
                                             <input
                                                 type="text"
                                                 name="metaKeyword"
-                                                placeholder="Meta Keyword"
+                                               
                                                 className="form-control"
                                                 value={formData.metaKeyword}
                                                 onChange={handleChange}
@@ -281,7 +298,7 @@ export default function AddProject() {
                                             <textarea
                                                 name="metaDescription"
                                                 className="form-control"
-                                                placeholder="Meta Description"
+                                               
                                                 rows="5"
                                                 value={formData.metaDescription}
                                                 onChange={handleChange}
@@ -292,7 +309,7 @@ export default function AddProject() {
                                             <input
                                                 type="text"
                                                 name="projectName"
-                                                placeholder="Project Name"
+                                                
                                                 className={`form-control ${validationErrors.projectName ? 'is-invalid' : ''}`}
                                                 value={formData.projectName}
                                                 onChange={handleChange}
@@ -306,7 +323,7 @@ export default function AddProject() {
                                             <input
                                                 type="text"
                                                 name="projectAddress"
-                                                placeholder="Project Address"
+                                               
                                                 className={`form-control ${validationErrors.projectAddress ? 'is-invalid' : ''}`}
                                                 value={formData.projectAddress}
                                                 onChange={handleChange}
@@ -358,13 +375,14 @@ export default function AddProject() {
                                                 onChange={handleChange}
                                             >
                                                 <option value="">Select Configuration</option>
-                                                <option value="2 BHK">2 BHK</option>
-                                                <option value="3 BHK">3 BHK</option>
-                                                <option value="4 BHK">4 BHK</option>
-                                                <option value="5 BHK">5 BHK</option>
+                                                <option value="1-BHK">1 BHK</option>
+                                                <option value="2-BHK">2 BHK</option>
+                                                <option value="3-BHK">3 BHK</option>
+                                                <option value="4-BHK">4 BHK</option>
+                                                <option value="5-BHK">5 BHK</option>
                                                 <option value="Villa">Villa</option>
-                                                <option value="Independent Homes">Independent Homes</option>
-                                                <option value="Penthouse">Penthouse</option>
+                                                
+                                                <option value="studio">Sudio Apartments</option>
                                             </select>
                                             {validationErrors.projectConfiguration && (
                                                 <div className="invalid-feedback">{validationErrors.projectConfiguration}</div>
@@ -408,7 +426,7 @@ export default function AddProject() {
                                                     <input
                                                         type="text"
                                                         name="projectPrice"
-                                                        placeholder={`Ex - 4 ${priceUnit}/Lakhs/K`}
+                                                        // placeholder={`Ex - 4 ${priceUnit}/Lakhs/K`}
                                                         className={`form-control ${validationErrors.projectPrice ? 'is-invalid' : ''}`}
                                                         value={formData.projectPrice}
                                                         onChange={handleChange}
@@ -448,7 +466,7 @@ export default function AddProject() {
                                             <input
                                                 type="text"
                                                 name="ivr_no"
-                                                placeholder="Ex - 9800000000"
+                                        
                                                 className="form-control"
                                                 value={formData.ivr_no}
                                                 onChange={handleChange}
@@ -459,7 +477,7 @@ export default function AddProject() {
                                             <input
                                                 type="text"
                                                 name="locationMap"
-                                                placeholder="Ex - https://goo.gl/maps/8HFai3e5fxvCc5Q78"
+                                             
                                                 className={`form-control ${validationErrors.locationMap ? 'is-invalid' : ''}`}
                                                 value={formData.locationMap}
                                                 onChange={handleChange}
@@ -473,7 +491,7 @@ export default function AddProject() {
                                             <input
                                                 type="text"
                                                 name="rera_no"
-                                                placeholder="Ex -XXXXXXXXXXX"
+                                            
                                                 className={`form-control ${validationErrors.rera_no ? 'is-invalid' : ''}`}
                                                 value={formData.rera_no}
                                                 onChange={handleChange}
@@ -487,7 +505,7 @@ export default function AddProject() {
                                             <input
                                                 type="number"
                                                 name="city_priority"
-                                                placeholder="Ex - 1   Only Numeric Value"
+                                        
                                                 className="form-control"
                                                 value={formData.city_priority}
                                                 onChange={handleChange}
@@ -498,7 +516,7 @@ export default function AddProject() {
                                             <input
                                                 type="number"
                                                 name="luxury_priority"
-                                                placeholder="Ex - 1   Only Numeric Value"
+                                               
                                                 className="form-control"
                                                 value={formData.luxury_priority}
                                                 onChange={handleChange}
@@ -510,7 +528,7 @@ export default function AddProject() {
                                                 type="number"
                                                 name="newLaunch_priority"
                                                 value={formData.newLaunch_priority}
-                                                placeholder="Ex - 1   Only Numeric Value"
+                                               
                                                 onChange={handleChange}
                                                 className="form-control"
                                             />
@@ -521,7 +539,7 @@ export default function AddProject() {
                                                 type="number"
                                                 name="featured_priority"
                                                 value={formData.featured_priority}
-                                                placeholder="Ex - 1   Only Numeric Value"
+                                               
                                                 onChange={handleChange}className="form-control"
                                             />
                                         </div>
@@ -532,7 +550,7 @@ export default function AddProject() {
                                                 name="recent_priority"
                                                 value={formData.recent_priority}
                                                 className="form-control"
-                                                placeholder="Ex - 1   Only Numeric Value"
+                                               
                                                 onChange={handleChange}
                                             />
                                         </div>
@@ -543,7 +561,7 @@ export default function AddProject() {
                                                 name="residential_priority"
                                                 value={formData.residential_priority}
                                                className="form-control"
-                                                placeholder="Ex - 1   Only Numeric Value"
+                                               
                                                 onChange={handleChange}
                                             />
                                         </div>
@@ -554,7 +572,7 @@ export default function AddProject() {
                                                 name="commercial_priority"
                                                 value={formData.commercial_priority}
                                               className="form-control"
-                                                placeholder="Ex - 1   Only Numeric Value"
+                                               
                                                 onChange={handleChange}
                                             />
                                         </div>
@@ -566,7 +584,7 @@ export default function AddProject() {
                                                         type="checkbox"
                                                         name="project_status"
                                                         value="New Launch"
-                                                        checked={formData.project_status.includes('New Launch')}
+                                                        checked={formData.project_status.includes('new launch')}
                                                         onChange={handleChange} 
                                                     /> New Launch
                                                 </label>
@@ -575,7 +593,7 @@ export default function AddProject() {
                                                         type="checkbox"
                                                         name="project_status"
                                                         value="Luxury"
-                                                        checked={formData.project_status.includes('Luxury')}
+                                                        checked={formData.project_status.includes('luxury')}
                                                         onChange={handleChange}
                                                     /> Luxury
                                                 </label>
@@ -584,7 +602,7 @@ export default function AddProject() {
                                                         type="checkbox"
                                                         name="project_status"
                                                         value="Featured"
-                                                        checked={formData.project_status.includes('Featured')}
+                                                        checked={formData.project_status.includes('featured')}
                                                         onChange={handleChange}
                                                     /> Featured
                                                 </label>
@@ -593,7 +611,7 @@ export default function AddProject() {
                                                         type="checkbox"
                                                         name="project_status"
                                                         value="Recent"
-                                                        checked={formData.project_status.includes('Recent')}
+                                                        checked={formData.project_status.includes('recent')}
                                                         onChange={handleChange}
                                                     /> Recent
                                                 </label>

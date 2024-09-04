@@ -157,8 +157,8 @@ export default function ProjectList() {
                                                         <th>Project Address</th>
                                                         <th>Project Price</th>
                                                         <th>Project Details</th>
-                                                        <th>Top Rated</th>
-                                                        <th>Recent</th>
+                                                        {/* <th>Top Rated</th>
+                                                        <th>Recent</th> */}
                                                         <th></th>
                                                         
                                                     </tr>
@@ -189,7 +189,7 @@ export default function ProjectList() {
                                                                 <Link to= {`viewProject/${project.slugURL}`} className='btn btn-primary btn-xs'>View Project</Link>
                                                                 {/* <button className="btn btn-primary btn-xs" onClick={() => `viewProject/${project.projectName}`}>View Project</button> */}
                                                                 </td>
-                                                            <td>{!project.project_status.includes('Featured') ? (
+                                                            {/* <td>{!project.project_status.includes('Featured') ? (
                                                                             <button className="btn btn-warning btn-xs" onClick={() => handleupdateProjectStatusCategory(project._id, 'Featured')}>Deactivate</button>
                                                                         ) : (
                                                                             <button className="btn btn-success btn-xs" onClick={() => handleupdateProjectStatusCategory(project._id, 'Featured')}>Active</button>
@@ -199,7 +199,7 @@ export default function ProjectList() {
                                                                             <button className="btn btn-warning btn-xs" onClick={() => handleupdateProjectStatusCategory(project._id, 'Recent')}>Deactivate</button>
                                                                         ) : (
                                                                             <button className="btn btn-success btn-xs" onClick={() => handleupdateProjectStatusCategory(project._id, 'Recent')}>Active</button>
-                                                                        )}</td>
+                                                                        )}</td> */}
                                                             <td>
                                                                 <ul className="list-inline d-flex justify-content-end">
                                                                     <li>

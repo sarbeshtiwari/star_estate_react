@@ -18,7 +18,7 @@ const Modal = ({ isOpen, onClose, onSubmit, text }) => {
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                <h2>{text ? 'Update Note' : 'Add Note'}</h2>
+                <h2>{text ? 'Update Content' : 'Add Content'}</h2>
                 <textarea
                     rows="4"
                     value={localText}

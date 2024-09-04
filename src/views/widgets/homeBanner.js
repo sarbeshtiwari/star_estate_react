@@ -126,7 +126,7 @@ export default function HomeBanner() {
                                                                     <td>
                                                                 <img
                                                                     src={banner.desktop_image_url ? `${banner.desktop_image_url}` : '/url/to/default/image'}
-                                                                    className="rounded-circle"
+                                                                    // className="rounded-circle"
                                                                     style={{ objectFit: 'cover' }}
                                                                     alt={banner.alt_tag}
                                                                     width="50"
@@ -137,21 +137,21 @@ export default function HomeBanner() {
                                                             <td>
                                                                 <img
                                                                     src={banner.tablet_image_url ? `${banner.tablet_image_url}` : '/url/to/default/image'}
-                                                                    className="rounded-circle"
+                                                                    // className="rounded-circle"
                                                                     style={{ objectFit: 'cover' }}
                                                                     alt={banner.alt_tag}
-                                                                    width="50"
-                                                                    height="50"
+                                                                    width="40"
+                                                                    height="20"
                                                                     onClick={() => handleShow(`${banner.tablet_image_url}`, banner.alt_tag)}
                                                                 />
                                                             </td>
                                                             <td>
                                                                 <img
                                                                     src={banner.mobile_image_url ? `${banner.mobile_image_url}` : '/url/to/default/image'}
-                                                                    className="rounded-circle"
+                                                                    // className="rounded-circle"
                                                                     style={{ objectFit: 'cover' }}
                                                                     alt={banner.alt_tag}
-                                                                    width="50"
+                                                                    width="30"
                                                                     height="50"
                                                                     onClick={() => handleShow(`${banner.mobile_image_url}`, banner.alt_tag)}
                                                                 />

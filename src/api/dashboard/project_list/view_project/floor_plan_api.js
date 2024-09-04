@@ -2,6 +2,8 @@ import axios from 'axios';
 
 const BASE_URL = 'https://ecis.in/apis/star-estate-API/projectFloorPlan';
 
+// const BASE_URL = 'http://localhost:3000/projectFloorPlan';
+
 export const addFloorPlan = async (formData) => {
     try {
         const response = await axios.post(`${BASE_URL}/addFloorPlan`, formData, {
@@ -68,3 +70,31 @@ export const deleteFloorPlan = async (cat_id) => {
         throw new Error('Error deleting Location Advantages.');
     }
 };
+
+
+export const projectFloorContent = async( projectname, floorPlanContent) => {
+    console.log(floorPlanContent)
+    try {
+        const response = await axios.post(`${BASE_URL}/projectsFloorPlanContent/${projectname}`, floorPlanContent);
+        return response.data;
+
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}
+
+
+export const getFloorContent = async (project) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/getFloorContent/${project}`);
+        if (response.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
+            return response.data.data[0];
+        } else {
+            return ''; // Return an empty string if no data is found
+        }
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+        throw error; // Rethrow to handle in the component
+    }
+}
