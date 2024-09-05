@@ -85,10 +85,10 @@ export default function Developer() {
                                             </label>
                                         </div>
                                         <div id="subct_filter" className="dataTables_filter">
-                                            <label>
+                                            {/* <label>
                                                 Search:
                                                 <input type="search" className="" placeholder="" aria-controls="subct" />
-                                            </label>
+                                            </label> */}
                                         </div>
                                         <div className="table-responsive">
                                             <table id="subct" className="table table-striped projects dataTable no-footer" aria-describedby="subct_info">

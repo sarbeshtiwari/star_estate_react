@@ -7,7 +7,8 @@ import {
     fetchDevelopers,
     fetchLocalitiesByCity,
     addProject,
-    updateProject
+    updateProject,
+    fetchCitiesByState
 } from '../../../../api/dashboard/project_list/project_list_api'; 
 import { imageURL } from "../../../../imageURL";
 
@@ -33,10 +34,13 @@ export default function AddProject() {
         projectBy: '',
         // projectType: '',
         projectPrice: '',
-        projectPriceUnit: 'Cr',
+        projectPriceUnit: '',
         ivr_no: '',
         locationMap: '',
         rera_no: '',
+        reraWebsite: '',
+        rera_qr: null,
+        state: '',
         city_priority: '',
         luxury_priority: '',
         newLaunch_priority: '',
@@ -56,9 +60,25 @@ export default function AddProject() {
         if (id !== 'add') {
             fetchProjectById(id).then(data => setFormData(data)).catch(console.error);
         }
-        fetchCities().then(data => setCities(data)).catch(console.error);
+        // fetchCities().then(data => setCities(data)).catch(console.error);
         fetchDevelopers().then(data => setDevelopers(data)).catch(console.error);
     }, [id, id1]);
+
+    const fetchCity = async (state) => {
+        try {
+            console.log(state)
+            const data = await fetchCitiesByState(state);
+            if (!data) {
+                alert("No data Found for this State");
+            } else {
+                setCities(data);
+            }
+            
+        } catch (error) {
+            alert("No data Found for this State");
+            console.error('Error fetching localities:', error);
+        }
+    };
 
     const fetchLocalities = async (cityId) => {
         try {
@@ -108,10 +128,11 @@ export default function AddProject() {
                 setFormData({
                     ...formData,
                     project_status: checked
-                        ? [...formData.project_status, value]
-                        : formData.project_status.filter(status => status !== value)
+                        ? [...formData.project_status, value]  
+                        : formData.project_status.filter(status => status !== value)  
                 });
             }
+            
         } else {
             setFormData({
                 ...formData,
@@ -119,6 +140,9 @@ export default function AddProject() {
             });
             if (name === 'cityLocation' && value) {
                 await fetchLocalities(value);
+            }
+            if (name === 'state' && value){
+                await fetchCity(value);
             }
         }
     };
@@ -185,6 +209,7 @@ export default function AddProject() {
         const errors = {};
         if (!formData.projectName) errors.projectName = 'Project Name is required';
         if (!formData.projectAddress) errors.projectAddress = 'Project Address is required';
+        if (!formData.state) errors.state = 'Project Price is required';
         if (!formData.cityLocation) errors.cityLocation = 'Project City is required';
         if (!formData.projectLocality) errors.projectLocality = 'Project Locality is required';
         if (!formData.projectConfiguration) errors.projectConfiguration = 'Project Configuration is required';
@@ -192,6 +217,8 @@ export default function AddProject() {
         // if (!formData.projectType) errors.projectType = 'Project Type is required';
         if (!formData.projectPrice && !isPriceRevealingSoon) errors.projectPrice = 'Project Price is required';
         if (!formData.rera_no) errors.rera_no = 'Rera No is required';
+        if (!formData.reraWebsite) errors.reraWebsite = 'Rera No is required';
+        if (!formData.rera_qr) errors.rera_qr= 'Rera QR is required';
         if (!formData.locationMap) errors.locationMap = 'Project Location is required';
         if (!formData.project_logo) errors.project_logo = 'Project Logo is required';
         if (!formData.project_thumbnail) errors.project_thumbnail = 'Project Image is required';
@@ -332,6 +359,57 @@ export default function AddProject() {
                                                 <div className="invalid-feedback">{validationErrors.projectAddress}</div>
                                             )}
                                         </div>
+                                        
+                                                            <div className="col-md-3 form-group">
+                                                                <label className="label_field">State</label>
+                                                                <select 
+                                                                    name="state" 
+                                                                    id="state" 
+                                                                    value={formData.state} 
+                                                                    onChange={handleChange} 
+                                                                    className={`form-control ${validationErrors.state ? 'is-invalid' : ''}`}
+                                                                >
+                                                                    <option value="">Select a State</option>
+                                                                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                                                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                                                    <option value="Assam">Assam</option>
+                                                                    <option value="Bihar">Bihar</option>
+                                                                    <option value="Chhattisgarh">Chhattisgarh</option>
+                                                                    <option value="Goa">Goa</option>
+                                                                    <option value="Gujarat">Gujarat</option>
+                                                                    <option value="Haryana">Haryana</option>
+                                                                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                                                    <option value="Jharkhand">Jharkhand</option>
+                                                                    <option value="Karnataka">Karnataka</option>
+                                                                    <option value="Kerala">Kerala</option>
+                                                                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                                                    <option value="Maharashtra">Maharashtra</option>
+                                                                    <option value="Manipur">Manipur</option>
+                                                                    <option value="Meghalaya">Meghalaya</option>
+                                                                    <option value="Mizoram">Mizoram</option>
+                                                                    <option value="Nagaland">Nagaland</option>
+                                                                    <option value="Odisha">Odisha</option>
+                                                                    <option value="Punjab">Punjab</option>
+                                                                    <option value="Rajasthan">Rajasthan</option>
+                                                                    <option value="Sikkim">Sikkim</option>
+                                                                    <option value="Tamil Nadu">Tamil Nadu</option>
+                                                                    <option value="Telangana">Telangana</option>
+                                                                    <option value="Tripura">Tripura</option>
+                                                                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                                                    <option value="Uttarakhand">Uttarakhand</option>
+                                                                    <option value="West Bengal">West Bengal</option>
+                                                                    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                                                    <option value="Chandigarh">Chandigarh</option>
+                                                                    <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                                                                    <option value="Lakshadweep">Lakshadweep</option>
+                                                                    <option value="Delhi">Delhi</option>
+                                                                    <option value="Puducherry">Puducherry</option>
+                                                                </select>
+                                                                {validationErrors.state && (
+                                                                    <div className="invalid-feedback">{validationErrors.state}</div>
+                                                                )}
+                                                            </div>
+
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">City</label>
                                             <select
@@ -499,7 +577,24 @@ export default function AddProject() {
                                             {validationErrors.rera_no && (
                                                 <div className="invalid-feedback">{validationErrors.rera_no}</div>
                                             )}
+                                            
                                         </div>
+                                        <div className="col-md-3 form-group">
+                                            <label className="label_field">RERA Website</label>
+                                            <input
+                                                type="text"
+                                                name="reraWebsite"
+                                            
+                                                className={`form-control ${validationErrors.reraWebsite ? 'is-invalid' : ''}`}
+                                                value={formData.reraWebsite}
+                                                onChange={handleChange}
+                                            />
+                                            {validationErrors.reraWebsite && (
+                                                <div className="invalid-feedback">{validationErrors.reraWebsite}</div>
+                                            )}
+                                            
+                                        </div>
+                                        
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">City Priority</label>
                                             <input
@@ -583,7 +678,7 @@ export default function AddProject() {
                                                     <input
                                                         type="checkbox"
                                                         name="project_status"
-                                                        value="New Launch"
+                                                        value="new launch"
                                                         checked={formData.project_status.includes('new launch')}
                                                         onChange={handleChange} 
                                                     /> New Launch
@@ -592,7 +687,7 @@ export default function AddProject() {
                                                     <input
                                                         type="checkbox"
                                                         name="project_status"
-                                                        value="Luxury"
+                                                        value="luxury"
                                                         checked={formData.project_status.includes('luxury')}
                                                         onChange={handleChange}
                                                     /> Luxury
@@ -601,7 +696,7 @@ export default function AddProject() {
                                                     <input
                                                         type="checkbox"
                                                         name="project_status"
-                                                        value="Featured"
+                                                        value="featured"
                                                         checked={formData.project_status.includes('featured')}
                                                         onChange={handleChange}
                                                     /> Featured
@@ -610,7 +705,7 @@ export default function AddProject() {
                                                     <input
                                                         type="checkbox"
                                                         name="project_status"
-                                                        value="Recent"
+                                                        value="recent"
                                                         checked={formData.project_status.includes('recent')}
                                                         onChange={handleChange}
                                                     /> Recent
@@ -620,7 +715,7 @@ export default function AddProject() {
                                             
                                            
                                         </div>
-                                        <div className="col-md-6 form-group">
+                                        <div className="col-md-3 form-group">
                                             <label className="label_field">Project Logo</label>
                                             <input
                                                 type="file"
@@ -641,7 +736,7 @@ export default function AddProject() {
                                                                     height="100"
                                                                 /> : ''}
                                         </div>
-                                        <div className="col-md-6 form-group">
+                                        <div className="col-md-3 form-group">
                                             <label className="label_field">Project Thumbnail</label>
                                             <input
                                                 type="file"
@@ -658,6 +753,27 @@ export default function AddProject() {
                                                                    
                                                                     style={{ objectFit: 'cover' }}
                                                                     alt={formData.projectName}
+                                                                    width="100"
+                                                                    height="100"
+                                                                /> : ''}
+                                        </div>
+                                        <div className="col-md-3 form-group">
+                                            <label className="label_field">RERA QR</label>
+                                            <input
+                                                type="file"
+                                                name="rera_qr"
+                                                className={`form-control ${validationErrors.rera_qr ? 'is-invalid' : ''}`}
+                                                onChange={handleChange}
+                                            />
+                                            {validationErrors.rera_qr && (
+                                                <div className="invalid-feedback">{validationErrors.rera_qr}</div>
+                                            )}
+                                            {formData.rera_qr ?  <img 
+                                                                   src={`${imageURL}/${formData.rera_qr}`}
+
+                                                                   
+                                                                    style={{ objectFit: 'cover' }}
+                                                                    alt={formData.rera_no}
                                                                     width="100"
                                                                     height="100"
                                                                 /> : ''}

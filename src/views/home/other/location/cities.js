@@ -5,26 +5,46 @@ import { fetchCities, updateCityStatus, deleteCity } from '../../../../api/locat
 
 export default function Cities() {
     const [cities, setCities] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const loadCities = async () => {
+            setLoading(true);
+            try {
+                // Simulate an API call with incremental data loading
+                let offset = 0;
+                const limit = 10; // Number of cities to fetch per chunk
+                const fetchData = async () => {
+                    const data = await fetchCities({ offset, limit });
+                    setCities(prevCities => [...prevCities, ...data]);
+                    offset += limit;
+                    if (data.length === limit) {
+                        // Fetch more data if there are still more cities
+                        setTimeout(fetchData, 1000); // Simulate delay
+                    } else {
+                        setLoading(false); // No more data to load
+                    }
+                };
+                fetchData();
+            } catch (error) {
+                console.error('Error loading cities:', error);
+                setLoading(false);
+            }
+        };
+
         loadCities();
     }, []);
-
-    const loadCities = async () => {
-        try {
-            const data = await fetchCities();
-            setCities(data);
-        } catch (error) {
-            console.error('Error loading cities:', error);
-        }
-    };
 
     const handleUpdateStatus = async (id, status) => {
         try {
             const result = await updateCityStatus(id, status);
             if (result.success) {
                 console.log('City status updated successfully!');
-                loadCities();
+                // Re-fetch cities or update state accordingly
+                const updatedCities = cities.map(city =>
+                    city._id === id ? { ...city, status } : city
+                );
+                setCities(updatedCities);
             } else {
                 console.error('Error updating city status:', result.message);
             }
@@ -36,7 +56,7 @@ export default function Cities() {
     const handleDeleteCity = async (id) => {
         try {
             await deleteCity(id);
-            loadCities();
+            setCities(cities.filter(city => city._id !== id));
         } catch (error) {
             console.error('Error deleting city:', error);
         }
@@ -63,94 +83,99 @@ export default function Cities() {
                                             <Link to="/addLocation/city/add" className="btn btn-success btn-xs">Add Cities</Link>
                                         </div>
                                         <div className="full price_table padding_infor_info">
-                                        <div className="table-responsive">
-                                            <table className="table table-striped projects dataTable no-footer">
-                                                <thead className="thead-dark">
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>Cities</th>
-                                                        <th>State</th>
-                                                        <th>Priority</th>
-                                                        <th>Sub City</th>
-                                                        <th>City By Keywords</th>
-                                                        <th>FAQs</th>
-                                                        <th>Footer FAQs</th>
-                                                        <th>Content Type</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {cities.map((city, index) => (
-                                                        <tr key={index} className={index % 2 === 0 ? 'even' : 'odd'}>
-                                                            <td className="sorting_1">{index + 1}</td>
-                                                            <td>{city.location}</td>
-                                                            <td>{city.state}</td>
-                                                            <td>{city.priority}</td>
-                                                            <td>
-                                                                <ul className="list-inline d-flex justify-content-center">
-                                                                    <li><Link to={`/subCities/${city.slugURL}`} className="btn btn-success btn-xs">Go</Link></li>
-                                                                </ul>
-                                                            </td>
-                                                            <td>
-                                                                <ul className="list-inline d-flex justify-content-center">
-                                                                    <li><Link to={`/projects/${city.slugURL}`} className="btn btn-success btn-xs">Open</Link></li>
-                                                                </ul>
-                                                            </td>
-                                                            <td>
-                                                                <ul className="list-inline d-flex justify-content-center">
-                                                                    <li><Link to={`/footerFAQ/${city.slugURL}/Common`} className="btn btn-success btn-xs">Go</Link></li>
-                                                                </ul>
-                                                            </td>
-                                                            <td>
-                                                                <ul className="list-inline d-flex justify-content-center">
-                                                                    <li><Link to={`/footerFAQ/${city.slugURL}/new`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
-                                                                    <li><Link to={`/footerFAQ/${city.slugURL}/commercial`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Commercial</Link></li>
-                                                                    <li><Link to={`/footerFAQ/${city.slugURL}/flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
-                                                                    <li><Link to={`/footerFAQ/${city.slugURL}/apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
-                                                                    <li><Link to={`/footerFAQ/${city.slugURL}/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
-                                                                    <li><Link to={`/footerFAQ/${city.slugURL}/residential`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
-                                                                </ul>
-                                                            </td>
-                                                            <td>
-                                                                <ul className="list-inline d-flex justify-content-center">
-                                                                    <li><Link to={`/addLocation/${city.slugURL}/New Projects`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
-                                                                    <li><Link to={`/addLocation/${city.slugURL}/Commercial`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Commercial</Link></li>
-                                                                    <li><Link to={`/addLocation/${city.slugURL}/Flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
-                                                                    <li><Link to={`/addLocation/${city.slugURL}/Apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
-                                                                    <li><Link to={`/addLocation/${city.slugURL}/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
-                                                                </ul>
-                                                            </td>
-                                                            <td>
-                                                                <ul className="list-inline d-flex justify-content-end">
-                                                                    <li>
-                                                                        {city.status === false ? (
-                                                                            <button className="btn btn-warning btn-xs" onClick={() => handleUpdateStatus(city._id, true)}>Deactive</button>
-                                                                        ) : (
-                                                                            <button className="btn btn-success btn-xs" onClick={() => handleUpdateStatus(city._id, false)}>Active</button>
-                                                                        )}
-                                                                    </li>
-                                                                    <li>
-                                                                        <Link to={`/addLocation/${city.location}/Common`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
-                                                                    </li>
-                                                                    <li>
-                                                                        <button
-                                                                            className="btn btn-danger btn-xs"
-                                                                            onClick={() => {
-                                                                                if (window.confirm('Are you sure you want to delete this city?')) {
-                                                                                    handleDeleteCity(city._id);
-                                                                                }
-                                                                            }}
-                                                                        >
-                                                                            <i className="fa fa-trash"></i>
-                                                                        </button>
-                                                                    </li>
-                                                                </ul>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
-                                        </div> </div>
+                                            {loading ? (
+                                                <div className="text-center">Loading cities...</div>
+                                            ) : (
+                                                <div className="table-responsive">
+                                                    <table className="table table-striped projects dataTable no-footer">
+                                                        <thead className="thead-dark">
+                                                            <tr>
+                                                                <th>No</th>
+                                                                <th>Cities</th>
+                                                                <th>State</th>
+                                                                <th>Priority</th>
+                                                                <th>Sub City</th>
+                                                                <th>City By Keywords</th>
+                                                                <th>FAQs</th>
+                                                                <th>Footer FAQs</th>
+                                                                <th>Content Type</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {cities.map((city, index) => (
+                                                                <tr key={index} className={index % 2 === 0 ? 'even' : 'odd'}>
+                                                                    <td className="sorting_1">{index + 1}</td>
+                                                                    <td>{city.location}</td>
+                                                                    <td>{city.state}</td>
+                                                                    <td>{city.priority}</td>
+                                                                    <td>
+                                                                        <ul className="list-inline d-flex justify-content-center">
+                                                                            <li><Link to={`/subCities/${city.slugURL}`} className="btn btn-success btn-xs">Go</Link></li>
+                                                                        </ul>
+                                                                    </td>
+                                                                    <td>
+                                                                        <ul className="list-inline d-flex justify-content-center">
+                                                                            <li><Link to={`/projects/${city.slugURL}`} className="btn btn-success btn-xs">Open</Link></li>
+                                                                        </ul>
+                                                                    </td>
+                                                                    <td>
+                                                                        <ul className="list-inline d-flex justify-content-center">
+                                                                            <li><Link to={`/footerFAQ/${city.slugURL}/Common`} className="btn btn-success btn-xs">Go</Link></li>
+                                                                        </ul>
+                                                                    </td>
+                                                                    <td>
+                                                                        <ul className="list-inline d-flex justify-content-center">
+                                                                            <li><Link to={`/footerFAQ/${city.slugURL}/new`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
+                                                                            <li><Link to={`/footerFAQ/${city.slugURL}/commercial`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Commercial</Link></li>
+                                                                            <li><Link to={`/footerFAQ/${city.slugURL}/flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
+                                                                            <li><Link to={`/footerFAQ/${city.slugURL}/apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
+                                                                            <li><Link to={`/footerFAQ/${city.slugURL}/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
+                                                                            <li><Link to={`/footerFAQ/${city.slugURL}/residential`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
+                                                                        </ul>
+                                                                    </td>
+                                                                    <td>
+                                                                        <ul className="list-inline d-flex justify-content-center">
+                                                                            <li><Link to={`/addLocation/${city.slugURL}/New Projects`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
+                                                                            <li><Link to={`/addLocation/${city.slugURL}/Commercial`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Commercial</Link></li>
+                                                                            <li><Link to={`/addLocation/${city.slugURL}/Flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
+                                                                            <li><Link to={`/addLocation/${city.slugURL}/Apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
+                                                                            <li><Link to={`/addLocation/${city.slugURL}/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
+                                                                        </ul>
+                                                                    </td>
+                                                                    <td>
+                                                                        <ul className="list-inline d-flex justify-content-end">
+                                                                            <li>
+                                                                                {city.status === false ? (
+                                                                                    <button className="btn btn-warning btn-xs" onClick={() => handleUpdateStatus(city._id, true)}>Deactive</button>
+                                                                                ) : (
+                                                                                    <button className="btn btn-success btn-xs" onClick={() => handleUpdateStatus(city._id, false)}>Active</button>
+                                                                                )}
+                                                                            </li>
+                                                                            <li>
+                                                                                <Link to={`/addLocation/${city.slugURL}/Common`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
+                                                                            </li>
+                                                                            <li>
+                                                                                <button
+                                                                                    className="btn btn-danger btn-xs"
+                                                                                    onClick={() => {
+                                                                                        if (window.confirm('Are you sure you want to delete this city?')) {
+                                                                                            handleDeleteCity(city._id);
+                                                                                        }
+                                                                                    }}
+                                                                                >
+                                                                                    <i className="fa fa-trash"></i>
+                                                                                </button>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

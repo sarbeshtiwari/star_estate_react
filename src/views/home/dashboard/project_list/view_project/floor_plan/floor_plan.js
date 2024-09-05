@@ -25,6 +25,7 @@ export default function FloorPlan() {
     const fetchDetailsHandler = async () => {
         try {
             const data = await getFloorPlanByProject(id);
+            console.log(data)
             setDetails(data);
         } catch (err) {
             console.error('Error fetching details:', err);

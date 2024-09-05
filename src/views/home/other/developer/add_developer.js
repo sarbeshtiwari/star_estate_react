@@ -133,8 +133,6 @@ export default function AddDeveloper() {
     const validateForm = () => {
         const errors = {};
         if (!formData.developerName) errors.developerName = 'Developer Name is required';
-        if (!formData.no_of_projects) errors.no_of_projects = 'No of projects is required';
-        if (!formData.establishYear) errors.establishYear = 'Establish Year is required';
         if (!formData.description) errors.description = 'Description is required';
         if (!formData.developerLogo) errors.developerLogo = 'Image is required';
         return errors;
@@ -266,13 +264,11 @@ export default function AddDeveloper() {
                                                         name="no_of_projects"
                                                         value={formData.no_of_projects}
                                                         onChange={handleInputChange}
-                                                        className={`form-control ${validationErrors.no_of_projects ? 'is-invalid' : ''}`}
+                                                        className='form-control'
                                                         placeholder="Eg: 50"
                                                         
                                                     />
-                                                    {validationErrors.no_of_projects && (
-                                                            <div className="invalid-feedback">{validationErrors.no_of_projects}</div>
-                                                        )}
+                                                   
                                                 </div>
                                                 <div className="col-md-4 form-group">
                                                     <label className="label_field">Establish Year</label>
@@ -281,13 +277,11 @@ export default function AddDeveloper() {
                                                         name="establishYear"
                                                         value={formData.establishYear}
                                                         onChange={handleInputChange}
-                                                        className={`form-control ${validationErrors.establishYear ? 'is-invalid' : ''}`}
+                                                       className='form-control'
                                                         placeholder="Eg: 1885"
                                                         
                                                     />
-                                                    {validationErrors.establishYear && (
-                                                            <div className="invalid-feedback">{validationErrors.establishYear}</div>
-                                                        )}
+                                                   
                                                 </div>
                                                 <div className="col-md-4 form-group">
                                                     <label className="label_field">Ongoing Projects</label>

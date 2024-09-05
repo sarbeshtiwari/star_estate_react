@@ -73,7 +73,7 @@ export default function ProjectConfiguration() {
                                                         <th>City</th>
                                                         <th>Project Configuration</th>                                                                                                            
                                                         
-                                                        <th>FAQs</th>
+                                                        {/* <th>FAQs</th> */}
                                                         
                                                         <th>Content Type</th>
                                                         <th></th>
@@ -86,24 +86,24 @@ export default function ProjectConfiguration() {
                                                             <td>{id}</td>
                                                             <td>{data.projectConfiguration}</td>
                                                            
-                                                           
+{/*                                                            
                                                             <td>
                                                                 <ul className="list-inline d-flex justify-content-center">
-                                                                    <li><Link to={`/configurationFAQ/${id}/New`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
-                                                                    <li><Link to={`/configurationFAQ/${id}/commercial`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Commercial</Link></li>
-                                                                    <li><Link to={`/configurationFAQ/${id}/flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
-                                                                    <li><Link to={`/configurationFAQ/${id}/apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
-                                                                    <li><Link to={`/configurationFAQ/${id}/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
-                                                                    <li><Link to={`/configurationFAQ/${id}/residential`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
+                                                                    <li><Link to={`/${id}/configurationFAQ/New`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
+                                                                    <li><Link to={`/${id}/configurationFAQ/commercial`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Commercial</Link></li>
+                                                                    <li><Link to={`/${id}/configurationFAQ/flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
+                                                                    <li><Link to={`/${id}/configurationFAQ/apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
+                                                                    <li><Link to={`/${id}/configurationFAQ/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
+                                                                    <li><Link to={`/${id}/configurationFAQ/residential`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
                                                                 </ul>
-                                                            </td>
+                                                            </td> */}
                                                             <td>
                                                                 <ul className="list-inline d-flex justify-content-center">
-                                                                    <li><Link to={`/addConfiguration/${id}/New Projects`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
-                                                                    <li><Link to={`/addConfiguration/${id}/Commercial`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Commercial</Link></li>
-                                                                    <li><Link to={`/addConfiguration/${id}/Flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
-                                                                    <li><Link to={`/addConfiguration/${id}/Apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
-                                                                    <li><Link to={`/addConfiguration/${id}/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
+                                                                    <li><Link to={`/${id}/addConfiguration/New Projects`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
+                                                                    <li><Link to={`/${id}/addConfiguration/Residential`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
+                                                                    <li><Link to={`/${id}/addConfiguration/Flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
+                                                                    <li><Link to={`/${id}/addConfiguration/Apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
+                                                                    <li><Link to={`/${id}/addConfiguration/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
                                                                 </ul>
                                                             </td>
                                                             <td>

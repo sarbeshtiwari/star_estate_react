@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const BASE_URL = 'https://ecis.in/apis/star-estate-API/projectFloorPlan';
 
-// const BASE_URL = 'http://localhost:3000/projectFloorPlan';
+// const BASE_URL = 'http://localhost:5000/projectFloorPlan';
 
 export const addFloorPlan = async (formData) => {
     try {
@@ -88,6 +88,7 @@ export const projectFloorContent = async( projectname, floorPlanContent) => {
 export const getFloorContent = async (project) => {
     try {
         const response = await axios.get(`${BASE_URL}/getFloorContent/${project}`);
+        console.log(response)
         if (response.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
             return response.data.data[0];
         } else {

@@ -22,9 +22,9 @@ export const updateAwardStatus = async (id, status) => {
 };
 
 // Delete an Award
-export const deleteAward = async (id, image) => {
+export const deleteAward = async (id) => {
     try {
-        await axios.delete(`${API_URL}/award/deleteAward/${id}`, { data: { image } });
+        await axios.delete(`${API_URL}/award/deleteAwards/${id}`);
     } catch (error) {
         throw new Error('Failed to delete Award');
     }

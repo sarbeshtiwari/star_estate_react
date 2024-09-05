@@ -23,8 +23,9 @@ export default function AddConfiguration() {
     useEffect(() => {
         if (id !== 'add') {
             const fetchData = async () => {
+                
                 try {
-                    console.log('tried')
+                    
                     const response = await fetchProjectConfigurationByID(id);
                     if (response && response.data && response.data.length > 0) {
                         const projectData = response.data[0];

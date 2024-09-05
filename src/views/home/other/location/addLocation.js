@@ -163,7 +163,6 @@ export default function AddLocation() {
         if (!formData.location_type) errors.location_type = 'Location Type is required';
         if (!formData.location) errors.location = 'Location is required';
         if (!formData.state) errors.state = 'State is required';
-        if (!formData.ctcontent) errors.ctcontent = 'Content is required';
         if (!image) errors.image = 'Image is required';
         return errors;
     };
@@ -290,12 +289,55 @@ export default function AddLocation() {
                                                         )}
                                                     </div>
                                                     <div className="col-md-6 form-group">
-                                                        <label className="label_field">State</label>
-                                                        <input type="text" name="state" id="state" value={formData.state} onChange={handleInputChange}  className={`form-control ${validationErrors.state ? 'is-invalid' : ''}`} />
-                                                        {validationErrors.state && (
-                                                            <div className="invalid-feedback">{validationErrors.state}</div>
-                                                        )}
-                                                    </div>
+                                                            <label className="label_field">State</label>
+                                                            <select 
+                                                                name="state" 
+                                                                id="state" 
+                                                                value={formData.state} 
+                                                                onChange={handleInputChange} 
+                                                                className={`form-control ${validationErrors.state ? 'is-invalid' : ''}`}
+                                                            >
+                                                                <option value="">Select a State</option>
+                                                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                                                <option value="Assam">Assam</option>
+                                                                <option value="Bihar">Bihar</option>
+                                                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                                                <option value="Goa">Goa</option>
+                                                                <option value="Gujarat">Gujarat</option>
+                                                                <option value="Haryana">Haryana</option>
+                                                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                                                <option value="Jharkhand">Jharkhand</option>
+                                                                <option value="Karnataka">Karnataka</option>
+                                                                <option value="Kerala">Kerala</option>
+                                                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                                                <option value="Maharashtra">Maharashtra</option>
+                                                                <option value="Manipur">Manipur</option>
+                                                                <option value="Meghalaya">Meghalaya</option>
+                                                                <option value="Mizoram">Mizoram</option>
+                                                                <option value="Nagaland">Nagaland</option>
+                                                                <option value="Odisha">Odisha</option>
+                                                                <option value="Punjab">Punjab</option>
+                                                                <option value="Rajasthan">Rajasthan</option>
+                                                                <option value="Sikkim">Sikkim</option>
+                                                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                                                <option value="Telangana">Telangana</option>
+                                                                <option value="Tripura">Tripura</option>
+                                                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                                                <option value="Uttarakhand">Uttarakhand</option>
+                                                                <option value="West Bengal">West Bengal</option>
+                                                                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                                                <option value="Chandigarh">Chandigarh</option>
+                                                                <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                                                                <option value="Lakshadweep">Lakshadweep</option>
+                                                                <option value="Delhi">Delhi</option>
+                                                                <option value="Puducherry">Puducherry</option>
+                                                            </select>
+                                                            {validationErrors.state && (
+                                                                <div className="invalid-feedback">{validationErrors.state}</div>
+                                                            )}
+                                                        </div>
+
                                                     <div className="col-md-6 form-group">
                                                         <label className="label_field">Priority</label>
                                                         <input type="text" name="priority" id="priority" value={formData.priority} onChange={handleInputChange} className="form-control" />
@@ -318,10 +360,8 @@ export default function AddLocation() {
                                                     </div>
                                                     <div className="col-md-12 form-group">
                                                         <label className="label_field">Content</label>
-                                                        <textarea name="ctcontent" id="ctcontent" value={formData.ctcontent} onChange={handleInputChange}  className={`form-control ${validationErrors.ctcontent ? 'is-invalid' : ''}`} rows="5"></textarea>
-                                                        {validationErrors.ctcontent && (
-                                                            <div className="invalid-feedback">{validationErrors.ctcontent}</div>
-                                                        )}
+                                                        <textarea name="ctcontent" id="ctcontent" value={formData.ctcontent} onChange={handleInputChange}  className='form-control' rows="5"></textarea>
+                                                        
                                                     </div>
                                                     <div className="col-md-12 form-group">
                                                         <label className="label_field">Schema</label>

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_BASE_URL = 'https://ecis.in/apis/star-estate-API/addProjects';
-// const API_BASE_URL = 'http://localhost:3000/addProjects'
+// const API_BASE_URL = 'http://localhost:5000/addProjects'
 export const fetchProjects = async (id) => {
     try {
         
@@ -131,3 +131,12 @@ export const fetchLocalitiesByCity = async (cityId) => {
     }
 };
 
+export const fetchCitiesByState = async (state) => {
+    try {
+        const response = await axios.get(`${BASE_URL_CITIES}/city/getCityByState/${state}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching cities:', error);
+        throw error;
+    }
+};

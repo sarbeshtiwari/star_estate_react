@@ -76,6 +76,8 @@ import Awards from './views/home/other/awards/awards';
 import AddAwards from './views/home/other/awards/addAwards';
 import ClientSpeak from './views/home/other/clientsSpeak/client_speak';
 import AddClientSpeak from './views/home/other/clientsSpeak/addClientSpeak';
+import ConfigurationFAQ from './views/home/other/location/configurationFaq';
+import AddConfigurationFAQ from './views/home/other/location/addConfigurationFAQ';
 
 function App() {
   return (
@@ -135,7 +137,10 @@ function App() {
         <Route path="/subCities/:id" element={<ProtectedRoute element ={<SubCities/>}/>}/>
         <Route path="/addSubCities/:id/:ids" element={<ProtectedRoute element ={<AddSubCity/>}/>}/>
         <Route path="/projects/:id" element={<ProtectedRoute element={<ProjectConfiguration/>}/>}/>
+
         <Route path='/:ids/addConfiguration/:id' element={<ProtectedRoute element={<AddConfiguration/>}/>}/>
+        <Route path= '/:ids/configurationFAQ/:id' element={<ProtectedRoute element={<ConfigurationFAQ/>}/>}/>
+        <Route path='/addConfigurationFAQ/:city/:projectType' element={<ProtectedRoute element={<AddConfigurationFAQ/>}/>}/>
 
 
 

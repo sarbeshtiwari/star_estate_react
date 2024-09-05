@@ -34,10 +34,10 @@ export default function Awards() {
         }
     };
 
-    const handleDeleteEvent = async (id, image) => {
+    const handleDeleteEvent = async (id) => {
         if (window.confirm('Are you sure you want to delete this Event?')) {
             try {
-                await deleteAward(id, image);
+                await deleteAward(id);
                 setEvent(prevEvents => prevEvents.filter(evt => evt._id !== id));
             } catch (error) {
                 setError(error.message);
@@ -115,7 +115,7 @@ export default function Awards() {
                                                                             <li>
                                                                                 <button
                                                                                     className="btn btn-danger btn-xs"
-                                                                                    onClick={() => handleDeleteEvent(evt._id, evt.eventImage)}
+                                                                                    onClick={() => handleDeleteEvent(evt._id)}
                                                                                 >
                                                                                     <i className="fa fa-trash"></i>
                                                                                 </button>
