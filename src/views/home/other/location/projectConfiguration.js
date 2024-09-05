@@ -5,6 +5,7 @@ import { deleteConfiguration, fetchProjectConfiguration, updateConfigurationStat
 
 export default function ProjectConfiguration() {
     const [projectConfiguration, setProjectConfiguration] = useState([]);
+    const [projectConfiguration1, setProjectConfiguration1] = useState([]);
     const {id } = useParams();
 
     useEffect(() => {
@@ -15,11 +16,35 @@ export default function ProjectConfiguration() {
         try {
             const data = await fetchProjectConfiguration(id);
             console.log(data)
-            setProjectConfiguration(data);
+            
+            let commonConfigurations = [];
+
+        // Loop through the data array, and for each object, filter the 'data' property
+        data.forEach(item => {
+            const filteredData = item.data.filter(config => config.projectType === 'common');
+            // Add the filtered configurations to the commonConfigurations array
+            commonConfigurations = [...commonConfigurations, ...filteredData];
+        });
+
+        // Log each common project configuration
+        commonConfigurations.forEach(config => {
+            console.log('Project Configuration:', config.projectConfiguration);
+            console.log('Meta Title:', config.metaTitle);
+            console.log('Meta Keyword:', config.metaKeyword);
+            console.log('Meta Description:', config.metaDescription);
+            console.log('CT Content:', config.ctcontent);
+            console.log('Schema:', config.schema);
+        });
+
+        // Optionally, set this filtered data to state if needed
+        setProjectConfiguration(data);
+        setProjectConfiguration1(commonConfigurations);
         } catch (error) {
             console.error('Error loading Project Configuration:', error);
         }
     };
+
+    
 
     const handleUpdateStatus = async (ids, status) => {
         try {
@@ -62,7 +87,7 @@ export default function ProjectConfiguration() {
                                 <div className="col-md-12">
                                     <div className="white_shd full margin_bottom_30">
                                         <div className="full graph_head">
-                                            <Link to={`/${id}/addConfiguration/add`} className="btn btn-success btn-xs">Add Project Configuration</Link>
+                                            <Link to={`/${id}/addConfiguration/common`} className="btn btn-success btn-xs">Add Project Configuration</Link>
                                         </div>
                                         <div className="full price_table padding_infor_info">
                                         <div className="table-responsive">
@@ -99,11 +124,11 @@ export default function ProjectConfiguration() {
                                                             </td> */}
                                                             <td>
                                                                 <ul className="list-inline d-flex justify-content-center">
-                                                                    <li><Link to={`/${id}/addConfiguration/New Projects`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
-                                                                    <li><Link to={`/${id}/addConfiguration/Residential`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
-                                                                    <li><Link to={`/${id}/addConfiguration/Flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
-                                                                    <li><Link to={`/${id}/addConfiguration/Apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
-                                                                    <li><Link to={`/${id}/addConfiguration/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
+                                                                    <li><Link to={`/${id}/addConfiguration/projects`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>Projects</Link></li>
+                                                                    <li><Link to={`/${id}/addConfiguration/property`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
+                                                                    <li><Link to={`/${id}/addConfiguration/flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
+                                                                    <li><Link to={`/${id}/addConfiguration/apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
+                                                                   
                                                                 </ul>
                                                             </td>
                                                             <td>
@@ -116,7 +141,7 @@ export default function ProjectConfiguration() {
                                                                         )}
                                                                     </li>
                                                                     <li>
-                                                                        <Link to={`/${id}/addConfiguration/${data._id}`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
+                                                                        <Link to={`/${id}/addConfiguration/common`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
                                                                     </li>
                                                                     <li>
                                                                         <button

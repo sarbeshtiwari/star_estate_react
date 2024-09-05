@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../sidebar';
-import { addConfiguration, fetchProjectConfigurationByID } from '../../../../api/location/configuration_api';
+import { addConfiguration, fetchProjectConfigurationByID, fetchProjectConfigurationByLocationAndType } from '../../../../api/location/configuration_api';
 
 export default function AddConfiguration() {
     const navigate = useNavigate();
     const { ids, id } = useParams();
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState(() => ({
         location: ids,
+        projectType: id === 'add' ? 'common' : id, // Check if id is 'add', otherwise use id
         meta_title: '',
         meta_key: '',
         meta_desc: '',
         projectConfiguration: '',
         ctcontent: '',
         schema: '',
-    });
+    }));
     const [validationErrors, setValidationErrors] = useState({});
     const [loading, setLoading] = useState(false);
 
@@ -26,11 +27,13 @@ export default function AddConfiguration() {
                 
                 try {
                     
-                    const response = await fetchProjectConfigurationByID(id);
+                    // const response = await fetchProjectConfigurationByID(id);
+                    const response = await fetchProjectConfigurationByLocationAndType(ids, id);
                     if (response && response.data && response.data.length > 0) {
                         const projectData = response.data[0];
                         setFormData({
                             location: ids,
+                            projectType: id,
                             meta_title: projectData.metaTitle || '',
                             meta_key: projectData.metaKeyword || '',
                             meta_desc: projectData.metaDescription || '',
@@ -76,7 +79,8 @@ export default function AddConfiguration() {
         const { meta_title, meta_key, meta_desc, projectConfiguration, ctcontent, schema} = formData;
         
         const dataArray = [{
-            projectConfiguration: formData.projectConfiguration,
+            // projectConfiguration: formData.projectConfiguration,
+            projectType: id,
             metaTitle: formData.meta_title || ' ',
             metaKeyword: formData.meta_key || ' ',
             metaDescription: formData.meta_desc || ' ',
@@ -86,6 +90,7 @@ export default function AddConfiguration() {
         
         const formDataToSend = new FormData();
         formDataToSend.append('location', ids);
+        formDataToSend.append('projectConfiguration', formData.projectConfiguration)
         formDataToSend.append('data', JSON.stringify(dataArray));
         
         // Debugging: Log formDataToSend to verify content
@@ -165,15 +170,53 @@ export default function AddConfiguration() {
                                                     </div>
                                                     <div className="col-md-6 form-group">
                                                         <label className="label_field">Project Configuration</label>
-                                                        <select name="projectConfiguration" id="projectConfiguration" value={formData.projectConfiguration} onChange={handleInputChange} className={`form-control ${validationErrors.projectConfiguration ? 'is-invalid' : ''}`}>
+                                                        <select 
+                                                            name="projectConfiguration" 
+                                                            id="projectConfiguration" 
+                                                            value={formData.projectConfiguration} 
+                                                            onChange={handleInputChange} 
+                                                            className={`form-control ${validationErrors.projectConfiguration ? 'is-invalid' : ''}`}
+                                                        >
                                                             <option value="">Select Configuration</option>
-                                                            <option value="1 BHK Flats">1 BHK Flats</option>
-                                                            <option value="2 BHK Flats">2 BHK Flats</option>
-                                                            <option value="3 BHK Flats">3 BHK Flats</option>
-                                                            <option value="4 BHK Flats">4 BHK Flats</option>
-                                                            <option value="5 BHK Flats">5 BHK Flats</option>
-                                                            <option value="Studio">Studio</option>
+                                                            
+                                                            {/* BHK Flats */}
+                                                            <optgroup label="BHK Flats">
+                                                                <option value="1 BHK Flats">1 BHK Flats</option>
+                                                                <option value="2 BHK Flats">2 BHK Flats</option>
+                                                                <option value="3 BHK Flats">3 BHK Flats</option>
+                                                                <option value="4 BHK Flats">4 BHK Flats</option>
+                                                                <option value="5 BHK Flats">5 BHK Flats</option>
+                                                            </optgroup>
+                                                            
+                                                            {/* Apartments */}
+                                                            <optgroup label="Apartments">
+                                                              
+                                                                <option value="1 BHK Apartments">1 BHK Apartments</option>
+                                                                <option value="2 BHK Apartments">2 BHK Apartments</option>
+                                                                <option value="3 BHK Apartments">3 BHK Apartments</option>
+                                                                <option value="4 BHK Apartments">4 BHK Apartments</option>
+                                                                <option value="5 BHK Apartments">5 BHK Apartments</option>
+                                                            </optgroup>
+                                                            
+                                                            {/* Properties */}
+                                                            <optgroup label="Properties">
+                                                                <option value="1 BHK Property">1 BHK Property</option>
+                                                                <option value="2 BHK Property">2 BHK Property</option>
+                                                                <option value="3 BHK Property">3 BHK Property</option>
+                                                                <option value="4 BHK Property">4 BHK Property</option>
+                                                                <option value="5 BHK Property">5 BHK Property</option>
+                                                            </optgroup>
+                                                            
+                                                            {/* Projects */}
+                                                            <optgroup label="Projects">
+                                                                <option value="1 BHK Project">1 BHK Project</option>
+                                                                <option value="2 BHK Project">2 BHK Project</option>
+                                                                <option value="3 BHK Project">3 BHK Project</option>
+                                                                <option value="4 BHK Project">4 BHK Project</option>
+                                                                <option value="5 BHK Project">5 BHK Project</option>
+                                                            </optgroup>
                                                         </select>
+
                                                         {validationErrors.projectConfiguration && (
                                                             <div className='invalid-feedback'>{validationErrors.projectConfiguration}</div>
                                                         )}

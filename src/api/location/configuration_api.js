@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://ecis.in/apis/star-estate-API/cityConfiguration';
+const API_URL = 'http://localhost:5000/cityConfiguration';
 
 
 export const addConfiguration = async (formDataToSend) => {
@@ -36,6 +36,16 @@ export const fetchProjectConfigurationByID= async (id) => {
         throw new Error('Error adding Data: ' + error.message);
     }
 };
+
+export const fetchProjectConfigurationByLocationAndType= async (location, projectConfiguration, projectType) => {
+    try {
+        const response = await axios.get(`${API_URL}/getConfigurationByLocationAndType/${location}/${projectConfiguration}/${projectType}`);
+        return response.data;
+    } catch (error) {
+        throw new Error('Error adding Data: ' + error.message);
+    }
+};
+
 
 
 // Update Configuration status

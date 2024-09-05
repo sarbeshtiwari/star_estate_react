@@ -12,24 +12,25 @@ export default function Cities() {
             setLoading(true);
             try {
                 // Simulate an API call with incremental data loading
-                let offset = 0;
-                const limit = 10; // Number of cities to fetch per chunk
+                // let offset = 0;
+                // const limit = 10; // Number of cities to fetch per chunk
                 const fetchData = async () => {
-                    const data = await fetchCities({ offset, limit });
-                    setCities(prevCities => [...prevCities, ...data]);
-                    offset += limit;
-                    if (data.length === limit) {
-                        // Fetch more data if there are still more cities
-                        setTimeout(fetchData, 1000); // Simulate delay
-                    } else {
-                        setLoading(false); // No more data to load
-                    }
+                    const data = await fetchCities();
+                    setCities(data);
+                    // offset += limit;
+                    // if (data.length === limit) {
+                    //     // Fetch more data if there are still more cities
+                    //     setTimeout(fetchData, 1000); // Simulate delay
+                    // } else {
+                    //     setLoading(false); // No more data to load
+                    // }
                 };
                 fetchData();
             } catch (error) {
                 console.error('Error loading cities:', error);
                 setLoading(false);
             }
+            setLoading(false);
         };
 
         loadCities();
