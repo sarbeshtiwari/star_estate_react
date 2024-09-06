@@ -9,6 +9,7 @@ export default function ProjectLocationAdvantage() {
   
     const [details, setDetails] = useState([]);
     const [LocationAdvantages, setLocationAdvantages] = useState([]);
+    const [loading, setLoading] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -17,6 +18,7 @@ export default function ProjectLocationAdvantage() {
     }, [id]);
 
     const fetchDetailsHandler = async () => {
+        setLoading(true)
         try {
             // Fetch project LocationAdvantages
             const projectResponse = await getProjectLocationAdvantages(id);
@@ -48,6 +50,7 @@ export default function ProjectLocationAdvantage() {
             setDetails([]);
             setLocationAdvantages([]);
         }
+        setLoading(false)
     };
 
     // const handleStatusUpdate = async (detailId, status) => {
@@ -98,6 +101,14 @@ export default function ProjectLocationAdvantage() {
                                 </button>
                                     </div>
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
+                                    {loading ? (
+    <div className="d-flex justify-content-center align-items-center">
+        <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+        <span className="ml-2">Loading...</span>
+    </div>
+) : ''} 
                                         <div className="full price_table padding_infor_info">
                                             <div className="row">
                                                 <div className="col-lg-12">

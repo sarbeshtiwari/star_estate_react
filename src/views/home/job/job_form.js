@@ -17,6 +17,7 @@ const useJobForm = (id) => {
     const [statusMessage, setStatusMessage] = useState('');
     const [editorHtml, setEditorHtml] = useState('');
     const [loading, setLoading] = useState(false);
+    const [fetchloading, setfetchLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
     const navigate = useNavigate();
 
@@ -27,7 +28,7 @@ const useJobForm = (id) => {
     }, [id]);
 
     const loadJobDetails = async (id) => {
-        setLoading(true);
+        setfetchLoading(true);
         try {
             const jobData = await fetchJobDetails(id);
             setFormData({
@@ -46,7 +47,7 @@ const useJobForm = (id) => {
             setStatusMessage('Error fetching job details');
             console.error(error);
         } finally {
-            setLoading(false);
+            setfetchLoading(false);
         }
     };
 
@@ -123,6 +124,7 @@ const useJobForm = (id) => {
         editorHtml,
         statusMessage,
         loading,
+        fetchloading,
         validationErrors,
         handleInputChange,
         handleEditorChange,

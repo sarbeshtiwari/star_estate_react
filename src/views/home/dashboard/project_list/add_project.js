@@ -58,8 +58,27 @@ export default function AddProject() {
 
     useEffect(() => {
         if (id !== 'add') {
-            fetchProjectById(id).then(data => setFormData(data)).catch(console.error);
+            // Fetch project data and pre-fill the form
+            fetchProjectById(id)
+                .then(async (data) => {
+                    setFormData(data);
+                    
+                    // Pre-fill city and locality based on the state and cityLocation in the data
+                    if (data.state) {
+                        // Fetch cities for the state
+                        const citiesData = await fetchCitiesByState(data.state);
+                        setCities(citiesData);
+                        
+                        if (data.cityLocation) {
+                            // Fetch localities for the city
+                            const localitiesData = await fetchLocalitiesByCity(data.cityLocation);
+                            setLocality(localitiesData);
+                        }
+                    }
+                })
+                .catch(console.error);
         }
+
         // fetchCities().then(data => setCities(data)).catch(console.error);
         fetchDevelopers().then(data => setDevelopers(data)).catch(console.error);
     }, [id, id1]);
@@ -440,6 +459,7 @@ export default function AddProject() {
                                                     <option key={locality._id} value={locality.sub_city}>{locality.sub_city}</option>
                                                 ))}
                                             </select>
+                                            
                                             {validationErrors.projectLocality && (
                                                 <div className="invalid-feedback">{validationErrors.projectLocality}</div>
                                             )}

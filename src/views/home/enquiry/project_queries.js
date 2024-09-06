@@ -168,13 +168,13 @@ const ProjectQueries = () => {
                                                 </table> */}
                                                 <div id="pjdataTable_wrapper" className="dataTables_wrapper no-footer">
                                                     <div className="dt-buttons">
-                                                        <button 
+                                                        {/* <button 
                                                             className="dt-button buttons-copy buttons-html5" 
                                                             type="button" 
                                                             onClick={handleCopy}
                                                         >
                                                             <span>Copy</span>
-                                                        </button>
+                                                        </button> */}
                                                         <button 
                                                             className="dt-button buttons-excel buttons-html5" 
                                                             type="button" 
@@ -197,7 +197,14 @@ const ProjectQueries = () => {
                                                             <span>PDF</span>
                                                         </button>
                                                     </div>
-                                                    {loading && <div className="loading">Loading...</div>}
+                                                    {loading ? (
+                                                            <div className="d-flex justify-content-center align-items-center">
+                                                                <div className="spinner-border text-primary" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
+                                                                <span className="ml-2">Loading...</span>
+                                                            </div>
+                                                        ) : ''}
                                                     {error && <div className="alert alert-danger">{error}</div>}
 
                                                     <div id="pjdataTable_filter" className="dataTables_filter">

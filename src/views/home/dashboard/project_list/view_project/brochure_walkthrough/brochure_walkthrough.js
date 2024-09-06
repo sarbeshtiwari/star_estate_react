@@ -8,6 +8,7 @@ export default function BrochureWalkthrough() {
     const { id } = useParams();
     const [details, setDetails] = useState([]);
     const [popupContent, setPopupContent] = useState(null); // State to hold popup content
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -15,12 +16,14 @@ export default function BrochureWalkthrough() {
     }, [id]);
 
     const fetchDetailsHandler = async () => {
+        setLoading(true);
         try {
             const data = await getBrochure(id);
             setDetails(data);
         } catch (err) {
             console.error('Error fetching details:', err);
         }
+        setLoading(false)
     };
 
     const handleStatusUpdate = async (detailId, status) => {
@@ -110,6 +113,14 @@ export default function BrochureWalkthrough() {
                                         </button>
                                     </div>
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
+                                    {loading ? (
+    <div className="d-flex justify-content-center align-items-center">
+        <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+        <span className="ml-2">Loading...</span>
+    </div>
+) : ''} 
                                         <div className="full price_table padding_infor_info">
                                             <div className="row">
                                                 <div className="col-lg-12">

@@ -13,6 +13,7 @@ export default function AddConfiguration() {
         meta_title: '',
         meta_key: '',
         meta_desc: '',
+        projectType:'',
         projectConfiguration: '',
         ctcontent: '',
         schema: '',
@@ -27,22 +28,23 @@ export default function AddConfiguration() {
                 
                 try {
                     
-                    // const response = await fetchProjectConfigurationByID(id);
-                    const response = await fetchProjectConfigurationByLocationAndType(ids, id);
-                    if (response && response.data && response.data.length > 0) {
-                        const projectData = response.data[0];
-                        setFormData({
-                            location: ids,
-                            projectType: id,
-                            meta_title: projectData.metaTitle || '',
-                            meta_key: projectData.metaKeyword || '',
-                            meta_desc: projectData.metaDescription || '',
-                            projectConfiguration: projectData.projectConfiguration || '',
-                            ctcontent: projectData.ctcontent || '',
-                            schema: projectData.schema || '',
-                        });
-                    }
-                    console.log(formData)
+                    const response = await fetchProjectConfigurationByID(id);
+                    setFormData(response)
+                    // const response = await fetchProjectConfigurationByLocationAndType(ids, id);
+                    // if (response && response.data && response.data.length > 0) {
+                    //     const projectData = response.data[0];
+                    //     setFormData({
+                    //         location: ids,
+                    //         projectType: projectData.projectConfiguration,
+                    //         meta_title: projectData.metaTitle || '',
+                    //         meta_key: projectData.metaKeyword || '',
+                    //         meta_desc: projectData.metaDescription || '',
+                    //         projectConfiguration: projectData.projectConfiguration || '',
+                    //         ctcontent: projectData.ctcontent || '',
+                    //         schema: projectData.schema || '',
+                    //     });
+                    // }
+                    // console.log(formData)
                 } catch (error) {
                     console.error('Error fetching project configuration:', error);
                 }
@@ -63,6 +65,7 @@ export default function AddConfiguration() {
     const validateForm = () => {
         const errors = {};
         if (!formData.projectConfiguration) errors.projectConfiguration = 'Project Configuration Type is required';
+        if (!formData.projectType) errors.projectType = 'Project Type is required';
         return errors;
     };
 
@@ -76,27 +79,27 @@ export default function AddConfiguration() {
             setValidationErrors(errors);
             return;
         }
-        const { meta_title, meta_key, meta_desc, projectConfiguration, ctcontent, schema} = formData;
+        const { meta_title, meta_key, meta_desc, projectConfiguration, projectType, ctcontent, schema} = formData;
         
-        const dataArray = [{
-            // projectConfiguration: formData.projectConfiguration,
-            projectType: id,
-            metaTitle: formData.meta_title || ' ',
-            metaKeyword: formData.meta_key || ' ',
-            metaDescription: formData.meta_desc || ' ',
-            ctcontent: formData.ctcontent || ' ',
-            schema: formData.schema || ' ',
-        }];
+        // const dataArray = [{
+        //     // projectConfiguration: formData.projectConfiguration,
+        //     projectType: id,
+        //     metaTitle: formData.meta_title || ' ',
+        //     metaKeyword: formData.meta_key || ' ',
+        //     metaDescription: formData.meta_desc || ' ',
+        //     ctcontent: formData.ctcontent || ' ',
+        //     schema: formData.schema || ' ',
+        // }];
         
-        const formDataToSend = new FormData();
-        formDataToSend.append('location', ids);
-        formDataToSend.append('projectConfiguration', formData.projectConfiguration)
-        formDataToSend.append('data', JSON.stringify(dataArray));
+        // const formDataToSend = new FormData();
+        // formDataToSend.append('location', ids);
+        // formDataToSend.append('projectConfiguration', formData.projectConfiguration)
+        // formDataToSend.append('data', JSON.stringify(dataArray));
         
-        // Debugging: Log formDataToSend to verify content
-        for (let pair of formDataToSend.entries()) {
-            console.log(pair[0] + ': ' + pair[1]);
-        }
+        // // Debugging: Log formDataToSend to verify content
+        // for (let pair of formDataToSend.entries()) {
+        //     console.log(pair[0] + ': ' + pair[1]);
+        // }
         
         
       
@@ -109,7 +112,7 @@ export default function AddConfiguration() {
 
             let result;
            
-                result = await addConfiguration(formDataToSend);
+                result = await addConfiguration(formData);
            
     
             if (result.success) {
@@ -167,6 +170,34 @@ export default function AddConfiguration() {
                                                     <div className="col-md-12 form-group">
                                                         <label className="label_field">Meta Description</label>
                                                         <textarea name="meta_desc" id="meta_desc" value={formData.meta_desc} onChange={handleInputChange} className="form-control" rows="5"></textarea>
+                                                    </div>
+                                                    <div className="col-md-6 form-group">
+                                                        <label className="label_field">Project Type</label>
+                                                        <select 
+                                                            name="projectType" 
+                                                            id="projectType" 
+                                                            value={formData.projectType} 
+                                                            onChange={handleInputChange} 
+                                                            className={`form-control ${validationErrors.projectType ? 'is-invalid' : ''}`}
+                                                        >
+                                                            <option value="">Select Project Type</option>
+                                                            
+                                                            {/* BHK Flats */}
+                                                           
+                                                                <option value="new-project">New Project</option>
+                                                                <option value="residential">Residential</option>
+                                                                <option value="commercial">Commercial</option>
+                                                                <option value="flats">Flats</option>
+                                                                <option value="common">Common</option>
+                                                                <option value="apartments">Apartments</option>
+                                                            
+                                                            
+                                                            
+                                                        </select>
+
+                                                        {validationErrors.projectType && (
+                                                            <div className='invalid-feedback'>{validationErrors.projectType}</div>
+                                                        )}
                                                     </div>
                                                     <div className="col-md-6 form-group">
                                                         <label className="label_field">Project Configuration</label>

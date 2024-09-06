@@ -9,16 +9,19 @@ export default function ContentSEO() {
     const [selectedDetail, setSelectedDetail] = useState(null);
     const { id } = useParams();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const getDetails = async () => {
+            setLoading(true)
             try {
                 const data = await fetchDetails(id);
                 setDetails(data);
             } catch (err) {
                 console.error('Unexpected error:', err);
             }
+            setLoading(false)
         };
 
         getDetails();
@@ -87,6 +90,14 @@ export default function ContentSEO() {
                                 </button>
                                     </div>
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
+                                    {loading ? (
+    <div className="d-flex justify-content-center align-items-center">
+        <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+        <span className="ml-2">Loading...</span>
+    </div>
+) : ''} 
                                         <div className="full price_table padding_infor_info">
                                             <div className="row">
                                                 <div className="col-lg-12">

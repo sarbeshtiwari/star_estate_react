@@ -13,6 +13,7 @@ export default function FloorPlan() {
     const [noteText, setNoteText] = useState(''); // Track the note text
     const { id } = useParams();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
      
         floorPlanContent: ''
@@ -23,13 +24,14 @@ export default function FloorPlan() {
     }, [id]);
 
     const fetchDetailsHandler = async () => {
+        setLoading(true)
         try {
             const data = await getFloorPlanByProject(id);
-            console.log(data)
             setDetails(data);
         } catch (err) {
             console.error('Error fetching details:', err);
         }
+        setLoading(false)
     };
 
     const handleStatusUpdate = async (detailId, status) => {
@@ -54,8 +56,9 @@ export default function FloorPlan() {
 
     const handleOpenModal = async () => {
         setSelectedItemId(id); // Set selected item ID
+        setLoading(true)
         const data = await getFloorContent(id);
-        
+        setLoading(false)
         setNoteText(data.floorPlanContent || ''); // Prefill note text or set empty string
         setModalOpen(true);
     };
@@ -122,6 +125,14 @@ export default function FloorPlan() {
                                     </div>
 
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
+                                    {loading ? (
+    <div className="d-flex justify-content-center align-items-center">
+        <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+        <span className="ml-2">Loading...</span>
+    </div>
+) : ''} 
                                         <div className="full price_table padding_infor_info">
                                             <div className="row">
                                                 <div className="col-lg-12">

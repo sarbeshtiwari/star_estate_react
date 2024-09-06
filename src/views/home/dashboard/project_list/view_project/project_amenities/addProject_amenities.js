@@ -12,6 +12,7 @@ export default function AddProjectAmenities() {
     const [selectedAmenities, setSelectedAmenities] = useState(new Set()); // Set to manage selected amenities
     const { id } = useParams();
     const navigate = useNavigate();
+    const [fetchloading, setfetchLoading] = useState(false);
     const [formData, setFormData] = useState({
      
         amenityContent: ''
@@ -24,6 +25,7 @@ export default function AddProjectAmenities() {
     }, [id]);
 
     const fetchDetailsHandler = async (id) => {
+        setfetchLoading(true)
         try {
             // Fetch all amenities
             const amenities = await getAllTheAmenities();
@@ -44,6 +46,7 @@ export default function AddProjectAmenities() {
         } catch (err) {
             console.error('Error fetching details:', err);
         }
+        setfetchLoading(false)
     };
 
     const validateForm = () => {
@@ -137,6 +140,14 @@ export default function AddProjectAmenities() {
                                     </button>
                                 </div>
                                 <div id="subct_wrapper" className="dataTables_wrapper no-footer">
+                                {fetchloading ? (
+    <div className="d-flex justify-content-center align-items-center">
+        <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+        <span className="ml-2">Loading...</span>
+    </div>
+) : ''} 
                                     <div className="full price_table padding_infor_info">
                                         <div className="row">
                                         <form onSubmit={handleSubmit} id="submit" encType="multipart/form-data">

@@ -12,6 +12,7 @@ export default function Developer() {
 
     useEffect(() => {
         const loadDevelopers = async () => {
+            setLoading(true);
             try {
                 const data = await fetchDevelopers();
                 setDevelopers(data);
@@ -72,6 +73,14 @@ export default function Developer() {
                                         <Link to="/addDeveloper/add" className="btn btn-success btn-xs">Add Developer</Link>
                                     </div>
                                     <div className="full price_table padding_infor_info">
+                                       {loading ? (
+                                                            <div className="d-flex justify-content-center align-items-center">
+                                                                <div className="spinner-border text-primary" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
+                                                                <span className="ml-2">Loading...</span>
+                                                            </div>
+                                                        ) : ''}
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
                                         <div className="dataTables_length" id="subct_length">
                                             <label>

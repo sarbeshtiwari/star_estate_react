@@ -5,6 +5,7 @@ import { deleteConfiguration, fetchProjectConfiguration, updateConfigurationStat
 
 export default function ProjectConfiguration() {
     const [projectConfiguration, setProjectConfiguration] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [projectConfiguration1, setProjectConfiguration1] = useState([]);
     const {id } = useParams();
 
@@ -13,35 +14,37 @@ export default function ProjectConfiguration() {
     }, [id]);
 
     const loadProjectConfiguration = async (id) => {
+        setLoading(true);
         try {
             const data = await fetchProjectConfiguration(id);
             console.log(data)
             
-            let commonConfigurations = [];
+        //     let commonConfigurations = [];
 
-        // Loop through the data array, and for each object, filter the 'data' property
-        data.forEach(item => {
-            const filteredData = item.data.filter(config => config.projectType === 'common');
-            // Add the filtered configurations to the commonConfigurations array
-            commonConfigurations = [...commonConfigurations, ...filteredData];
-        });
+        // // Loop through the data array, and for each object, filter the 'data' property
+        // data.forEach(item => {
+        //     const filteredData = item.data.filter(config => config.projectType === 'common');
+        //     // Add the filtered configurations to the commonConfigurations array
+        //     commonConfigurations = [...commonConfigurations, ...filteredData];
+        // });
 
-        // Log each common project configuration
-        commonConfigurations.forEach(config => {
-            console.log('Project Configuration:', config.projectConfiguration);
-            console.log('Meta Title:', config.metaTitle);
-            console.log('Meta Keyword:', config.metaKeyword);
-            console.log('Meta Description:', config.metaDescription);
-            console.log('CT Content:', config.ctcontent);
-            console.log('Schema:', config.schema);
-        });
+        // // Log each common project configuration
+        // commonConfigurations.forEach(config => {
+        //     console.log('Project Configuration:', config.projectConfiguration);
+        //     console.log('Meta Title:', config.metaTitle);
+        //     console.log('Meta Keyword:', config.metaKeyword);
+        //     console.log('Meta Description:', config.metaDescription);
+        //     console.log('CT Content:', config.ctcontent);
+        //     console.log('Schema:', config.schema);
+        // });
 
         // Optionally, set this filtered data to state if needed
         setProjectConfiguration(data);
-        setProjectConfiguration1(commonConfigurations);
+        // setProjectConfiguration1(commonConfigurations);
         } catch (error) {
             console.error('Error loading Project Configuration:', error);
         }
+        setLoading(false);
     };
 
     
@@ -90,17 +93,26 @@ export default function ProjectConfiguration() {
                                             <Link to={`/${id}/addConfiguration/common`} className="btn btn-success btn-xs">Add Project Configuration</Link>
                                         </div>
                                         <div className="full price_table padding_infor_info">
+                                        {loading ? (
+                                                            <div className="d-flex justify-content-center align-items-center">
+                                                                <div className="spinner-border text-primary" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
+                                                                <span className="ml-2">Loading...</span>
+                                                            </div>
+                                                        ) : ''}
                                         <div className="table-responsive">
                                             <table className="table table-striped projects dataTable no-configuration">
                                                 <thead className="thead-dark">
                                                     <tr>
                                                         <th>No</th>
                                                         <th>City</th>
-                                                        <th>Project Configuration</th>                                                                                                            
+                                                        <th>Project Configuration</th>   
+                                                        <th>Project Type</th>                                                                                                         
                                                         
-                                                        {/* <th>FAQs</th> */}
+                                                        <th>FAQs</th>
                                                         
-                                                        <th>Content Type</th>
+                                                        {/* <th>Content Type</th> */}
                                                         <th></th>
                                                     </tr>
                                                 </thead>
@@ -110,19 +122,19 @@ export default function ProjectConfiguration() {
                                                             <td className="sorting_1">{index + 1}</td>
                                                             <td>{id}</td>
                                                             <td>{data.projectConfiguration}</td>
+                                                            <td>{data.projectType}</td>
                                                            
-{/*                                                            
                                                             <td>
                                                                 <ul className="list-inline d-flex justify-content-center">
-                                                                    <li><Link to={`/${id}/configurationFAQ/New`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
-                                                                    <li><Link to={`/${id}/configurationFAQ/commercial`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Commercial</Link></li>
-                                                                    <li><Link to={`/${id}/configurationFAQ/flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
-                                                                    <li><Link to={`/${id}/configurationFAQ/apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
-                                                                    <li><Link to={`/${id}/configurationFAQ/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
-                                                                    <li><Link to={`/${id}/configurationFAQ/residential`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
+                                                                    <li><Link to={`/${id}/configurationFAQ/${data.slugURL}/new-project`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
+                                                                    <li><Link to={`/${id}/configurationFAQ/${data.slugURL}/commercial`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Commercial</Link></li>
+                                                                    <li><Link to={`/${id}/configurationFAQ/${data.slugURL}/flats`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
+                                                                    <li><Link to={`/${id}/configurationFAQ/${data.slugURL}/apartments`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
+                                                                    <li><Link to={`/${id}/configurationFAQ/${data.slugURL}/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
+                                                                    <li><Link to={`/${id}/configurationFAQ/${data.slugURL}/residential`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
                                                                 </ul>
-                                                            </td> */}
-                                                            <td>
+                                                            </td>
+                                                            {/* <td>
                                                                 <ul className="list-inline d-flex justify-content-center">
                                                                     <li><Link to={`/${id}/addConfiguration/projects`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>Projects</Link></li>
                                                                     <li><Link to={`/${id}/addConfiguration/property`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
@@ -130,7 +142,7 @@ export default function ProjectConfiguration() {
                                                                     <li><Link to={`/${id}/addConfiguration/apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
                                                                    
                                                                 </ul>
-                                                            </td>
+                                                            </td> */}
                                                             <td>
                                                                 <ul className="list-inline d-flex justify-content-end">
                                                                     <li>
@@ -141,7 +153,7 @@ export default function ProjectConfiguration() {
                                                                         )}
                                                                     </li>
                                                                     <li>
-                                                                        <Link to={`/${id}/addConfiguration/common`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
+                                                                        <Link to={`/${id}/addConfiguration/${data._id}`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
                                                                     </li>
                                                                     <li>
                                                                         <button

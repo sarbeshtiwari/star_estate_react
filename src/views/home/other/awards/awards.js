@@ -7,17 +7,19 @@ import { deleteAward, fetchAwards, updateAwardStatus } from '../../../../api/awa
 export default function Awards() {
 
     const [event, setEvent] = useState([]);
-
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const loadEvents = async () => {
+            setLoading(true);
             try {
                 const data = await fetchAwards();
                 setEvent(data);
             } catch (err) {
                 setError(err.message);
             } 
+            setLoading(false);
         };
 
         loadEvents();
@@ -66,6 +68,14 @@ export default function Awards() {
                                         <Link to="/addAwards" className="btn btn-success btn-xs">Add Awards</Link>
                                     </div>
                                     <div className="full price_table padding_infor_info">
+                                    {loading ? (
+                                                            <div className="d-flex justify-content-center align-items-center">
+                                                                <div className="spinner-border text-primary" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
+                                                                <span className="ml-2">Loading...</span>
+                                                            </div>
+                                                        ) : ''}
                                         <div className="row">
                                             <div className="col-lg-12">
                                                 <div className="table-responsive-sm">

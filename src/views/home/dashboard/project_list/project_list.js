@@ -20,13 +20,15 @@ export default function ProjectList() {
     }, [id]);
 
   // Filter data based on the search query
-  const filteredProperty = projects.filter(item =>
-    item.projectName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.projectBy.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.projectConfiguration.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.projectType.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.projectPrice.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter data based on the search query
+const filteredProperty = projects.filter(item =>
+    (item.projectName || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (item.projectBy || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (item.projectConfiguration || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (item.projectType || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (item.projectPrice || '').toLowerCase().includes(searchQuery.toLowerCase())
+);
+
 
 
     
@@ -91,9 +93,7 @@ export default function ProjectList() {
 
 
     return (
-        <>  {loading? (<div className="d-flex justify-content-center align-items-center vh-100">
-            <img src={loadingImage} className="img-fluid"/>
-        </div>) : ( 
+        <>  
        
             <div id="">
                 <Sidebar/>
@@ -143,6 +143,14 @@ export default function ProjectList() {
                                                         </label>
                                                     </div>
                                         <div className="full price_table padding_infor_info">
+                                        {loading ? (
+    <div className="d-flex justify-content-center align-items-center">
+        <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+        <span className="ml-2">Loading...</span>
+    </div>
+) : ''} 
                                         <div className="table-responsive">
                                             <table id="subct" className="table table-striped projects dataTable no-footer" aria-describedby="subct_info">
                                                 <thead className="thead-dark">
@@ -251,7 +259,7 @@ export default function ProjectList() {
                 </div>
             </div>
         </div>
-         )}
+        
             </>
     );
 }

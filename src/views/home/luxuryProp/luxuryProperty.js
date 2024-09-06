@@ -52,11 +52,11 @@ export default function LuxuryPropery(){
     const downloadCSV = (data) => {
         const csvRows = [];
         // Adding headers
-        csvRows.push(['No', 'Name', 'Email', 'Mobile', 'Project Name', 'Query', 'Note', 'Created at']); // Replace with actual headers
+        csvRows.push(['No', 'Name', 'Email', 'Mobile', 'Project Name', 'Query',  'Created at']); // Replace with actual headers
 
         // Adding data rows
         data.forEach((row, index) => {
-            csvRows.push([index + 1, row.Name, row.Email, row.Mobile, row.Project_name, row.Query, row.Note, row.created_at]);
+            csvRows.push([index + 1, row.Name, row.Email, row.Mobile, row.Project_name, row.Query,  row.created_at]);
         });
 
         const csvString = csvRows.map(row => row.join(',')).join('\n');
@@ -72,7 +72,7 @@ export default function LuxuryPropery(){
     };
 
     const downloadExcel = (data) => {
-        const ws = XLSX.utils.json_to_sheet(data, { header: ['No', 'Name', 'Email', 'Mobile', 'Project Name', 'Query', 'Note', 'Created at'] });
+        const ws = XLSX.utils.json_to_sheet(data, { header: ['No', 'Name', 'Email', 'Mobile', 'Project Name', 'Query',  'Created at'] });
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
         XLSX.writeFile(wb, 'data.xlsx');
@@ -82,7 +82,7 @@ export default function LuxuryPropery(){
         const doc = new jsPDF();
         doc.text("PDF content here", 10, 10); // Customize as needed
         data.forEach((item, index) => {
-            doc.text(`${index + 1}: ${item.Name}, ${item.Email}, ${item.Mobile}, ${item.Project_name}, ${item.Query}, ${item.Note}, ${item.Created_at}`, 10, 20 + index * 10);
+            doc.text(`${index + 1}: ${item.Name}, ${item.Email}, ${item.Mobile}, ${item.Project_name}, ${item.Query},  ${item.Created_at}`, 10, 20 + index * 10);
         });
         doc.save('data.pdf');
     };
@@ -125,13 +125,7 @@ export default function LuxuryPropery(){
                                                 </table> */}
                                                 <div id="pjdataTable_wrapper" className="dataTables_wrapper no-footer">
                                                 <div className="dt-buttons">
-                                                        <button 
-                                                            className="dt-button buttons-copy buttons-html5" 
-                                                            type="button" 
-                                                            onClick={handleCopy}
-                                                        >
-                                                            <span>Copy</span>
-                                                        </button>
+                                                       
                                                         <button 
                                                             className="dt-button buttons-excel buttons-html5" 
                                                             type="button" 
@@ -166,6 +160,14 @@ export default function LuxuryPropery(){
                                                         />
                                                         </label>
                                                     </div>
+                                                    {loading ? (
+                                                            <div className="d-flex justify-content-center align-items-center">
+                                                                <div className="spinner-border text-primary" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
+                                                                <span className="ml-2">Loading...</span>
+                                                            </div>
+                                                        ) : ''}
                                                     <table id="pjdataTable" className="table table-striped projects display dataTable no-footer" style={{width: "100%"}} aria-describedby="pjdataTable_info">
                                                         <thead className="thead-dark">
                                                             <tr>

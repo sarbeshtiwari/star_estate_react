@@ -14,19 +14,21 @@ export default function Events() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const loadEvents = async () => {
-            try {
-                const data = await fetchEvents();
-                setEvent(data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+        
 
         loadEvents();
     }, []);
+    const loadEvents = async () => {
+        setLoading(true);
+        try {
+            const data = await fetchEvents();
+            setEvent(data);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const openModal = (eventId) => {
         setShowModal(true);
@@ -52,8 +54,9 @@ export default function Events() {
     const handleDeleteEvent = async (id, image) => {
         if (window.confirm('Are you sure you want to delete this Event?')) {
             try {
-                await deleteEvent(id, image);
-                setEvent(prevEvents => prevEvents.filter(evt => evt._id !== id));
+                await deleteEvent(id);
+                loadEvents();
+                // setEvent(prevEvents => prevEvents.filter(evt => evt._id !== id));
             } catch (error) {
                 setError(error.message);
             }
@@ -81,6 +84,14 @@ export default function Events() {
                                         <Link to="/addEvents/add" className="btn btn-success btn-xs">Add Events</Link>
                                     </div>
                                     <div className="full price_table padding_infor_info">
+                                    {loading ? (
+                                                            <div className="d-flex justify-content-center align-items-center">
+                                                                <div className="spinner-border text-primary" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
+                                                                <span className="ml-2">Loading...</span>
+                                                            </div>
+                                                        ) : ''}
                                         <div className="row">
                                             <div className="col-lg-12">
                                                 <div className="table-responsive-sm">

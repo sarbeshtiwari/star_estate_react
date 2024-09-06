@@ -419,7 +419,7 @@ export default function Sidebar() {
                     </Button>
                     <span className="text-danger">
                         {warningMessage && <p>{warningMessage}</p>}
-                        Session expires in: {formatTime(timeLeft)}
+                        {/* Session expires in: {formatTime(timeLeft)} */}
                     </span>
                 </div>
             </Offcanvas>

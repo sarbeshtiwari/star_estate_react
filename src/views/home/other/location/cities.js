@@ -9,28 +9,18 @@ export default function Cities() {
 
     useEffect(() => {
         const loadCities = async () => {
-            setLoading(true);
+            
             try {
-                // Simulate an API call with incremental data loading
-                // let offset = 0;
-                // const limit = 10; // Number of cities to fetch per chunk
                 const fetchData = async () => {
+                    setLoading(true);
                     const data = await fetchCities();
                     setCities(data);
-                    // offset += limit;
-                    // if (data.length === limit) {
-                    //     // Fetch more data if there are still more cities
-                    //     setTimeout(fetchData, 1000); // Simulate delay
-                    // } else {
-                    //     setLoading(false); // No more data to load
-                    // }
+                    setLoading(false)
                 };
                 fetchData();
             } catch (error) {
                 console.error('Error loading cities:', error);
-                setLoading(false);
-            }
-            setLoading(false);
+            } 
         };
 
         loadCities();
@@ -83,12 +73,20 @@ export default function Cities() {
                                         <div className="full graph_head">
                                             <Link to="/addLocation/city/add" className="btn btn-success btn-xs">Add Cities</Link>
                                         </div>
+                                       
                                         <div className="full price_table padding_infor_info">
-                                            {loading ? (
-                                                <div className="text-center">Loading cities...</div>
-                                            ) : (
+                                        
                                                 <div className="table-responsive">
+                                                {loading ? (
+    <div className="d-flex justify-content-center align-items-center">
+        <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+        <span className="ml-2">Loading...</span>
+    </div>
+) : ''} 
                                                     <table className="table table-striped projects dataTable no-footer">
+                                                    
                                                         <thead className="thead-dark">
                                                             <tr>
                                                                 <th>No</th>
@@ -175,7 +173,7 @@ export default function Cities() {
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                            )}
+                                            
                                         </div>
                                     </div>
                                 </div>

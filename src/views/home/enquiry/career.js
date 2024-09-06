@@ -92,7 +92,14 @@ const Career = () => {
                                                 
                                                 <div id="pjdataTable_wrapper" className="dataTables_wrapper no-footer">
                                                    
-                                                    {loading && <div className="loading">Loading...</div>}
+                                                {loading ? (
+                                                            <div className="d-flex justify-content-center align-items-center">
+                                                                <div className="spinner-border text-primary" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
+                                                                <span className="ml-2">Loading...</span>
+                                                            </div>
+                                                        ) : ''}
                                                     {error && <div className="alert alert-danger">{error}</div>}
 
                                                    

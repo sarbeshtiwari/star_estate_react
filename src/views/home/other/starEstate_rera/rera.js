@@ -8,18 +8,21 @@ export default function StarRera() {
    
     const [details, setDetails] = useState([]);
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         fetchDetailsHandler();
     }, []);
 
     const fetchDetailsHandler = async () => {
+        setLoading(true)
         try {
             const data = await getStarRera();
             setDetails(data);
         } catch (err) {
             console.error('Error fetching details:', err);
         }
+        setLoading(false)
     };
 
     const handleStatusUpdate = async (detailId, status) => {
@@ -68,6 +71,14 @@ export default function StarRera() {
                                 </button>
                                     </div>
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
+                                    {loading ? (
+    <div className="d-flex justify-content-center align-items-center">
+        <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+        <span className="ml-2">Loading...</span>
+    </div>
+) : ''} 
                                         <div className="full price_table padding_infor_info">
                                             <div className="row">
                                                 <div className="col-lg-12">

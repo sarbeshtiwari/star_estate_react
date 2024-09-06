@@ -5,7 +5,7 @@ import { fetchFAQs, updateFAQStatus, deleteFAQ } from '../../../../../api/locati
 
 export default function FooterFAQ() {
     const [faq, setFAQ] = useState([]);
-
+    const [loading, setLoading] = useState(false);
     const { city, projectType } = useParams();
 
     const navigate = useNavigate();
@@ -18,12 +18,14 @@ export default function FooterFAQ() {
     }, [city, projectType]);
 
     const fetchFAQsData = async (city, projectType) => {
+        setLoading(true);
         try {
             const faqs = await fetchFAQs(city, projectType);
             setFAQ(faqs);
         } catch (error) {
             console.error('Error fetching FAQs:', error);
         }
+        setLoading(false);
     };
 
     const handleUpdateStatus = async (id, status) => {
@@ -72,6 +74,14 @@ export default function FooterFAQ() {
                                         <Link to={`/addFAQ/${city}/add`} className="btn btn-success btn-xs">Add FAQs</Link>
                                     </div>
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
+                                    {loading ? (
+    <div className="d-flex justify-content-center align-items-center">
+        <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+        <span className="ml-2">Loading...</span>
+    </div>
+) : ''} 
                                         <div className="table-responsive">
                                             <table className="table table-striped projects dataTable no-footer">
                                                 <thead className="thead-dark">

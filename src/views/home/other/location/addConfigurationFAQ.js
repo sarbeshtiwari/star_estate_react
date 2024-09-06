@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../sidebar';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { fetchFAQ, updateFAQ, addFAQ } from '../../../../api/location/footer_faq_api';
+import { addFAQ, fetchFAQ, updateFAQ } from '../../../../api/location/configurationFAQ_api';
 
 const AddConfigurationFAQ = () => {
-    const { ids, id } = useParams();
+    const { slugURL, id } = useParams();
     const [faqType, setFaqType] = useState('');
-    const [headings, setHeadings] = useState([{ faqType: '', faqQuestion: '', faqAnswer: '', city: ids }]);
+    const [headings, setHeadings] = useState([{ faqType: '', faqQuestion: '', faqAnswer: '', propertyType: slugURL }]);
     const navigate = useNavigate();
     const [validationErrors, setValidationErrors] = useState({});
     const [loading, setLoading] = useState(false);
@@ -15,25 +15,26 @@ const AddConfigurationFAQ = () => {
         if (id !== 'add') {
             fetchFAQData(id);
         }
-    }, [id, ids]);
+        console.log(id)
+    }, [id, slugURL]);
 
     const fetchFAQData = async (faqId) => {
         try {
             const data = await fetchFAQ(faqId);
             if (data.length === 0) {
-                setHeadings([{ faqType: '', faqQuestion: '', faqAnswer: '', city: ids }]);
+                setHeadings([{ faqType: '', faqQuestion: '', faqAnswer: '', propertyType: slugURL }]);
             } else {
                 setFaqType(data[0].faqType || '');
                 setHeadings(data);
             }
         } catch (error) {
             console.error('Error fetching FAQ:', error);
-            setHeadings([{ faqType: '', faqQuestion: '', faqAnswer: '', city: ids }]);
+            setHeadings([{ faqType: '', faqQuestion: '', faqAnswer: '', propertyType: slugURL }]);
         }
     };
 
     const addMoreFields = () => {
-        setHeadings([...headings, { faqType, faqQuestion: '', faqAnswer: '', city: ids }]);
+        setHeadings([...headings, { faqType, faqQuestion: '', faqAnswer: '', propertyType: slugURL }]);
     };
 
     const removeField = (index) => {
@@ -88,6 +89,7 @@ const validateForm = () => {
         }
         setLoading(true);
         try {
+            console.log(headings)
             let response;
             if (id !== 'add') {
                 response = await updateFAQ(id, headings);
@@ -149,11 +151,11 @@ const validateForm = () => {
                                                         className={`form-control ${validationErrors[`faqType`] ? 'is-invalid' : ''}`}
                                                     >
                                                         <option value="">Select Type</option>
-                                                        <option value="Common">Common</option>
+                                                        
                                                         <option value="residential">Residential</option>
-                                                        <option value="flat">Flat</option>
-                                                        <option value="New">New</option>
-                                                        <option value="apartment">Apartment</option>
+                                                        <option value="flats">Flat</option>
+                                                        <option value="new-project">New Project</option>
+                                                        <option value="apartments">Apartment</option>
                                                         <option value="commercial">Commercial</option>
                                                         <option value="studio">Studio</option>
                                                     </select>

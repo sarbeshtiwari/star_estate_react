@@ -6,9 +6,11 @@ import { fetchCategories, updateCategoryStatus, deleteCategory } from '../../../
 
 const Category = () => {
     const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const loadCategories = async () => {
+            setLoading(true);
             try {
                 const data = await fetchCategories();
                 setCategories(data);
@@ -16,6 +18,7 @@ const Category = () => {
                 // Display error message to users if needed
                 console.error('Failed to fetch categories:', error);
             }
+            setLoading(false)
         };
         loadCategories();
     }, []);
@@ -72,6 +75,15 @@ const Category = () => {
                                     </div>
                                     <div className="full price_table padding_infor_info">
                                         <div className="row">
+                                        {loading ? (
+                                                <div className="d-flex justify-content-center align-items-center">
+                                                    <div className="spinner-border text-primary" role="status">
+                                                        <span className="sr-only">Loading...</span>
+                                                    </div>
+                                                    <span className="ml-2">Loading...</span>
+                                                </div>
+                                            ) : ''}
+
                                             <div className="col-lg-12">
                                                 <div className="table-responsive-sm">
                                                     <table id="subct" className="table table-striped projects">

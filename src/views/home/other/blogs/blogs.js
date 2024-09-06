@@ -9,15 +9,17 @@ import { imageURL } from '../../../../imageURL';
 
 export default function Blogs() {
     const [blogs, setBlogs] = useState([]);
-
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
         const loadBlogs = async () => {
+            setLoading(true);
             try {
                 const blogData = await fetchBlogs();
                 setBlogs(blogData);
             } catch (err) {
                 console.log('Failed to fetch data');
             }
+            setLoading(false)
         };
 
         loadBlogs();
@@ -67,6 +69,14 @@ export default function Blogs() {
                                         <Link to="" className="btn btn-primary btn-xs float-right">Back</Link>
                                     </div>
                                     <div className="full price_table padding_infor_info">
+                                    {loading ? (
+                                                            <div className="d-flex justify-content-center align-items-center">
+                                                                <div className="spinner-border text-primary" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
+                                                                <span className="ml-2">Loading...</span>
+                                                            </div>
+                                                        ) : ''}
                                         <div className="row">
                                             <div className="col-lg-12">
                                                 <div className="table-responsive-sm">

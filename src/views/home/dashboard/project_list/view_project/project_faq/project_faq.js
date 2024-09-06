@@ -6,6 +6,7 @@ import { fetchFAQs, updateFAQStatus, deleteFAQ } from '../../../../../../api/das
 export default function ProjectFAQ() {
     
     const [faq, setFAQ] = useState([]);
+    const [loading, setLoading] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -17,12 +18,14 @@ export default function ProjectFAQ() {
     }, [id]);
 
     const fetchFAQsData = async (projectId) => {
+        setLoading(true)
         try {
             const data = await fetchFAQs(projectId);
             setFAQ(data);
         } catch (error) {
             console.error('Error fetching FAQs:', error);
         }
+        setLoading(false)
     };
 
     const handleStatusUpdate = async (faqId, status) => {
@@ -71,6 +74,14 @@ export default function ProjectFAQ() {
                                 </button>
                                     </div>
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
+                                    {loading ? (
+    <div className="d-flex justify-content-center align-items-center">
+        <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+        <span className="ml-2">Loading...</span>
+    </div>
+) : ''} 
                                         <div className="table-responsive">
                                             <table className="table table-striped projects dataTable no-footer">
                                                 <thead className="thead-dark">

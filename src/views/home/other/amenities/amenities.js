@@ -5,7 +5,7 @@ import useAmenities from './custom/amenitiesform';
 import { imageURL } from '../../../../imageURL';
 
 export default function Amenities() {
-    const { amenities, error, handleUpdateStatus, handleDeleteAmenity } = useAmenities();
+    const { amenities, error, handleUpdateStatus, handleDeleteAmenity, loading } = useAmenities();
     const navigate = useNavigate();
 
     return (
@@ -34,6 +34,14 @@ export default function Amenities() {
                                 </button> */}
                                     </div>
                                     <div className="full price_table padding_infor_info">
+                                    {loading ? (
+                                                            <div className="d-flex justify-content-center align-items-center">
+                                                                <div className="spinner-border text-primary" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
+                                                                <span className="ml-2">Loading...</span>
+                                                            </div>
+                                                        ) : ''}
                                         {error && <div className="alert alert-danger">{error}</div>}
                                         <div className="row">
                                             <div className="col-lg-12">

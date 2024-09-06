@@ -13,6 +13,7 @@ const AddCareer = () => {
         statusMessage,
         validationErrors,
         loading,
+        fetchloading,
         handleInputChange,
         handleEditorChange,
         handleSubmit
@@ -55,6 +56,7 @@ const AddCareer = () => {
                                                         className="form-control"
                                                         value={formData.metaTitle}
                                                         onChange={handleInputChange}
+                                                        disabled={fetchloading}
                                                     />
                                                 </div>
                                                 <div className="col-md-6 form-group">
@@ -65,6 +67,7 @@ const AddCareer = () => {
                                                         className="form-control"
                                                         value={formData.metaKeyword}
                                                         onChange={handleInputChange}
+                                                        disabled={fetchloading}
                                                     />
                                                 </div>
                                                 <div className="col-md-12 form-group">
@@ -75,6 +78,7 @@ const AddCareer = () => {
                                                         className="form-control"
                                                         value={formData.metaDescription}
                                                         onChange={handleInputChange}
+                                                        disabled={fetchloading}
                                                     />
                                                 </div>
                                                 <div className="col-md-6 form-group">
@@ -85,6 +89,7 @@ const AddCareer = () => {
                                                         className={`form-control ${validationErrors.position ? 'is-invalid' : ''}`}
                                                         value={formData.position}
                                                         onChange={handleInputChange}
+                                                        disabled={fetchloading}
                                                     />
                                                     {validationErrors.position && (
                                                             <div className="invalid-feedback">{validationErrors.position}</div>
@@ -98,6 +103,7 @@ const AddCareer = () => {
                                                         className={`form-control ${validationErrors.nos ? 'is-invalid' : ''}`}
                                                         value={formData.nos}
                                                         onChange={handleInputChange}
+                                                        disabled={fetchloading}
                                                     />
                                                     {validationErrors.nos && (
                                                             <div className="invalid-feedback">{validationErrors.nos}</div>
@@ -111,6 +117,7 @@ const AddCareer = () => {
                                                         className={`form-control ${validationErrors.location ? 'is-invalid' : ''}`}
                                                         value={formData.location}
                                                         onChange={handleInputChange}
+                                                        disabled={fetchloading}
                                                     />
                                                     {validationErrors.location && (
                                                             <div className="invalid-feedback">{validationErrors.location}</div>
@@ -124,6 +131,7 @@ const AddCareer = () => {
                                                         className={`form-control ${validationErrors.qualification ? 'is-invalid' : ''}`}
                                                         value={formData.qualification}
                                                         onChange={handleInputChange}
+                                                        disabled={fetchloading}
                                                     />
                                                     {validationErrors.qualification && (
                                                             <div className="invalid-feedback">{validationErrors.qualification}</div>
@@ -137,6 +145,7 @@ const AddCareer = () => {
                                                         className={`form-control ${validationErrors.min_exp ? 'is-invalid' : ''}`}
                                                         value={formData.min_exp}
                                                         onChange={handleInputChange}
+                                                        disabled={fetchloading}
                                                     />
                                                     {validationErrors.min_exp && (
                                                             <div className="invalid-feedback">{validationErrors.min_exp}</div>
@@ -150,6 +159,7 @@ const AddCareer = () => {
                                                         modules={AddCareer.modules}
                                                         formats={AddCareer.formats}
                                                         className={`form-control ${validationErrors.description ? 'is-invalid' : ''}`}
+                                                        disabled={fetchloading}
                                                     />
                                                     {validationErrors.description && (
                                                             <div className="invalid-feedback">{validationErrors.description}</div>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/cityConfiguration';
+const API_URL = 'https://ecis.in/apis/star-estate-API/cityConfiguration';
 
 
 export const addConfiguration = async (formDataToSend) => {

@@ -4,10 +4,12 @@ import { fetchAmenityData, updateAmenityStatus, deleteAmenity, getAllTheAmenitie
 const useAmenities = () => {
     const [amenities, setAmenities] = useState([]);
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setLoading(true);
                 const data = await getAllTheAmenities();
                 if (data && Array.isArray(data.data)) {
                     setAmenities(data.data);
@@ -17,6 +19,7 @@ const useAmenities = () => {
             } catch (error) {
                 setError('Failed to fetch amenities data.');
             }
+            setLoading(false);
         };
 
         fetchData();
@@ -49,6 +52,7 @@ const useAmenities = () => {
     return {
         amenities,
         error,
+        loading,
         handleUpdateStatus,
         handleDeleteAmenity
     };

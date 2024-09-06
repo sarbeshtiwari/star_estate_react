@@ -7,17 +7,20 @@ import { deleteAdvertisement, fetchAdvertisements, updateAdvertisementStatus } f
 export default function Advertisements() {
 
     const [event, setEvent] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const loadEvents = async () => {
+            setLoading(true);
             try {
                 const data = await fetchAdvertisements();
                 setEvent(data);
             } catch (err) {
                 setError(err.message);
             } 
+            setLoading(false);
         };
 
         loadEvents();
@@ -65,7 +68,16 @@ export default function Advertisements() {
                                     <div className="full graph_head">
                                         <Link to="/addAdvertisements" className="btn btn-success btn-xs">Add Advertisements</Link>
                                     </div>
+                                    
                                     <div className="full price_table padding_infor_info">
+                                    {loading ? (
+                                                            <div className="d-flex justify-content-center align-items-center">
+                                                                <div className="spinner-border text-primary" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
+                                                                <span className="ml-2">Loading...</span>
+                                                            </div>
+                                                        ) : ''}
                                         <div className="row">
                                             <div className="col-lg-12">
                                                 <div className="table-responsive-sm">

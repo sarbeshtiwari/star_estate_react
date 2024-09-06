@@ -12,6 +12,7 @@ const AddAmenities = () => {
 
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [fetchloading, setfetchLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
     const [previewUrl, setPreviewUrl] = useState([]);
 
@@ -23,6 +24,7 @@ const AddAmenities = () => {
     }, [ids, id]);
 
     const fetchData = async (id) => {
+        setfetchLoading(true)
         try {
             const data = await getSubAmenitiyByID(id);
             // Ensure data is an array
@@ -40,6 +42,7 @@ const AddAmenities = () => {
             console.log('Error fetching data', error);
             setHeadings([{image: '', title: '', alt_tag: '', category: ids}]);
         }
+        setfetchLoading(false)
     }
 
     // Function to handle adding more fields
@@ -223,6 +226,7 @@ const AddAmenities = () => {
                                                                     className={`form-control ${validationErrors[`title${index}`] ? 'is-invalid' : ''}`}
                                                                     value={heading.title}
                                                                     onChange={(e) => handleHeadingChange(index, 'title', e.target.value)}
+                                                                    disabled={fetchloading}
                                                                 />
                                                                 {validationErrors[`title${index}`] && (
                                                                         <div className="text-danger">{validationErrors[`title${index}`]}</div>
@@ -236,6 +240,7 @@ const AddAmenities = () => {
                                                                     className={`form-control ${validationErrors[`alt_tag${index}`] ? 'is-invalid' : ''}`}
                                                                     value={heading.alt_tag}
                                                                     onChange={(e) => handleHeadingChange(index, 'alt_tag', e.target.value)}
+                                                                    disabled={fetchloading}
                                                                 />
                                                                 {validationErrors[`alt_tag${index}`] && (
                                                                         <div className="text-danger">{validationErrors[`alt_tag${index}`]}</div>

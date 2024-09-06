@@ -6,7 +6,6 @@ const API_URL = 'https://ecis.in/apis/star-estate-API/city';
 export const fetchCities = async () => {
     try {
         const response = await axios.get(`${API_URL}/getCities`);
-        console.log(response.data)
         return response.data;
     } catch (error) {
         console.error('Error fetching cities:', error);

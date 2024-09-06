@@ -6,6 +6,7 @@ import { imageURL } from '../../../../imageURL';
 
 export default function NewsPaper() {
     const [news, setNews] = useState([]);
+    const [loading, setLoading] = useState(false);
     
 
     useEffect(() => {
@@ -13,12 +14,14 @@ export default function NewsPaper() {
     }, []);
 
     const fetchNewsData = async () => {
+        setLoading(true)
         try {
             const response = await fetchNews();
             setNews(response.data);
         } catch (err) {
             console.error('Failed to fetch news:', err);
         }
+        setLoading(false)
     };
 
     const handleUpdateStatus = async (id, status) => {
@@ -65,6 +68,14 @@ export default function NewsPaper() {
                                         <Link to="" className="btn btn-primary btn-xs float-right">Back</Link>
                                     </div>
                                     <div className="full price_table padding_infor_info">
+                                    {loading ? (
+                                                            <div className="d-flex justify-content-center align-items-center">
+                                                                <div className="spinner-border text-primary" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
+                                                                <span className="ml-2">Loading...</span>
+                                                            </div>
+                                                        ) : ''}
                                         <div className="row">
                                             <div className="col-lg-12">
                                                 <div className="table-responsive-sm">

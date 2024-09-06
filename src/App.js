@@ -139,8 +139,8 @@ function App() {
         <Route path="/projects/:id" element={<ProtectedRoute element={<ProjectConfiguration/>}/>}/>
 
         <Route path='/:ids/addConfiguration/:id' element={<ProtectedRoute element={<AddConfiguration/>}/>}/>
-        <Route path= '/:ids/configurationFAQ/:id' element={<ProtectedRoute element={<ConfigurationFAQ/>}/>}/>
-        <Route path='/addConfigurationFAQ/:city/:projectType' element={<ProtectedRoute element={<AddConfigurationFAQ/>}/>}/>
+        <Route path= '/:city/configurationFAQ/:slugURL/:propertyType' element={<ProtectedRoute element={<ConfigurationFAQ/>}/>}/>
+        <Route path='/addConfigurationFAQ/:slugURL/:id' element={<ProtectedRoute element={<AddConfigurationFAQ/>}/>}/>
 
 
 

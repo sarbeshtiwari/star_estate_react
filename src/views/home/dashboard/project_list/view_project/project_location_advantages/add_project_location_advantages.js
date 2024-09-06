@@ -12,6 +12,7 @@ export default function AddProjectLocationAdvantages() {
     const [textBoxValues, setTextBoxValues] = useState({});
     const [proximityUnits, setProximityUnits] = useState({});
     const [loading , setLoading] = useState(false);
+    const [fetchloading, setfetchLoading] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -25,6 +26,7 @@ export default function AddProjectLocationAdvantages() {
     }, [id]);
 
     const fetchDetailsHandler = async (id) => {
+        setfetchLoading(true)
         try {
             const Location = await getLocationAdvantages();
             setDetails(Location);
@@ -58,6 +60,7 @@ export default function AddProjectLocationAdvantages() {
         } catch (err) {
             console.error('Error fetching details:', err);
         }
+        setfetchLoading(false)
     };
 
     const handleCheckboxChange = (locationId) => {
@@ -185,6 +188,14 @@ export default function AddProjectLocationAdvantages() {
                                         </button>
                                     </div>
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
+                                    {fetchloading ? (
+    <div className="d-flex justify-content-center align-items-center">
+        <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+        <span className="ml-2">Loading...</span>
+    </div>
+) : ''} 
                                         <div className="full price_table padding_infor_info">
                                             <div className="row">
                                             <form onSubmit={handleSubmit} id="submit" encType="multipart/form-data">

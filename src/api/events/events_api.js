@@ -22,9 +22,9 @@ export const updateEventStatus = async (id, status) => {
 };
 
 // Delete an event
-export const deleteEvent = async (id, image) => {
+export const deleteEvent = async (id) => {
     try {
-        await axios.delete(`${API_URL}/events/deleteEvent/${id}`, { data: { image } });
+        await axios.delete(`${API_URL}/events/deleteEvent/${id}`);
     } catch (error) {
         throw new Error('Failed to delete event');
     }

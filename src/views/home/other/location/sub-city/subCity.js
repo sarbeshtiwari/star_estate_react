@@ -5,11 +5,13 @@ import { fetchSubCities, updateSubCityStatus, deleteSubCity } from '../../../../
 
 export default function SubCities() {
     const [subCities, setSubCities] = useState([]);
+    const [loading, setLoading] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         const getSubCities = async () => {
+            setLoading(true);
             try {
                 const data = await fetchSubCities(id);
                 if (data.length === 0) {
@@ -19,6 +21,7 @@ export default function SubCities() {
             } catch (error) {
                 console.error('Error fetching subCities:', error);
             }
+            setLoading(false);
         };
 
         getSubCities();
@@ -99,6 +102,14 @@ export default function SubCities() {
                                                 </label>
                                             </div>
                                             <div className="table-responsive">
+                                            {loading ? (
+                                                            <div className="d-flex justify-content-center align-items-center">
+                                                                <div className="spinner-border text-primary" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
+                                                                <span className="ml-2">Loading...</span>
+                                                            </div>
+                                                        ) : ''}
                                                 <table className="table table-striped projects dataTable no-footer">
                                                     <thead className="thead-dark">
                                                         <tr>

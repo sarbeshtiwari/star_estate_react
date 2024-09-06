@@ -1,35 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../sidebar';
-import { fetchFAQs, updateFAQStatus, deleteFAQ } from '../../../../api/location/footer_faq_api';
+import { deleteFAQ, fetchFAQs, updateFAQStatus } from '../../../../api/location/configurationFAQ_api';
 
 export default function ConfigurationFAQ() {
     const [faq, setFAQ] = useState([]);
-
-    const { city, projectType } = useParams();
+    const [loading, setLoading] = useState(false);
+    const { city, propertyType , slugURL} = useParams();
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (city && projectType) {
-            fetchFAQsData(city, projectType);
+        if (slugURL && propertyType) {
+            fetchFAQsData(slugURL, propertyType);
+            
         }
-        console.log(projectType)
-    }, [city, projectType]);
+    }, [slugURL, propertyType]);
 
-    const fetchFAQsData = async (city, projectType) => {
+    const fetchFAQsData = async (slugURL, propertyType) => {
+        setLoading(true);
         try {
-            const faqs = await fetchFAQs(city, projectType);
+            const faqs = await fetchFAQs(slugURL, propertyType);
+            console.log(faqs)
             setFAQ(faqs);
         } catch (error) {
             console.error('Error fetching FAQs:', error);
         }
+        setLoading(false);
     };
 
     const handleUpdateStatus = async (id, status) => {
         try {
             await updateFAQStatus(id, status);
-            fetchFAQsData(city, projectType);  // Refresh FAQs after update
+            fetchFAQsData(slugURL, propertyType);  // Refresh FAQs after update
         } catch (error) {
             console.error('Error updating FAQ status:', error);
         }
@@ -38,7 +41,7 @@ export default function ConfigurationFAQ() {
     const handleDeleteFAQ = async (id) => {
         try {
             await deleteFAQ(id);
-            fetchFAQsData(city, projectType);  // Refresh FAQs after delete
+            fetchFAQsData(slugURL, propertyType);  // Refresh FAQs after delete
         } catch (error) {
             console.error('Error deleting FAQ:', error);
         }
@@ -69,9 +72,17 @@ export default function ConfigurationFAQ() {
                                 </button>
                                     </div>
                                     <div className="full graph_head">
-                                        <Link to={`/addConfigurationFAQ/${city}/add`} className="btn btn-success btn-xs">Add FAQs</Link>
+                                        <Link to={`/addConfigurationFAQ/${slugURL}/add`} className="btn btn-success btn-xs">Add FAQs</Link>
                                     </div>
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
+                                    {loading ? (
+                                                            <div className="d-flex justify-content-center align-items-center">
+                                                                <div className="spinner-border text-primary" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
+                                                                <span className="ml-2">Loading...</span>
+                                                            </div>
+                                                        ) : ''}
                                         <div className="table-responsive">
                                             <table className="table table-striped projects dataTable no-footer">
                                                 <thead className="thead-dark">

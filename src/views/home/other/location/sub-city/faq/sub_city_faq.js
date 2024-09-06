@@ -6,18 +6,21 @@ import { fetchFAQs, updateFAQStatus, deleteFAQ } from '../../../../../../api/loc
 export default function SubCityFooterFAQ() {
     const [faq, setFAQ] = useState([]);
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const { sub_city, content_type } = useParams();
 
     useEffect(() => {
         if (sub_city && content_type) {
             const loadFAQs = async () => {
+                setLoading(true);
                 try {
                     const faqs = await fetchFAQs(sub_city, content_type);
                     setFAQ(faqs);
                 } catch (error) {
                     console.error('Error loading FAQs:', error);
                 }
+                setLoading(false)
             };
 
             loadFAQs();
@@ -72,6 +75,14 @@ export default function SubCityFooterFAQ() {
                                         <Link to={`/SubCityaddFAQ/${sub_city}/add`} className="btn btn-success btn-xs">Add FAQs</Link>
                                     </div>
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
+                                    {loading ? (
+    <div className="d-flex justify-content-center align-items-center">
+        <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+        <span className="ml-2">Loading...</span>
+    </div>
+) : ''} 
                                         <div className="table-responsive">
                                             <table className="table table-striped projects dataTable no-footer">
                                                 <thead className="thead-dark">

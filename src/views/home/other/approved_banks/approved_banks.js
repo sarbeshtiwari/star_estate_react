@@ -9,12 +9,14 @@ import { imageURL } from '../../../../imageURL';
 
 export default function ApprovedBanks(){
     const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         fetchData();
-    })
+    },[])
 
     const fetchData = async () => {
+        setLoading(true);
         try { 
             const response = await getBankList();
             setData(response);
@@ -22,6 +24,7 @@ export default function ApprovedBanks(){
          catch (error) {
             console.error(error);
          }
+         setLoading(false)
     }
 
     const handleupdateStatus = async (id, status) => {
@@ -71,6 +74,14 @@ export default function ApprovedBanks(){
                       
                     </div>
                                     <div className="full price_table padding_infor_info">
+                                    {loading ? (
+                                                            <div className="d-flex justify-content-center align-items-center">
+                                                                <div className="spinner-border text-primary" role="status">
+                                                                    <span className="sr-only">Loading...</span>
+                                                                </div>
+                                                                <span className="ml-2">Loading...</span>
+                                                            </div>
+                                                        ) : ''}
                                         <div className="row">
                                             <div className="col-lg-12">
                                                 <div className="table-responsive-sm">
