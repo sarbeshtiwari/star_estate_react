@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '../home/sidebar';
-import { deleteBanner, fetchBannerByID } from '../../api/bannerImage/bannerImage';
+import { deleteBanner, fetchBannerByID, updateBannerStatus } from '../../api/bannerImage/bannerImage';
 import { imageURL } from '../../imageURL';
 // import image from '../../../assets/images/logo.png';
 // import { fetchHomeBanner, updateHomeBannerStatus, deleteHomeBanner, globals } from '../../api/bannerImage/bannerImage';
@@ -42,21 +42,20 @@ export default function HomeBanner() {
     };
 
     const handleUpdateStatus = async (id, currentStatus) => {
-        // try {
-        //     const result = await updateHomeBannerStatus(id, currentStatus);
-        //     if (result.success) {
-        //         console.log('Home banner status updated successfully!');
-        //         setHomeBanner(prevHomeBanner => 
-        //             prevHomeBanner.map(homeBanner =>
-        //                 homeBanner.id === id ? { ...homeBanner, status: currentStatus } : homeBanner
-        //             )
-        //         );
-        //     } else {
-        //         console.error('Error updating home banner status:', result.message);
-        //     }
-        // } catch (error) {
-        //     console.error('Unexpected error:', error);
-        // }
+        try {
+            const result = await updateBannerStatus(id, currentStatus);
+            if (result.success) {
+                setHomeBanner(prevHomeBanner => 
+                    prevHomeBanner.map(homeBanner =>
+                        homeBanner._id === id ? { ...homeBanner, status: currentStatus } : homeBanner
+                    )
+                );
+            } else {
+                console.error('Error updating home banner status:', result.message);
+            }
+        } catch (error) {
+            console.error('Unexpected error:', error);
+        }
     };
 
     const handleDeleteHomeBanner = async (id) => {
@@ -114,7 +113,7 @@ export default function HomeBanner() {
                                                                 <th>Image Mobile</th>
 
                                                                 {/* <th>Alt Tag</th> */}
-                                                                {/* <th>Current Status</th> */}
+                                                                <th>Current Status</th>
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
@@ -157,7 +156,7 @@ export default function HomeBanner() {
                                                                 />
                                                             </td>
                                                                     {/* <td>{banner.alt_tag_desktop}</td> */}
-                                                                    {/* <td>
+                                                                    <td>
                                                                         
                                                                           
                                                                                 {banner.status === false ? (
@@ -167,7 +166,7 @@ export default function HomeBanner() {
                                                                                 )}
                                                                           
                                                                        
-                                                                    </td> */}
+                                                                    </td>
                                                                     <td>
                                                                         <ul className="list-inline d-flex justify-content-center">
                                                                             {/* <li>

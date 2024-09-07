@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://ecis.in/apis/star-estate-API/projectFloorPlan';
+// const BASE_URL = 'https://ecis.in/apis/star-estate-API/projectFloorPlan';
 
-// const BASE_URL = 'http://localhost:5000/projectFloorPlan';
+const BASE_URL = 'http://localhost:4000/projectFloorPlan';
 
 export const addFloorPlan = async (formData) => {
     try {

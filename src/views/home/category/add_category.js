@@ -53,8 +53,11 @@ const AddCategory = () => {
 
     const validateForm = () => {
         const errors = {};
+        if (!formData.metaTitle) errors.metaTitle = 'Meta Title is required';
+        if (!formData.metaKeyword) errors.metaKeyword = 'Meta Keyword is required';
+        if (!formData.metaDescription) errors.metaDescription = 'Meta Description is required';
         if (!formData.category) errors.category = 'Category is required';
-        // if (!formData.content) errors.content = 'Content is required';
+        if (!formData.content) errors.content = 'Content is required';
         return errors;
     };
     
@@ -139,34 +142,44 @@ const AddCategory = () => {
                                                     <label className="label_field">Meta Title</label>
                                                     <input
                                                         type="text"
-                                                        name="metaTitle"
-                                                        className="form-control"
+                                                        name="metaTitle"                                                        
                                                         value={formData.metaTitle}
                                                         onChange={handleChange}
                                                         disabled={loading}
-                                                    />                                                    
+                                                        className={`form-control ${validationErrors.metaTitle ? 'is-invalid' : ''}`}
+                                            />
+                                            {validationErrors.metaTitle && (
+                                                            <div className="invalid-feedback">{validationErrors.metaTitle}</div>
+                                                        )}                                                 
                                                 </div>
                                                 <div className="col-md-6 form-group">
                                                     <label className="label_field">Meta Keyword</label>
                                                     <input
                                                         type="text"
                                                         name="metaKeyword"
-                                                        className="form-control"
                                                         value={formData.metaKeyword}
                                                         onChange={handleChange}
                                                         disabled={loading}
-                                                    />
+                                                        className={`form-control ${validationErrors.metaKeyword ? 'is-invalid' : ''}`}
+                                                        />
+                                                        {validationErrors.metaKeyword && (
+                                                                        <div className="invalid-feedback">{validationErrors.metaKeyword}</div>
+                                                                    )}
                                                 </div>
                                                 <div className="col-md-6 form-group">
                                                     <label className="label_field">Meta Description</label>
                                                     <input
                                                         type="text"
                                                         name="metaDescription"
-                                                        className="form-control"
+                                                        
                                                         value={formData.metaDescription}
                                                         onChange={handleChange}
                                                         disabled={loading}
-                                                    />
+                                                        className={`form-control ${validationErrors.metaDescription ? 'is-invalid' : ''}`}
+                                                        />
+                                                        {validationErrors.metaDescription && (
+                                                                        <div className="invalid-feedback">{validationErrors.metaDescription}</div>
+                                                                    )}
                                                 </div>
                                                 <div className="col-md-6 form-group">
                                                     <label className="label_field">Category</label>
@@ -187,11 +200,15 @@ const AddCategory = () => {
                                                     <textarea
                                                     rows={5}
                                                         name="content"
-                                                        className="form-control"
+                                                        
                                                         value={formData.content}
                                                         onChange={handleChange}
                                                         disabled={loading}
-                                                    ></textarea>
+                                                        className={`form-control ${validationErrors.content ? 'is-invalid' : ''}`}
+                                                        ></textarea>
+                                                        {validationErrors.content && (
+                                                                        <div className="invalid-feedback">{validationErrors.content}</div>
+                                                                    )}
                                                 </div>
                                             </div>
 

@@ -226,6 +226,9 @@ export default function AddProject() {
 
     const validateForm = () => {
         const errors = {};
+        if (!formData.metaTitle) errors.metaTitle = 'Meta Title is required';
+        if (!formData.metaKeyword) errors.metaKeyword = 'Meta Keyword is required';
+        if (!formData.metaDescription) errors.metaDescription = 'Meta Description is required';
         if (!formData.projectName) errors.projectName = 'Project Name is required';
         if (!formData.projectAddress) errors.projectAddress = 'Project Address is required';
         if (!formData.state) errors.state = 'Project Price is required';
@@ -322,33 +325,39 @@ export default function AddProject() {
                                             <input
                                                 type="text"
                                                 name="metaTitle"
-                                                
-                                                className="form-control"
                                                 value={formData.metaTitle}
                                                 onChange={handleChange}
+                                                className={`form-control ${validationErrors.metaTitle ? 'is-invalid' : ''}`}
                                             />
+                                            {validationErrors.metaTitle && (
+                                                            <div className="invalid-feedback">{validationErrors.metaTitle}</div>
+                                                        )}
                                         </div>
                                         <div className="col-md-6 form-group">
                                             <label className="label_field">Meta Keyword</label>
                                             <input
                                                 type="text"
-                                                name="metaKeyword"
-                                               
-                                                className="form-control"
+                                                name="metaKeyword"                                               
                                                 value={formData.metaKeyword}
                                                 onChange={handleChange}
+                                                className={`form-control ${validationErrors.metaKeyword ? 'is-invalid' : ''}`}
                                             />
+                                            {validationErrors.metaKeyword && (
+                                                            <div className="invalid-feedback">{validationErrors.metaKeyword}</div>
+                                                        )}
                                         </div>
                                         <div className="col-md-12 form-group">
                                             <label className="label_field">Meta Description</label>
                                             <textarea
-                                                name="metaDescription"
-                                                className="form-control"
-                                               
+                                                name="metaDescription"                                              
                                                 rows="5"
                                                 value={formData.metaDescription}
                                                 onChange={handleChange}
+                                                className={`form-control ${validationErrors.metaDescription ? 'is-invalid' : ''}`}
                                             ></textarea>
+                                            {validationErrors.metaDescription && (
+                                                            <div className="invalid-feedback">{validationErrors.metaDescription}</div>
+                                                        )}
                                         </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">Project Name</label>

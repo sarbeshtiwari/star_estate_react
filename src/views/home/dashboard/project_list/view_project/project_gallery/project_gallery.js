@@ -152,7 +152,7 @@ export default function ProjectGallery() {
                                                                     <th>Icon</th>
                                                                     <th>Title</th>
                                                                     <th>Alt Tag</th>
-                                                                    <th>Hero Banner</th>
+                                                                    {/* <th>Hero Banner</th> */}
                                                                     <th></th>
                                                                 </tr>
                                                             </thead>
@@ -173,11 +173,11 @@ export default function ProjectGallery() {
                                                                         </td>
                                                                         <td>{detail.title}</td>
                                                                         <td>{detail.alt}</td>
-                                                                        <td>{detail.displayHome === false ? (
+                                                                        {/* <td>{detail.displayHome === false ? (
                                                                                         <button className="btn btn-warning btn-xs" onClick={() => handleDisplayHomeStatusUpdate(detail._id, true)}>Deactivate</button>
                                                                                     ) : (
                                                                                         <button className="btn btn-success btn-xs" onClick={() => handleDisplayHomeStatusUpdate(detail._id, false)}>Active</button>
-                                                                                    )}</td>
+                                                                                    )}</td> */}
                                                                         <td>
                                                                             <ul className="list-inline d-flex justify-content-end">
                                                                                 <li>

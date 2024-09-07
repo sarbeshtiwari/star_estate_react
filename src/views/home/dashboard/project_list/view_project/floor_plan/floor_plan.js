@@ -142,8 +142,10 @@ export default function FloorPlan() {
                                                                 <tr>
                                                                     <th>No</th>
                                                                     <th>Image</th>
-                                                                    <th>Area</th>
-                                                                    <th>Title</th>
+                                                                    <th>Property Configuration</th>
+                                                                    <th>Area (sqft)</th>
+                                                                    <th>Area (sqm)</th>
+                                                                   
                                                                     <th></th>
                                                                 </tr>
                                                             </thead>
@@ -162,9 +164,10 @@ export default function FloorPlan() {
                                                                                 height="50"
                                                                             />
                                                                         </td>
-                                                                        
-                                                                        <td>{detail.area}</td>
                                                                         <td>{detail.title}</td>
+                                                                        <td>{detail.area ? detail.area : detail.areaRangeSqft}</td>
+                                                                        <td>{detail.areaRangeSqm}</td>
+                                                                        
                                                                         <td>
                                                                             <ul className="list-inline d-flex justify-content-end">
                                                                                 <li>

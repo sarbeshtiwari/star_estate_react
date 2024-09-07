@@ -53,33 +53,42 @@ const AddCareer = () => {
                                                     <input
                                                         type="text"
                                                         name="metaTitle"
-                                                        className="form-control"
                                                         value={formData.metaTitle}
                                                         onChange={handleInputChange}
                                                         disabled={fetchloading}
-                                                    />
+                                                        className={`form-control ${validationErrors.metaTitle ? 'is-invalid' : ''}`}
+                                                        />
+                                                        {validationErrors.metaTitle && (
+                                                                        <div className="invalid-feedback">{validationErrors.metaTitle}</div>
+                                                                    )} 
                                                 </div>
                                                 <div className="col-md-6 form-group">
                                                     <label className="label_field">Meta Keyword</label>
                                                     <input
                                                         type="text"
                                                         name="metaKeyword"
-                                                        className="form-control"
                                                         value={formData.metaKeyword}
                                                         onChange={handleInputChange}
                                                         disabled={fetchloading}
-                                                    />
+                                                        className={`form-control ${validationErrors.metaKeyword ? 'is-invalid' : ''}`}
+                                                        />
+                                                        {validationErrors.metaKeyword && (
+                                                                        <div className="invalid-feedback">{validationErrors.metaKeyword}</div>
+                                                                    )}
                                                 </div>
                                                 <div className="col-md-12 form-group">
                                                     <label className="label_field">Meta Description</label>
                                                     <textarea
                                                         rows={'5'}
                                                         name="metaDescription"
-                                                        className="form-control"
                                                         value={formData.metaDescription}
                                                         onChange={handleInputChange}
                                                         disabled={fetchloading}
-                                                    />
+                                                        className={`form-control ${validationErrors.metaDescription ? 'is-invalid' : ''}`}
+                                                        />
+                                                        {validationErrors.metaDescription && (
+                                                                        <div className="invalid-feedback">{validationErrors.metaDescription}</div>
+                                                                    )}
                                                 </div>
                                                 <div className="col-md-6 form-group">
                                                     <label className="label_field">Position</label>

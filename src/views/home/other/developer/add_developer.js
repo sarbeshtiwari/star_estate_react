@@ -132,6 +132,9 @@ export default function AddDeveloper() {
 
     const validateForm = () => {
         const errors = {};
+        if (!formData.metaTitle) errors.metaTitle = 'Meta Title is required';
+        if (!formData.metaKeyword) errors.metaKeyword = 'Meta Keyword is required';
+        if (!formData.metaDescription) errors.metaDescription = 'Meta Description is required';
         if (!formData.developerName) errors.developerName = 'Developer Name is required';
         if (!formData.description) errors.description = 'Description is required';
         if (!formData.developerLogo) errors.developerLogo = 'Image is required';
@@ -209,16 +212,18 @@ export default function AddDeveloper() {
                                     <div className="full price_table padding_infor_info">
                                         <form onSubmit={handleSubmit} encType="multipart/form-data">
                                             <div className="form-row mb-3">
-                                                <div className="col-md-6 form-group">
+                                            <div className="col-md-6 form-group">
                                                     <label className="label_field">Meta Title</label>
                                                     <input
                                                         type="text"
                                                         name="metaTitle"
                                                         value={formData.metaTitle}
                                                         onChange={handleInputChange}
-                                                        className="form-control"
-                                                        placeholder="Meta Title"
-                                                    />
+                                                        className={`form-control ${validationErrors.metaTitle ? 'is-invalid' : ''}`}
+                                                        />
+                                                        {validationErrors.metaTitle && (
+                                                                        <div className="invalid-feedback">{validationErrors.metaTitle}</div>
+                                                                    )} 
                                                 </div>
                                                 <div className="col-md-6 form-group">
                                                     <label className="label_field">Meta Keyword</label>
@@ -226,21 +231,25 @@ export default function AddDeveloper() {
                                                         type="text"
                                                         name="metaKeyword"
                                                         value={formData.metaKeyword}
-                                                        onChange={handleInputChange}
-                                                        className="form-control"
-                                                        placeholder="Meta Keyword"
-                                                    />
+                                                        onChange={handleInputChange}                                                        
+                                                        className={`form-control ${validationErrors.metaKeyword ? 'is-invalid' : ''}`}
+                                                        />
+                                                        {validationErrors.metaKeyword && (
+                                                                        <div className="invalid-feedback">{validationErrors.metaKeyword}</div>
+                                                                    )}
                                                 </div>
                                                 <div className="col-md-12 form-group">
                                                     <label className="label_field">Meta Description</label>
                                                     <textarea
+                                                        rows={'5'}
                                                         name="metaDescription"
                                                         value={formData.metaDescription}
-                                                        onChange={handleInputChange}
-                                                        className="form-control"
-                                                        rows="3"
-                                                        placeholder="Meta Description"
-                                                    ></textarea>
+                                                        onChange={handleInputChange}                                                        
+                                                        className={`form-control ${validationErrors.metaDescription ? 'is-invalid' : ''}`}
+                                                        />
+                                                        {validationErrors.metaDescription && (
+                                                                        <div className="invalid-feedback">{validationErrors.metaDescription}</div>
+                                                                    )}
                                                 </div>
                                                 <div className="col-md-4 form-group">
                                                     <label className="label_field">Developer Name</label>
@@ -250,7 +259,7 @@ export default function AddDeveloper() {
                                                         value={formData.developerName}
                                                         onChange={handleInputChange}
                                                         className={`form-control ${validationErrors.developerName ? 'is-invalid' : ''}`}
-                                                        placeholder="Developer Name"
+                                                      
                                                         
                                                     />
                                                     {validationErrors.developerName && (
@@ -265,7 +274,7 @@ export default function AddDeveloper() {
                                                         value={formData.no_of_projects}
                                                         onChange={handleInputChange}
                                                         className='form-control'
-                                                        placeholder="Eg: 50"
+                                                        
                                                         
                                                     />
                                                    
@@ -278,7 +287,7 @@ export default function AddDeveloper() {
                                                         value={formData.establishYear}
                                                         onChange={handleInputChange}
                                                        className='form-control'
-                                                        placeholder="Eg: 1885"
+                                                        
                                                         
                                                     />
                                                    
@@ -291,7 +300,7 @@ export default function AddDeveloper() {
                                                         value={formData.ongoingProjects}
                                                         onChange={handleInputChange}
                                                         className="form-control"
-                                                        placeholder="Eg: 8"
+                                                        
                                                     />
                                                 </div>
                                                 <div className="col-md-4 form-group">
@@ -302,7 +311,7 @@ export default function AddDeveloper() {
                                                         value={formData.experience}
                                                         onChange={handleInputChange}
                                                         className="form-control"
-                                                        placeholder="Eg: 140"
+                                                       
                                                     />
                                                 </div>
                                                 <div className="col-md-4 form-group">
@@ -313,7 +322,7 @@ export default function AddDeveloper() {
                                                         value={formData.developerPriority}
                                                         onChange={handleInputChange}
                                                         className="form-control"
-                                                        placeholder="Eg: 2"
+                                                        
                                                         
                                                     />
                                                 </div>
@@ -325,7 +334,7 @@ export default function AddDeveloper() {
                                                         onChange={handleInputChange}
                                                         className={`form-control ${validationErrors.description ? 'is-invalid' : ''}`}
                                                         rows="7"
-                                                        placeholder="Description"
+                                                       
                                                     ></textarea>
                                                     {validationErrors.description && (
                                                             <div className="invalid-feedback">{validationErrors.description}</div>

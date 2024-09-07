@@ -56,7 +56,11 @@ export default function AddContentSEO() {
 
     const validateForm = () => {
         const errors = {};
-        if (!editorHtml) errors.description = 'Description is required';
+        const trimmedEditorHtml = editorHtml.replace(/<(.|\n)*?>/g, '').trim();
+
+        if (!trimmedEditorHtml) {
+            errors.description = 'Description is required';
+        }
         return errors;
     };
 
@@ -119,16 +123,19 @@ export default function AddContentSEO() {
                                                     <div className="col-md-12 form-group" style={{ marginBottom: '20px' }}>
                                                         <label className="label_field">Description</label>
                                                         {validationErrors.description && (
-                                                            <div className="invalid-feedback" style={{ display: 'block' }}>{validationErrors.description}</div>
-                                                        )}
-                                                        <ReactQuill
-                                                            value={editorHtml}
-                                                            onChange={handleChange}
-                                                            modules={AddContentSEO.modules}
-                                                            formats={AddContentSEO.formats}
-                                                            style={{ height: '400px' }}
-                                                            // className={`form-control ${validationErrors.description ? 'is-invalid' : ''}`}
-                                                        />
+                                                                <div className="invalid-feedback" style={{ display: 'block' }}>
+                                                                    {validationErrors.description}
+                                                                </div>
+                                                            )}
+                                                            <ReactQuill
+                                                                value={editorHtml}
+                                                                onChange={handleChange}
+                                                                modules={AddContentSEO.modules}
+                                                                formats={AddContentSEO.formats}
+                                                                style={{ height: '400px' }}
+                                                                // className={`form-control ${validationErrors.description ? 'is-invalid' : ''}`}
+                                                            />
+
                                                         
                                                     </div>
                                                     <div className="col-md-12 form-group" style={{ marginBottom: '20px' , marginTop: '30px' }}>

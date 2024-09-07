@@ -78,6 +78,8 @@ import ClientSpeak from './views/home/other/clientsSpeak/client_speak';
 import AddClientSpeak from './views/home/other/clientsSpeak/addClientSpeak';
 import ConfigurationFAQ from './views/home/other/location/configurationFaq';
 import AddConfigurationFAQ from './views/home/other/location/addConfigurationFAQ';
+import ProjectHomeBanner from './views/home/dashboard/project_list/view_project/bannerImages/projectBannerImage';
+import AddProjectBannerImage from './views/home/dashboard/project_list/view_project/bannerImages/addProjectBannerImage';
 
 function App() {
   return (
@@ -183,6 +185,10 @@ function App() {
 
         <Route path='/clientSpeak' element={<ProtectedRoute element={<ClientSpeak/>}/>}/>
         <Route path='/addClientSpeak/:id' element={<ProtectedRoute element={<AddClientSpeak/>}/>}/>
+
+        <Route path='/projectBannerImage/:id' element={<ProtectedRoute element={<ProjectHomeBanner/>}/>}/>
+        <Route path='/addBanner/:id' element={<ProtectedRoute element={<AddProjectBannerImage/>}/>}/>
+
 
 
 

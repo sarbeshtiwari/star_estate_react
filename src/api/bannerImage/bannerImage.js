@@ -41,8 +41,7 @@ export const addBannerImage = async (formDataToSend) => {
 
 export const updateBannerStatus = async (id, status) => {
     try {
-        const response = await axios.patch(`${API_URL}/updateStatus`, {
-            id,
+        const response = await axios.put(`${API_URL}/updateStatus/${id}`, {
             status
         });
         return response.data;

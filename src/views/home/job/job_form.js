@@ -69,6 +69,9 @@ const useJobForm = (id) => {
 
     const validateForm = () => {
         const errors = {};
+        if (!formData.metaTitle) errors.metaTitle = 'Meta Title is required';
+        if (!formData.metaKeyword) errors.metaKeyword = 'Meta Keyword is required';
+        if (!formData.metaDescription) errors.metaDescription = 'Meta Description is required';
         if (!formData.position) errors.position = 'Position is required';
         if (!formData.nos) errors.nos = 'Number of Seats is required';
         if (!formData.location) errors.location = 'Location is required';

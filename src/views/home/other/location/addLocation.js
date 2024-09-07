@@ -8,9 +8,9 @@ export default function AddLocation() {
     const { ids, id } = useParams();
 
     const [formData, setFormData] = useState({
-        meta_title: '',
-        meta_key: '',
-        meta_desc: '',
+        metaTitle: '',
+        metaKeyword: '',
+        metaDescription: '',
         location_type: '',
         location: '',
         state: '',
@@ -35,9 +35,9 @@ export default function AddLocation() {
                         const specificDataItem = city.data.find(item => item.location_type === id);
                         if (specificDataItem) {
                             setFormData({
-                                meta_title: specificDataItem.metaTitle || '',
-                                meta_key: specificDataItem.metaKeyword || '',
-                                meta_desc: specificDataItem.metaDescription || '',
+                                metaTitle: specificDataItem.metaTitle || '',
+                                metaKeyword: specificDataItem.metaKeyword || '',
+                                metaDescription: specificDataItem.metaDescription || '',
                                 location_type: specificDataItem.location_type || '',
                                 location: city.location || '',
                                 state: city.state || '',
@@ -160,6 +160,9 @@ export default function AddLocation() {
 
     const validateForm = () => {
         const errors = {};
+        if (!formData.metaTitle) errors.metaTitle = 'Meta Title is required';
+        if (!formData.metaKeyword) errors.metaKeyword = 'Meta Keyword is required';
+        if (!formData.metaDescription) errors.metaDescription = 'Meta Description is required';
         if (!formData.location_type) errors.location_type = 'Location Type is required';
         if (!formData.location) errors.location = 'Location is required';
         if (!formData.state) errors.state = 'State is required';
@@ -177,14 +180,14 @@ export default function AddLocation() {
             setValidationErrors(errors);
             return;
         }
-        const { meta_title, meta_key, meta_desc, location_type, location, state, priority, ctcontent, schema, content_above_faqs } = formData;
+        const { metaTitle, metaKeyword, metaDescription, location_type, location, state, priority, ctcontent, schema, content_above_faqs } = formData;
     
         // Prepare form data
         const dataArray = [{
             location_type: location_type,
-            metaTitle: meta_title || ' ',
-            metaKeyword: meta_key || ' ',
-            metaDescription: meta_desc || ' ',
+            metaTitle: metaTitle || ' ',
+            metaKeyword: metaKeyword || ' ',
+            metaDescription: metaDescription || ' ',
             ctcontent: ctcontent || ' ',
             schema: schema || ' ',
             content_above_faqs: content_above_faqs || ' ',
@@ -254,18 +257,45 @@ export default function AddLocation() {
                                             <form onSubmit={handleFormSubmit} id="citiesform" encType="multipart/form-data">
                                                 <span className="status text-danger mb-0"></span>
                                                 <div className="form-row mb-3">
-                                                    <div className="col-md-6 form-group">
-                                                        <label className="label_field">Meta Title</label>
-                                                        <input type="text" name="meta_title" id="meta_title" value={formData.meta_title} onChange={handleInputChange} className="form-control" />
-                                                    </div>
-                                                    <div className="col-md-6 form-group">
-                                                        <label className="label_field">Meta Keywords</label>
-                                                        <input type="text" name="meta_key" id="meta_key" value={formData.meta_key} onChange={handleInputChange} className="form-control" />
-                                                    </div>
-                                                    <div className="col-md-12 form-group">
-                                                        <label className="label_field">Meta Description</label>
-                                                        <textarea name="meta_desc" id="meta_desc" value={formData.meta_desc} onChange={handleInputChange} className="form-control" rows="5"></textarea>
-                                                    </div>
+                                                <div className="col-md-6 form-group">
+                                                    <label className="label_field">Meta Title</label>
+                                                    <input
+                                                        type="text"
+                                                        name="metaTitle"
+                                                        value={formData.metaTitle}
+                                                        onChange={handleInputChange}
+                                                        className={`form-control ${validationErrors.metaTitle ? 'is-invalid' : ''}`}
+                                                        />
+                                                        {validationErrors.metaTitle && (
+                                                                        <div className="invalid-feedback">{validationErrors.metaTitle}</div>
+                                                                    )} 
+                                                </div>
+                                                <div className="col-md-6 form-group">
+                                                    <label className="label_field">Meta Keyword</label>
+                                                    <input
+                                                        type="text"
+                                                        name="metaKeyword"
+                                                        value={formData.metaKeyword}
+                                                        onChange={handleInputChange}
+                                                        className={`form-control ${validationErrors.metaKeyword ? 'is-invalid' : ''}`}
+                                                        />
+                                                        {validationErrors.metaKeyword && (
+                                                                        <div className="invalid-feedback">{validationErrors.metaKeyword}</div>
+                                                                    )}
+                                                </div>
+                                                <div className="col-md-12 form-group">
+                                                    <label className="label_field">Meta Description</label>
+                                                    <textarea
+                                                        rows={'5'}
+                                                        name="metaDescription"
+                                                        value={formData.metaDescription}
+                                                        onChange={handleInputChange}
+                                                        className={`form-control ${validationErrors.metaDescription ? 'is-invalid' : ''}`}
+                                                        />
+                                                        {validationErrors.metaDescription && (
+                                                                        <div className="invalid-feedback">{validationErrors.metaDescription}</div>
+                                                                    )}
+                                                </div>
                                                     <div className="col-md-6 form-group">
                                                         <label className="label_field">Location Type</label>
                                                         <select name="location_type" id="location_type" value={formData.location_type} onChange={handleInputChange} className={`form-control ${validationErrors.location_type ? 'is-invalid' : ''}`}>
