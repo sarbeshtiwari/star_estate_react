@@ -1,11 +1,12 @@
 import axios from 'axios';
+import axiosInstance from '../../imageURL';
 
 const BASE_URL = 'https://ecis.in/apis/star-estate-API';
 
 
 export const fetchLuxuryProperty = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}/luxuryProjects/getLuxuryProjects`);
+        const response = await axiosInstance.get(`/luxuryProjects/getLuxuryProjects`);
         return response.data;
     } catch (error) {
         throw new Error('Error fetching Query');
@@ -14,7 +15,7 @@ export const fetchLuxuryProperty = async () => {
 
 export const deleteLuxuryProperty = async (id) => {
     try{
-        const response = await axios.delete(`${BASE_URL}/luxuryProjects/deleteLuxuryProjects/${id}`);
+        const response = await axiosInstance.delete(`/luxuryProjects/deleteLuxuryProjects/${id}`);
         return response;
     } catch (error) {
         throw new Error('Error deleting data');
@@ -23,7 +24,7 @@ export const deleteLuxuryProperty = async (id) => {
 
 export const updateLuxuryProperty = async (id, note) => {
     try{
-        const response = await axios.put(`${BASE_URL}/luxuryProjects/updateLuxuryProjects/${id}`, {note});
+        const response = await axiosInstance.put(`/luxuryProjects/updateLuxuryProjects/${id}`, {note});
         return response;
     } catch (error) {
         throw new Error('Error updating data');

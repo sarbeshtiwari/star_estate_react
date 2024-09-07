@@ -1,10 +1,11 @@
 import axios from 'axios';
+import axiosInstance from '../../imageURL';
 
 const BASE_URL = 'https://ecis.in/apis/star-estate-API';
 
 export const addBankList = async (formData) => {
     try {
-        const response = await axios.post(`${BASE_URL}/banks/addBankList`, formData, {
+        const response = await axiosInstance.post(`/banks/addBankList`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -18,7 +19,7 @@ export const addBankList = async (formData) => {
 
 export const getBankList = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}/banks/getBankList`);
+        const response = await axiosInstance.get(`/banks/getBankList`);
         return response.data;
     } catch (error) {
         console.error('Error:', error.response ? error.response.data : error.message);
@@ -28,7 +29,7 @@ export const getBankList = async () => {
 
 export const getBankListByID = async (id) => {
     try {
-        const response = await axios.get(`${BASE_URL}/banks/getBankListByID/${id}`);
+        const response = await axiosInstance.get(`/banks/getBankListByID/${id}`);
         console.log(response.data);
         return response.data;
 
@@ -40,7 +41,7 @@ export const getBankListByID = async (id) => {
 
 export const updateBankList = async (id, formData) => {
     try {
-        const response = await axios.put(`${BASE_URL}/banks/updateBankList/${id}`, formData, {
+        const response = await axiosInstance.put(`/banks/updateBankList/${id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -54,7 +55,7 @@ export const updateBankList = async (id, formData) => {
 
 export const updateBankListStatus = async (cat_id, status) => {
     try {
-        await axios.put(`${BASE_URL}/banks/updateBankListStatus/${cat_id}`, { status });
+        await axiosInstance.put(`/banks/updateBankListStatus/${cat_id}`, { status });
     } catch (error) {
         throw new Error('Error updating Location Advantages status.');
     }
@@ -63,7 +64,7 @@ export const updateBankListStatus = async (cat_id, status) => {
 // Delete BankList
 export const deleteBankList = async (cat_id) => {
     try {
-        await axios.delete(`${BASE_URL}/banks/deleteBankList/${cat_id}`);
+        await axiosInstance.delete(`/banks/deleteBankList/${cat_id}`);
     } catch (error) {
         throw new Error('Error deleting Location Advantages.');
     }

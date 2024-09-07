@@ -1,11 +1,12 @@
 import axios from 'axios';
+import axiosInstance from '../../imageURL';
 
 const BASE_URL = 'https://ecis.in/apis/star-estate-API';
 
 
 export const fetchContactUS = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}/contactUS/getContactUS`);
+        const response = await axiosInstance.get(`/contactUS/getContactUS`);
         return response.data;
     } catch (error) {
         throw new Error('Error fetching Query');
@@ -14,7 +15,7 @@ export const fetchContactUS = async () => {
 
 export const deleteContactUS = async (id) => {
     try{
-        const response = await axios.delete(`${BASE_URL}/contactUS/deleteContactUS/${id}`);
+        const response = await axiosInstance.delete(`/contactUS/deleteContactUS/${id}`);
         return response;
     } catch (error) {
         throw new Error('Error deleting data');
@@ -23,7 +24,7 @@ export const deleteContactUS = async (id) => {
 
 export const updateContactUS = async (id, note) => {
     try{
-        const response = await axios.put(`${BASE_URL}/contactUS/updateContactUS/${id}`, {note});
+        const response = await axiosInstance.put(`/contactUS/updateContactUS/${id}`, {note});
         return response;
     } catch (error) {
         throw new Error('Error updating data');

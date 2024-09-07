@@ -83,7 +83,7 @@ import AddProjectBannerImage from './views/home/dashboard/project_list/view_proj
 
 function App() {
   return (
-    <BrowserRouter basename="/starEstate">
+    <BrowserRouter basename="/starestate-panel">
     {/* <ProtectedRoute element ={<Sidebar></Sidebar>}/> */}
       <Routes>
         {/* Default route */}

@@ -1,11 +1,12 @@
 import axios from 'axios';
+import axiosInstance from '../../imageURL';
 
 const API_URL = 'https://ecis.in/apis/star-estate-API';
 
 // Fetch all events
 export const fetchEvents = async () => {
     try {
-        const response = await axios.get(`${API_URL}/events/getEvents`);
+        const response = await axiosInstance.get(`/events/getEvents`);
         return response.data;
     } catch (error) {
         throw new Error('Failed to fetch events');
@@ -15,7 +16,7 @@ export const fetchEvents = async () => {
 // Update event status
 export const updateEventStatus = async (id, status) => {
     try {
-        await axios.put(`${API_URL}/events/updateEventStatus/${id}`, { status });
+        await axiosInstance.put(`/events/updateEventStatus/${id}`, { status });
     } catch (error) {
         throw new Error('Failed to update event status');
     }
@@ -24,7 +25,7 @@ export const updateEventStatus = async (id, status) => {
 // Delete an event
 export const deleteEvent = async (id) => {
     try {
-        await axios.delete(`${API_URL}/events/deleteEvent/${id}`);
+        await axiosInstance.delete(`/events/deleteEvent/${id}`);
     } catch (error) {
         throw new Error('Failed to delete event');
     }
@@ -33,17 +34,17 @@ export const deleteEvent = async (id) => {
 
 
 export const fetchEventById = async (id) => {
-    return axios.get(`${API_URL}/events/getEventById/${id}`);
+    return axiosInstance.get(`/events/getEventById/${id}`);
 };
 
 export const addEvent = async (data) => {
-    return axios.post(`${API_URL}/events/addEvents`, data, {
+    return axiosInstance.post(`/events/addEvents`, data, {
         headers: { 'Content-Type': 'multipart/form-data' }
     });
 };
 
 export const updateEvent = async (id, data) => {
-    return axios.put(`${API_URL}/events/updateEvent/${id}`, data, {
+    return axiosInstance.put(`/events/updateEvent/${id}`, data, {
         headers: { 'Content-Type': 'multipart/form-data' }
     });
 };
@@ -51,13 +52,13 @@ export const updateEvent = async (id, data) => {
 
 
 export const fetchImages = async (eventId) => {
-    return axios.get(`${API_URL}/images/getEventImages/${eventId}`);
+    return axiosInstance.get(`/images/getEventImages/${eventId}`);
 };
 
 export const updateImageStatus = async (imageId, status) => {
-    return axios.put(`${API_URL}/images/updateEventImageStatus/${imageId}`, { status });
+    return axiosInstance.put(`/images/updateEventImageStatus/${imageId}`, { status });
 };
 
 export const deleteImage = async (imageId, imagePath) => {
-    return axios.delete(`${API_URL}/images/deleteEventImage/${imageId}`, { data: { imagePath } });
+    return axiosInstance.delete(`/images/deleteEventImage/${imageId}`, { data: { imagePath } });
 };

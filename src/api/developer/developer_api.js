@@ -1,11 +1,12 @@
 import axios from 'axios';
+import axiosInstance from '../../imageURL';
 
 const API_URL = 'https://ecis.in/apis/star-estate-API';
 
 // Fetch all developers
 export const fetchDevelopers = async () => {
     try {
-        const response = await axios.get(`${API_URL}/developers/getDeveloper`);
+        const response = await axiosInstance.get(`/developers/getDeveloper`);
         return response.data;
     } catch (error) {
         throw new Error('Failed to fetch developers');
@@ -15,7 +16,7 @@ export const fetchDevelopers = async () => {
 // Update developer status
 export const updateDeveloperStatus = async (id, status) => {
     try {
-        const response = await axios.put(`${API_URL}/developers/updateDeveloperStatus/${id}`, { status });
+        const response = await axiosInstance.put(`/developers/updateDeveloperStatus/${id}`, { status });
         return response.data;
     } catch (error) {
         throw new Error('Failed to update developer status');
@@ -25,7 +26,7 @@ export const updateDeveloperStatus = async (id, status) => {
 // Delete a developer
 export const deleteDeveloper = async (id, image) => {
     try {
-        await axios.delete(`${API_URL}/developers/deleteDeveloper/${id}`, { data: { image } });
+        await axiosInstance.delete(`/developers/deleteDeveloper/${id}`, { data: { image } });
     } catch (error) {
         throw new Error('Failed to delete developer');
     }
@@ -34,7 +35,7 @@ export const deleteDeveloper = async (id, image) => {
 // Fetch developer by ID
 export const fetchDeveloperById = async (id) => {
     try {
-        const response = await axios.get(`${API_URL}/developers/getDeveloperById/${id}`);
+        const response = await axiosInstance.get(`/developers/getDeveloperById/${id}`);
         return response.data;
     } catch (error) {
         throw new Error('Failed to fetch developer data');
@@ -44,7 +45,7 @@ export const fetchDeveloperById = async (id) => {
 // Add a new developer
 export const addDeveloper = async (data) => {
     try {
-        const response = await axios.post(`${API_URL}/developers/addDeveloper`, data, {
+        const response = await axiosInstance.post(`/developers/addDeveloper`, data, {
             headers: { 'Content-Type': 'multipart/form-data' }
         });
         return response.data;
@@ -56,7 +57,7 @@ export const addDeveloper = async (data) => {
 // Update an existing developer
 export const updateDeveloper = async (id, data) => {
     try {
-        const response = await axios.put(`${API_URL}/developers/updateDeveloper/${id}`, data, {
+        const response = await axiosInstance.put(`/developers/updateDeveloper/${id}`, data, {
             headers: { 'Content-Type': 'multipart/form-data' }
         });
         return response.data;

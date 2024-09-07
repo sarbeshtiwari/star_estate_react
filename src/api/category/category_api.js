@@ -1,4 +1,5 @@
 import axios from 'axios';
+import axiosInstance from '../../imageURL';
 
 const API_BASE_URL = `https://ecis.in/apis/star-estate-API`;
 // const API_BASE_URL = 'http://localhost:1000';
@@ -6,7 +7,7 @@ const API_BASE_URL = `https://ecis.in/apis/star-estate-API`;
 // Add categories
 export const addCategories = async (dataToSubmit) => {
     try {
-        const response = await axios.post(`${API_BASE_URL}/categories/addCategory`, dataToSubmit);   //can change later
+        const response = await axiosInstance.post(`/categories/addCategory`, dataToSubmit);   //can change later
         return response.data;
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -17,7 +18,7 @@ export const addCategories = async (dataToSubmit) => {
 // Update categories
 export const updateCategories = async (id, dataToSubmit) => {
     try {
-        const response = await axios.put(`${API_BASE_URL}/categories/updateCategory/${id}`, dataToSubmit);   //can change later
+        const response = await axiosInstance.put(`/categories/updateCategory/${id}`, dataToSubmit);   //can change later
         console.log(response);
         return response.data;
     } catch (error) {
@@ -29,7 +30,7 @@ export const updateCategories = async (id, dataToSubmit) => {
 // Fetch categories
 export const fetchCategories = async () => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/categories/getCategories`);   //can change later
+        const response = await axiosInstance.get(`/categories/getCategories`);   //can change later
 
         return response.data;
     } catch (error) {
@@ -41,7 +42,7 @@ export const fetchCategories = async () => {
 // Update category status
 export const updateCategoryStatus = async (id, status) => {
     try {
-        const response = await axios.put(`${API_BASE_URL}/categories/updateCategoryStatus/${id}`, { status });
+        const response = await axiosInstance.put(`/categories/updateCategoryStatus/${id}`, { status });
         return response.data;
     } catch (error) {
         console.error('Error updating category status:', error);
@@ -52,7 +53,7 @@ export const updateCategoryStatus = async (id, status) => {
 // Delete category
 export const deleteCategory = async (id) => {
     try {
-        await axios.delete(`${API_BASE_URL}/categories/deleteCategory/${id}`);
+        await axiosInstance.delete(`/categories/deleteCategory/${id}`);
     } catch (error) {
         console.error('Error deleting category:', error);
         throw error;
@@ -62,7 +63,7 @@ export const deleteCategory = async (id) => {
 // Get category by ID
 export const getCategoryById = async (id) => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/categories/getCategoriesByID/${id}`);
+        const response = await axiosInstance.get(`/categories/getCategoriesByID/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching category by ID:', error);

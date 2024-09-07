@@ -1,10 +1,11 @@
 import axios from 'axios';
+import axiosInstance from '../../imageURL';
 
 const API_URL = 'https://ecis.in/apis/star-estate-API/bannerImages';
 
 export const deleteBanner = async (id) => {
     try {
-        const response = await axios.delete(`${API_URL}/delete/${id}`);
+        const response = await axiosInstance.delete(`/bannerImages/delete/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error deleting  banner:', error);
@@ -15,7 +16,7 @@ export const deleteBanner = async (id) => {
 
 export const fetchBannerByID = async () => {
     try {
-        const response = await axios.get(`${API_URL}/get`);      
+        const response = await axiosInstance.get(`/bannerImages/get`);      
         return response.data;
     } catch (error) {
         console.error('Error fetching  banner data:', error);
@@ -25,8 +26,8 @@ export const fetchBannerByID = async () => {
 
 export const addBannerImage = async (formDataToSend) => {
     try {
-        const url = `${API_URL}/addImages`;
-        const response = await axios.post(url, formDataToSend, {
+        const url = `/bannerImages/addImages`;
+        const response = await axiosInstance.post(url, formDataToSend, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -41,7 +42,7 @@ export const addBannerImage = async (formDataToSend) => {
 
 export const updateBannerStatus = async (id, status) => {
     try {
-        const response = await axios.put(`${API_URL}/updateStatus/${id}`, {
+        const response = await axiosInstance.put(`/bannerImages/updateStatus/${id}`, {
             status
         });
         return response.data;

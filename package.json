@@ -1,7 +1,7 @@
 {
   "name": "star_estate_react",
   "version": "0.1.0",
-  "homepage": "https://ecis.in/starEstate",
+  "homepage": "https://starestate.com/starestate-panel",
   "private": true,
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^43.1.0",

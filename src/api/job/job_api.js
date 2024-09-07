@@ -1,12 +1,13 @@
 // apiService.js
 import axios from 'axios';
+import axiosInstance from '../../imageURL';
 
 const BASE_URL = 'https://ecis.in/apis/star-estate-API';
 
 // Fetch all jobs
 export const fetchJobs = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}/jobs/getJobs`);
+        const response = await axiosInstance.get(`/jobs/getJobs`);
         return response.data;
     } catch (error) {
         throw new Error('Error fetching jobs');
@@ -16,7 +17,7 @@ export const fetchJobs = async () => {
 // Update job status
 export const updateJobStatus = async (id, status) => {
     try {
-        const response = await axios.put(`${BASE_URL}/jobs/updateJobStatus/${id}`, { status });
+        const response = await axiosInstance.put(`/jobs/updateJobStatus/${id}`, { status });
         return response.data;
     } catch (error) {
         throw new Error('Error updating job status');
@@ -26,7 +27,7 @@ export const updateJobStatus = async (id, status) => {
 // Delete job
 export const deleteJob = async (id) => {
     try {
-        await axios.delete(`${BASE_URL}/jobs/deleteJob/${id}`);
+        await axiosInstance.delete(`/jobs/deleteJob/${id}`);
     } catch (error) {
         throw new Error('Error deleting job');
     }
@@ -35,7 +36,7 @@ export const deleteJob = async (id) => {
 // Fetch job details by ID
 export const fetchJobDetails = async (id) => {
     try {
-        const response = await axios.get(`${BASE_URL}/jobs/getJobByID/${id}`);
+        const response = await axiosInstance.get(`/jobs/getJobByID/${id}`);
         return response.data;
     } catch (error) {
         throw new Error('Error fetching job details');
@@ -45,7 +46,7 @@ export const fetchJobDetails = async (id) => {
 // Add new job
 export const addJob = async (jobData) => {
     try {
-        const response = await axios.post(`${BASE_URL}/jobs/addJob`, jobData);
+        const response = await axiosInstance.post(`/jobs/addJob`, jobData);
         return response.data;
     } catch (error) {
         throw new Error('Error adding job');
@@ -55,7 +56,7 @@ export const addJob = async (jobData) => {
 // Update job details
 export const updateJob = async (id, jobData) => {
     try {
-        const response = await axios.put(`${BASE_URL}/jobs/updateJob/${id}`, jobData);
+        const response = await axiosInstance.put(`/jobs/updateJob/${id}`, jobData);
         return response.data;
     } catch (error) {
         throw new Error('Error updating job');

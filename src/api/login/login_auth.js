@@ -1,12 +1,13 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
+import axiosInstance from "../../imageURL";
 
 const API_URL = `https://ecis.in/apis/star-estate-API/auth`
 
 export const verifyLogin = async (email, password) => {
   console.log('called')
   try {
-    const response = await axios.post(`${API_URL}/login`, {
+    const response = await axiosInstance.post(`/auth/login`, {
       email,
       password,
     });
