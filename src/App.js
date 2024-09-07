@@ -117,8 +117,8 @@ function App() {
         <Route path="/:id/addProjectGallery/:ids" element={<ProtectedRoute element ={<AddProjectGallery/>}/>}/>
         <Route path="/projectRERA/:id" element={<ProtectedRoute element ={<ProjectRera/>}/>}/>
         <Route path="/:id/addProjectRERA/:ids" element={<ProtectedRoute element ={<AddProjectRERA/>}/>}/>
-        <Route path="/projectBanksRatings/:id" element={<ProtectedRoute element ={<ProjectBanksRatings/>}/>}/>
-        <Route path="/:id/addBanksRatings/:ids" element={<ProtectedRoute element ={<AddBanksandRatings/>}/>}/>
+        <Route path="/projectBanks/:id" element={<ProtectedRoute element ={<ProjectBanksRatings/>}/>}/>
+        <Route path="/:id/addBanks/:ids" element={<ProtectedRoute element ={<AddBanksandRatings/>}/>}/>
 
 
         <Route path="/category" element ={<ProtectedRoute element ={<Category/>}/>}/>

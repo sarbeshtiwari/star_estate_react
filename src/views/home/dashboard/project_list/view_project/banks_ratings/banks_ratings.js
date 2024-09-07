@@ -16,14 +16,16 @@ export default function ProjectBanksRatings() {
     const fetchDetailsHandler = async () => {
         try {
             const response = await getProjectBanks(id);
-          
-            
+            console.log(response)
+            // setDetails(response)
             // Assuming `response` is an object with a property that holds the array
             if (response && response.data) {
+                console.log('data')
                 // Check if response.data is an array
-                if (Array.isArray(response.data1)) {
-                    setDetails(response.data1);
-                } 
+                // if (Array.isArray(response.data)) {
+                    
+                    setDetails([response.data]);
+                // } 
             } else {
                 // No data received
                 console.error('No data received:', response);
@@ -50,7 +52,7 @@ export default function ProjectBanksRatings() {
                         <div className="row column_title">
                             <div className="col-md-12">
                                 <div className="page_title">
-                                    <h2>Approved Banks & Ratings</h2>
+                                    <h2>Bank Details</h2>
                                 </div>
                             </div>
                         </div>
@@ -58,7 +60,7 @@ export default function ProjectBanksRatings() {
                             <div className="col-md-12">
                                 <div className="white_shd full margin_bottom_30">
                                     <div className="full graph_head">
-                                        {details.length === 0 ? ( <Link to={`/${id}/addBanksRatings/add`} className="btn btn-success btn-xs">Add</Link>): ('')}
+                                        {details.length === 0 ? ( <Link to={`/${id}/addBanks/add`} className="btn btn-success btn-xs">Add</Link>): ('')}
                                        
                                         <button 
                                     className="btn btn-primary btn-xs float-right"
@@ -76,12 +78,12 @@ export default function ProjectBanksRatings() {
                                                             <thead className="thead-dark">
                                                                 <tr>
                                                                     <th>No</th>
-                                                                    <th>Lifestyle</th>
-                                                                    <th>Amenities</th>
-                                                                    <th>Layout</th>
-                                                                    <th>Connectivity</th>
-                                                                    <th>Money Value</th>
-                                                                    {/* <th>Approved Banks</th> */}
+                                                                    <th>Account Number</th>
+                                                                    <th>IFSC Code</th>
+                                                                    <th>CIF No</th>
+                                                                    <th>Bank Name</th>
+                                                                    <th>Bank Address</th>
+                                                                    <th>Other Details</th>
                                                                     <th></th>
                                                                 </tr>
                                                             </thead>
@@ -89,12 +91,12 @@ export default function ProjectBanksRatings() {
                                                                 {details.map((detail, index) => (
                                                                     <tr key={detail._id} className={index % 2 === 0 ? 'even' : 'odd'}>
                                                                         <td className="sorting_1">{index + 1}</td>
-                                                                        <td>{detail.lifestyle}</td>
-                                                                        <td>{detail.amenities}</td>
-                                                                        <td>{detail.layout}</td>
-                                                                        <td>{detail.connectivity}</td>
-                                                                        <td>{detail.value_for_money}</td>
-                                                                        {/* <td>{detail.approved_banks}</td> */}
+                                                                        <td>{detail.accountNumber}</td>
+                                                                        <td>{detail.IFSCcode}</td>
+                                                                        <td>{detail.CIFno}</td>
+                                                                        <td>{detail.bankName}</td>
+                                                                        <td>{detail.bankAddress}</td>
+                                                                        <td>{detail.otherDetails}</td>
                                                                         <td>
                                                                             {/* <ul className="list-inline d-flex justify-content-end"> */}
                                                                                 {/* <li>
@@ -105,7 +107,7 @@ export default function ProjectBanksRatings() {
                                                                                     )}
                                                                                 </li> */}
                                                                                 {/* <li> */}
-                                                                                    <Link to={`/${id}/addBanksRatings/${detail._id}`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
+                                                                                    <Link to={`/${id}/addBanks/${detail._id}`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
                                                                                 {/* </li> */}
                                                                                 {/* <li>
                                                                                     <button

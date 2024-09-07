@@ -15,7 +15,7 @@ export const ProjectBanks = async (bankId, status, projectname) => {
 export const getProjectBanks = async (projectname) => {
     try {
         const response = await axios.get(`${$API_URL}/getprojectBanks/${projectname}`);
-        return response.data;
+        return response;
     } catch (error){
         console.error('Error:', error.response ? error.response.data : error.message);
         throw error;
@@ -36,7 +36,7 @@ export const addProjectBanksRatings = async (formData, id) => {
 export const getProjectbanksRatings = async (id) => {
     try{
         const response = await axios.get(`${$API_URL}/getProjectbanksRatings/${id}`);
-        return response.data;
+        return response;
     } catch (error){
         console.error('Error:', error.response ? error.response.data : error.message);
         throw error;

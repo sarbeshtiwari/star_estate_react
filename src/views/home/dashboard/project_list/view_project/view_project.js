@@ -196,10 +196,10 @@ export default function ViewProject(){
                                         </div>
                                     </div>
                                 </Link>
-                            </div>
+                            </div>*/}
                             
                             <div className="col-md-6 col-lg-4">
-                                <Link to={`/projectBanksRatings/${id}`}>
+                                <Link to={`/projectBanks/${id}`}>
                                     <div className="full counter_section margin_bottom_30">
                                         <div className="couter_icon">
                                             <div>
@@ -209,12 +209,12 @@ export default function ViewProject(){
                                         <div className="counter_no">
                                             <div>
                                                 
-                                                <p className="head_couter">Approved Banks &amp; Rating</p>
+                                                <p className="head_couter">Bank Details</p>
                                             </div>
                                         </div>
                                     </div>
                                 </Link>
-                            </div> */}
+                            </div> 
                         </div>
                     </div>
   
