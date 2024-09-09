@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import Sidebar from '../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { deleteProject, fetchProjects, updateProjectStatusCategory, updateStatus } from '../../../../api/dashboard/project_list/project_list_api';
+import { deleteProject, fetchProjects, updateProjectStatusCategory, updateSimilarPropStatus, updateStatus } from '../../../../api/dashboard/project_list/project_list_api';
 
 import {imageURL} from '../../../../imageURL'
 import Modal from 'react-bootstrap/Modal';
@@ -81,6 +81,20 @@ const filteredProperty = projects.filter(item =>
     const handleupdateProjectStatusCategory = async (projectID, value) => {
         try {
             const response = await updateProjectStatusCategory(projectID, value); // Use await here
+            if (response.data && response.data.success) {
+                const data = await fetchProjects(id);
+                setProjects(data);
+            } else {
+                console.error('Error updating Project Data:', response.data.message);
+            }
+        } catch (error) {
+            console.log('Unexpected error:', error);
+        }
+    };
+
+    const handleshowSimilarProp = async (projectID, status) => {
+        try {
+            const response = await updateSimilarPropStatus(projectID, status); // Use await here
             if (response.data && response.data.success) {
                 const data = await fetchProjects(id);
                 setProjects(data);
@@ -181,6 +195,7 @@ const filteredProperty = projects.filter(item =>
                                                         <th>Project Price</th>
                                                         <th>Project Details</th>
                                                         <th>Banner Image</th>
+                                                        <th>Show Similar Properties</th>
                                                         {/* <th>Top Rated</th>
                                                         <th>Recent</th> */}
                                                         <th></th>
@@ -226,6 +241,11 @@ const filteredProperty = projects.filter(item =>
                                                                         ) : (
                                                                             <button className="btn btn-success btn-xs" onClick={() => handleupdateProjectStatusCategory(project._id, 'Recent')}>Active</button>
                                                                         )}</td> */}
+                                                                        <td>{project.showSimilarProperties === false ? (
+                                                                            <button className="btn btn-warning btn-xs" onClick={() => handleshowSimilarProp(project._id,  true)}>Deactive</button>
+                                                                        ) : (
+                                                                            <button className="btn btn-success btn-xs" onClick={() => handleshowSimilarProp(project._id, false)}>Active</button>
+                                                                        )}</td>
                                                             <td>
                                                                 <ul className="list-inline d-flex justify-content-end">
                                                                     <li>

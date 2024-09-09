@@ -6,7 +6,7 @@ import { fetchFAQById, updateFAQ, addFAQs } from '../../../../../../api/dashboar
 const AddProjectFAQ = () => {
     const { ids, id } = useParams();
     const [faqType, setFaqType] = useState(''); 
-    const [headings, setHeadings] = useState([{ faqType: '', faqQuestion: '', faqAnswer: '', projectname: id }]); 
+    const [headings, setHeadings] = useState([{ faqQuestion: '', faqAnswer: '', projectname: id }]); 
     const navigate = useNavigate();
     const [validationErrors, setValidationErrors] = useState({});
     const [loading, setLoading] = useState(false);
@@ -21,18 +21,18 @@ const AddProjectFAQ = () => {
         try {
             const data = await fetchFAQById(faqId);
             if (data.length === 0) {
-                setHeadings([{ faqType: '', faqQuestion: '', faqAnswer: '', projectname: id }]);
+                setHeadings([{  faqQuestion: '', faqAnswer: '', projectname: id }]);
             } else {
                 setFaqType(data[0].faqType || '');
                 setHeadings(data);
             }
         } catch (error) {
-            setHeadings([{ faqType: '', faqQuestion: '', faqAnswer: '', projectname: id }]);
+            setHeadings([{  faqQuestion: '', faqAnswer: '', projectname: id }]);
         }
     };
 
     const addMoreFields = () => {
-        setHeadings([...headings, { faqType, faqQuestion: '', faqAnswer: '', projectname: id }]);
+        setHeadings([...headings, { faqQuestion: '', faqAnswer: '', projectname: id }]);
     };
 
     const removeField = (index) => {
@@ -66,9 +66,9 @@ const AddProjectFAQ = () => {
     const validateForm = () => {
         const errors = {};
         headings.forEach((heading, index) => {
-            if (!heading.faqType.trim()) {
-                errors[`faqType`] = 'Faq Type is required';
-            }
+            // if (!heading.faqType.trim()) {
+            //     errors[`faqType`] = 'Faq Type is required';
+            // }
             if (!heading.faqQuestion.trim()) {
                 errors[`faqQuestion${index}`] = 'Question is required';
             }
@@ -135,7 +135,7 @@ const AddProjectFAQ = () => {
                                     <div className="full price_table padding_infor_info">
                                         <span className="status text-danger"></span>
                                         <form onSubmit={handleSubmit} id="gallerImage" encType="multipart/form-data">
-                                            <div className="form-row">
+                                            {/* <div className="form-row">
                                                 <div className="col-md-12 form-group">
                                                     <label className="label_field">FAQs Type</label>
                                                     <select
@@ -154,7 +154,7 @@ const AddProjectFAQ = () => {
                                                                     <div className="text-danger">{validationErrors[`faqType`]}</div>
                                                                 )}
                                                 </div>
-                                            </div>
+                                            </div> */}
                                             <div className="more_fields_container">
                                                 {headings.map((heading, index) => (
                                                     <div className="clone_fields" key={index}>

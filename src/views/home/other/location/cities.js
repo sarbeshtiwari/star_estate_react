@@ -135,10 +135,11 @@ export default function Cities() {
                                                                     </td>
                                                                     <td>
                                                                         <ul className="list-inline d-flex justify-content-center">
-                                                                            <li><Link to={`/addLocation/${city.slugURL}/New Projects`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
-                                                                            <li><Link to={`/addLocation/${city.slugURL}/Commercial`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Commercial</Link></li>
-                                                                            <li><Link to={`/addLocation/${city.slugURL}/Flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
-                                                                            <li><Link to={`/addLocation/${city.slugURL}/Apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
+                                                                            <li><Link to={`/addLocation/${city.slugURL}/new-projects`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
+                                                                            <li><Link to={`/addLocation/${city.slugURL}/commercial`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Commercial</Link></li>
+                                                                            <li><Link to={`/addLocation/${city.slugURL}/residential`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
+                                                                            <li><Link to={`/addLocation/${city.slugURL}/flats`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
+                                                                            <li><Link to={`/addLocation/${city.slugURL}/apartments`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
                                                                             <li><Link to={`/addLocation/${city.slugURL}/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
                                                                         </ul>
                                                                     </td>
@@ -152,7 +153,7 @@ export default function Cities() {
                                                                                 )}
                                                                             </li>
                                                                             <li>
-                                                                                <Link to={`/addLocation/${city.slugURL}/Common`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
+                                                                                <Link to={`/addLocation/${city.slugURL}/common`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
                                                                             </li>
                                                                             <li>
                                                                                 <button

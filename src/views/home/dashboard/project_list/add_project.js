@@ -36,7 +36,7 @@ export default function AddProject() {
         projectPrice: '',
         projectPriceUnit: '',
         ivr_no: '',
-        locationMap: '',
+        
         rera_no: '',
         reraWebsite: '',
         rera_qr: null,
@@ -51,6 +51,7 @@ export default function AddProject() {
         project_status: [],
         project_logo: null,
         project_thumbnail: null,
+        locationMap: null,
         property_type: id1
     });
 
@@ -138,12 +139,13 @@ export default function AddProject() {
                 setIsPriceRevealingSoon(checked);
                 if (checked) {
                     // Set project price to "Price Revealing Soon" if checked
-                    setFormData({ ...formData, projectPrice: 'Price Revealing Soon' });
+                    setFormData({ ...formData, projectPrice: 'Revealing Soon' });
                 } else {
                     // Optionally, handle the case where it's unchecked, e.g., clear the price or revert it
                     setFormData({ ...formData, projectPrice: '' });
                 }
-            } else {
+            } 
+            else {
                 setFormData({
                     ...formData,
                     project_status: checked
@@ -233,7 +235,7 @@ export default function AddProject() {
         if (!formData.projectAddress) errors.projectAddress = 'Project Address is required';
         if (!formData.state) errors.state = 'Project Price is required';
         if (!formData.cityLocation) errors.cityLocation = 'Project City is required';
-        if (!formData.projectLocality) errors.projectLocality = 'Project Locality is required';
+        // if (!formData.projectLocality) errors.projectLocality = 'Project Locality is required';
         if (!formData.projectConfiguration) errors.projectConfiguration = 'Project Configuration is required';
         if (!formData.projectBy) errors.projectBy = 'Developer is required';
         // if (!formData.projectType) errors.projectType = 'Project Type is required';
@@ -262,7 +264,7 @@ export default function AddProject() {
 
         // Concatenate the project price with the selected price unit
             const formattedPrice = isPriceRevealingSoon
-            ? 'Price Revealing Soon'
+            ? 'Revealing Soon'
             : `${formData.projectPrice} ${priceUnit}`;
 
         // Update formData with the formatted price
@@ -387,57 +389,55 @@ export default function AddProject() {
                                                 <div className="invalid-feedback">{validationErrors.projectAddress}</div>
                                             )}
                                         </div>
-                                        
-                                                            <div className="col-md-3 form-group">
-                                                                <label className="label_field">State</label>
-                                                                <select 
-                                                                    name="state" 
-                                                                    id="state" 
-                                                                    value={formData.state} 
-                                                                    onChange={handleChange} 
-                                                                    className={`form-control ${validationErrors.state ? 'is-invalid' : ''}`}
-                                                                >
-                                                                    <option value="">Select a State</option>
-                                                                    <option value="Andhra Pradesh">Andhra Pradesh</option>
-                                                                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                                                                    <option value="Assam">Assam</option>
-                                                                    <option value="Bihar">Bihar</option>
-                                                                    <option value="Chhattisgarh">Chhattisgarh</option>
-                                                                    <option value="Goa">Goa</option>
-                                                                    <option value="Gujarat">Gujarat</option>
-                                                                    <option value="Haryana">Haryana</option>
-                                                                    <option value="Himachal Pradesh">Himachal Pradesh</option>
-                                                                    <option value="Jharkhand">Jharkhand</option>
-                                                                    <option value="Karnataka">Karnataka</option>
-                                                                    <option value="Kerala">Kerala</option>
-                                                                    <option value="Madhya Pradesh">Madhya Pradesh</option>
-                                                                    <option value="Maharashtra">Maharashtra</option>
-                                                                    <option value="Manipur">Manipur</option>
-                                                                    <option value="Meghalaya">Meghalaya</option>
-                                                                    <option value="Mizoram">Mizoram</option>
-                                                                    <option value="Nagaland">Nagaland</option>
-                                                                    <option value="Odisha">Odisha</option>
-                                                                    <option value="Punjab">Punjab</option>
-                                                                    <option value="Rajasthan">Rajasthan</option>
-                                                                    <option value="Sikkim">Sikkim</option>
-                                                                    <option value="Tamil Nadu">Tamil Nadu</option>
-                                                                    <option value="Telangana">Telangana</option>
-                                                                    <option value="Tripura">Tripura</option>
-                                                                    <option value="Uttar Pradesh">Uttar Pradesh</option>
-                                                                    <option value="Uttarakhand">Uttarakhand</option>
-                                                                    <option value="West Bengal">West Bengal</option>
-                                                                    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                                                                    <option value="Chandigarh">Chandigarh</option>
-                                                                    <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
-                                                                    <option value="Lakshadweep">Lakshadweep</option>
-                                                                    <option value="Delhi">Delhi</option>
-                                                                    <option value="Puducherry">Puducherry</option>
-                                                                </select>
-                                                                {validationErrors.state && (
-                                                                    <div className="invalid-feedback">{validationErrors.state}</div>
-                                                                )}
-                                                            </div>
-
+                                        <div className="col-md-3 form-group">
+                                            <label className="label_field">State</label>
+                                            <select 
+                                                name="state" 
+                                                id="state" 
+                                                value={formData.state} 
+                                                onChange={handleChange} 
+                                                className={`form-control ${validationErrors.state ? 'is-invalid' : ''}`}
+                                            >
+                                                <option value="">Select a State</option>
+                                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                                <option value="Assam">Assam</option>
+                                                <option value="Bihar">Bihar</option>
+                                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                                <option value="Goa">Goa</option>
+                                                <option value="Gujarat">Gujarat</option>
+                                                <option value="Haryana">Haryana</option>
+                                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                                <option value="Jharkhand">Jharkhand</option>
+                                                <option value="Karnataka">Karnataka</option>
+                                                <option value="Kerala">Kerala</option>
+                                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                                <option value="Maharashtra">Maharashtra</option>
+                                                <option value="Manipur">Manipur</option>
+                                                <option value="Meghalaya">Meghalaya</option>
+                                                <option value="Mizoram">Mizoram</option>
+                                                <option value="Nagaland">Nagaland</option>
+                                                <option value="Odisha">Odisha</option>
+                                                <option value="Punjab">Punjab</option>
+                                                <option value="Rajasthan">Rajasthan</option>
+                                                <option value="Sikkim">Sikkim</option>
+                                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                                <option value="Telangana">Telangana</option>
+                                                <option value="Tripura">Tripura</option>
+                                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                                <option value="Uttarakhand">Uttarakhand</option>
+                                                <option value="West Bengal">West Bengal</option>
+                                                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                                <option value="Chandigarh">Chandigarh</option>
+                                                <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                                                <option value="Lakshadweep">Lakshadweep</option>
+                                                <option value="Delhi">Delhi</option>
+                                                <option value="Puducherry">Puducherry</option>
+                                            </select>
+                                        {validationErrors.state && (
+                                            <div className="invalid-feedback">{validationErrors.state}</div>
+                                        )}
+                                        </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">City</label>
                                             <select
@@ -459,7 +459,8 @@ export default function AddProject() {
                                             <label className="label_field">Locality</label>
                                             <select
                                                 name="projectLocality"
-                                                className={`form-control ${validationErrors.projectLocality ? 'is-invalid' : ''}`}
+                                                className={`form-control`}
+                                                // className={`form-control ${validationErrors.projectLocality ? 'is-invalid' : ''}`}
                                                 value={formData.projectLocality}
                                                 onChange={handleChange}
                                             >
@@ -469,9 +470,9 @@ export default function AddProject() {
                                                 ))}
                                             </select>
                                             
-                                            {validationErrors.projectLocality && (
+                                            {/* {validationErrors.projectLocality && (
                                                 <div className="invalid-feedback">{validationErrors.projectLocality}</div>
-                                            )}
+                                            )} */}
                                         </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">Project Configuration</label>
@@ -495,7 +496,6 @@ export default function AddProject() {
                                                 <div className="invalid-feedback">{validationErrors.projectConfiguration}</div>
                                             )}
                                         </div>
-
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">Project BY</label>
                                             <select
@@ -506,7 +506,7 @@ export default function AddProject() {
                                             >
                                                 <option value="">Select Developer</option>
                                                 {developers.map(developers => (
-                                                    <option key={developers._id} value={developers.developersName}>{developers.developerName}</option>
+                                                    <option key={developers._id} value={developers.slugURL}>{developers.developerName}</option>
                                                 ))}
                                             </select>
                                             {validationErrors.projectBy && (
@@ -579,20 +579,7 @@ export default function AddProject() {
                                                 onChange={handleChange}
                                             />
                                         </div>
-                                        <div className="col-md-3 form-group">
-                                            <label className="label_field">Google Map Location</label>
-                                            <input
-                                                type="text"
-                                                name="locationMap"
-                                             
-                                                className={`form-control ${validationErrors.locationMap ? 'is-invalid' : ''}`}
-                                                value={formData.locationMap}
-                                                onChange={handleChange}
-                                            />
-                                            {validationErrors.locationMap && (
-                                                <div className="invalid-feedback">{validationErrors.locationMap}</div>
-                                            )}
-                                        </div>
+                                       
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">RERA No.</label>
                                             <input
@@ -623,83 +610,7 @@ export default function AddProject() {
                                             )}
                                             
                                         </div>
-                                        
-                                        <div className="col-md-3 form-group">
-                                            <label className="label_field">City Priority</label>
-                                            <input
-                                                type="number"
-                                                name="city_priority"
-                                        
-                                                className="form-control"
-                                                value={formData.city_priority}
-                                                onChange={handleChange}
-                                            />
-                                        </div>
-                                        <div className="col-md-3 form-group">
-                                            <label className="label_field">Luxury Priority</label>
-                                            <input
-                                                type="number"
-                                                name="luxury_priority"
-                                               
-                                                className="form-control"
-                                                value={formData.luxury_priority}
-                                                onChange={handleChange}
-                                            />
-                                        </div>
-                                        <div className="col-md-3 form-group">
-                                            <label className="label_field">New Launch Priority</label>
-                                            <input
-                                                type="number"
-                                                name="newLaunch_priority"
-                                                value={formData.newLaunch_priority}
-                                               
-                                                onChange={handleChange}
-                                                className="form-control"
-                                            />
-                                        </div>
-                                        <div className="col-md-3 form-group">
-                                            <label className="label_field">Featured Priority</label>
-                                            <input
-                                                type="number"
-                                                name="featured_priority"
-                                                value={formData.featured_priority}
-                                               
-                                                onChange={handleChange}className="form-control"
-                                            />
-                                        </div>
-                                        <div className="col-md-3 form-group">
-                                            <label className="label_field">Recent Priority</label>
-                                            <input
-                                                type="number"
-                                                name="recent_priority"
-                                                value={formData.recent_priority}
-                                                className="form-control"
-                                               
-                                                onChange={handleChange}
-                                            />
-                                        </div>
-                                        <div className="col-md-3 form-group">
-                                            <label className="label_field">Residential</label>
-                                            <input
-                                                type="number"
-                                                name="residential_priority"
-                                                value={formData.residential_priority}
-                                               className="form-control"
-                                               
-                                                onChange={handleChange}
-                                            />
-                                        </div>
-                                        <div className="col-md-3 form-group">
-                                            <label className="label_field">Commercial</label>
-                                            <input
-                                                type="number"
-                                                name="commercial_priority"
-                                                value={formData.commercial_priority}
-                                              className="form-control"
-                                               
-                                                onChange={handleChange}
-                                            />
-                                        </div>
+                                       
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">Project Status</label>
                                             <div>
@@ -807,6 +718,108 @@ export default function AddProject() {
                                                                     height="100"
                                                                 /> : ''}
                                         </div>
+                                        <div className="col-md-3 form-group">
+                                            <label className="label_field">Google Map Location</label>
+                                            <input
+                                                type="file"
+                                                name="locationMap"
+                                             
+                                                className={`form-control ${validationErrors.locationMap ? 'is-invalid' : ''}`}
+                                                // value={formData.locationMap}
+                                                onChange={handleChange}
+                                            />
+                                            {validationErrors.locationMap && (
+                                                <div className="invalid-feedback">{validationErrors.locationMap}</div>
+                                            )}
+                                            {formData.locationMap ?  <img 
+                                                                   src={`${imageURL}/${formData.locationMap}`}
+
+                                                                   
+                                                                    style={{ objectFit: 'cover' }}
+                                                                    alt={formData.locationMap}
+                                                                    width="100"
+                                                                    height="100"
+                                                                /> : ''}
+                                        </div>
+                                         {/* Priority */}
+                                        
+                                         <div className="priority-section">
+                                            <h3 className="section-title">Priority Settings</h3>
+                                            <div className="row">
+                                                <div className="col-md-3 form-group">
+                                                    <label className="label_field">City</label>
+                                                    <input
+                                                        type="number"
+                                                        name="city_priority"
+                                                        className="form-control"
+                                                        value={formData.city_priority}
+                                                        onChange={handleChange}
+                                                    />
+                                                </div>
+                                                <div className="col-md-3 form-group">
+                                                    <label className="label_field">Luxury</label>
+                                                    <input
+                                                        type="number"
+                                                        name="luxury_priority"
+                                                        className="form-control"
+                                                        value={formData.luxury_priority}
+                                                        onChange={handleChange}
+                                                    />
+                                                </div>
+                                                <div className="col-md-3 form-group">
+                                                    <label className="label_field">New Launch</label>
+                                                    <input
+                                                        type="number"
+                                                        name="newLaunch_priority"
+                                                        value={formData.newLaunch_priority}
+                                                        onChange={handleChange}
+                                                        className="form-control"
+                                                    />
+                                                </div>
+                                                <div className="col-md-3 form-group">
+                                                    <label className="label_field">Featured</label>
+                                                    <input
+                                                        type="number"
+                                                        name="featured_priority"
+                                                        value={formData.featured_priority}
+                                                        onChange={handleChange}
+                                                        className="form-control"
+                                                    />
+                                                </div>
+                                                <div className="col-md-3 form-group">
+                                                    <label className="label_field">Recent</label>
+                                                    <input
+                                                        type="number"
+                                                        name="recent_priority"
+                                                        value={formData.recent_priority}
+                                                        className="form-control"
+                                                        onChange={handleChange}
+                                                    />
+                                                </div>
+                                                <div className="col-md-3 form-group">
+                                                    <label className="label_field">Residential</label>
+                                                    <input
+                                                        type="number"
+                                                        name="residential_priority"
+                                                        value={formData.residential_priority}
+                                                        className="form-control"
+                                                        onChange={handleChange}
+                                                    />
+                                                </div>
+                                                <div className="col-md-3 form-group">
+                                                    <label className="label_field">Commercial</label>
+                                                    <input
+                                                        type="number"
+                                                        name="commercial_priority"
+                                                        value={formData.commercial_priority}
+                                                        className="form-control"
+                                                        onChange={handleChange}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* END */}
                                         <div className="col-md-12 form-group">
                                         {id === 'add' ? ( 
                                                     <button className="main_bt" type="submit" disabled={loading}>

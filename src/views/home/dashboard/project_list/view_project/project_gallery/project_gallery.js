@@ -134,13 +134,13 @@ export default function ProjectGallery() {
                                     </div>
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
                                     {loading ? (
-    <div className="d-flex justify-content-center align-items-center">
-        <div className="spinner-border text-primary" role="status">
-            <span className="sr-only">Loading...</span>
-        </div>
-        <span className="ml-2">Loading...</span>
-    </div>
-) : ''} 
+                                            <div className="d-flex justify-content-center align-items-center">
+                                                <div className="spinner-border text-primary" role="status">
+                                                    <span className="sr-only">Loading...</span>
+                                                </div>
+                                                <span className="ml-2">Loading...</span>
+                                            </div>
+                                        ) : ''} 
                                         <div className="full price_table padding_infor_info">
                                             <div className="row">
                                                 <div className="col-lg-12">
@@ -152,7 +152,7 @@ export default function ProjectGallery() {
                                                                     <th>Icon</th>
                                                                     <th>Title</th>
                                                                     <th>Alt Tag</th>
-                                                                    {/* <th>Hero Banner</th> */}
+                                                                    <th>Walkthrough Banner</th>
                                                                     <th></th>
                                                                 </tr>
                                                             </thead>
@@ -173,11 +173,11 @@ export default function ProjectGallery() {
                                                                         </td>
                                                                         <td>{detail.title}</td>
                                                                         <td>{detail.alt}</td>
-                                                                        {/* <td>{detail.displayHome === false ? (
+                                                                        <td>{detail.displayHome === false ? (
                                                                                         <button className="btn btn-warning btn-xs" onClick={() => handleDisplayHomeStatusUpdate(detail._id, true)}>Deactivate</button>
                                                                                     ) : (
                                                                                         <button className="btn btn-success btn-xs" onClick={() => handleDisplayHomeStatusUpdate(detail._id, false)}>Active</button>
-                                                                                    )}</td> */}
+                                                                                    )}</td>
                                                                         <td>
                                                                             <ul className="list-inline d-flex justify-content-end">
                                                                                 <li>

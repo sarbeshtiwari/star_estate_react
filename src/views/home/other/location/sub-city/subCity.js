@@ -146,10 +146,11 @@ export default function SubCities() {
                                                                     </td>
                                                                     <td>
                                                                         <ul className="list-inline d-flex justify-content-center">
-                                                                            <li><Link to={`/addSubCities/${subCity.slugURL}/New Projects`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
-                                                                            <li><Link to={`/addSubCities/${subCity.slugURL}/Residential`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
-                                                                            <li><Link to={`/addSubCities/${subCity.slugURL}/Flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
-                                                                            <li><Link to={`/addSubCities/${subCity.slugURL}/Apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
+                                                                            <li><Link to={`/addSubCities/${subCity.slugURL}/new-projects`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
+                                                                            <li><Link to={`/addSubCities/${subCity.slugURL}/residential`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
+                                                                            <li><Link to={`/addSubCities/${subCity.slugURL}/commercial`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Commercial</Link></li>
+                                                                            <li><Link to={`/addSubCities/${subCity.slugURL}/flats`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
+                                                                            <li><Link to={`/addSubCities/${subCity.slugURL}/apartments`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
                                                                             <li><Link to={`/addSubCities/${subCity.slugURL}/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
                                                                         </ul>
                                                                     </td>
@@ -163,7 +164,7 @@ export default function SubCities() {
                                                                                 )}
                                                                             </li>
                                                                             <li>
-                                                                                <Link to={`/addSubCities/${subCity.slugURL}/Common`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
+                                                                                <Link to={`/addSubCities/${subCity.slugURL}/common`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i></Link>
                                                                             </li>
                                                                             <li>
                                                                                 <button

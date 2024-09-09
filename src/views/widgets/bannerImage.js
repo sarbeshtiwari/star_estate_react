@@ -26,33 +26,33 @@ export default function AddBannerImage() {
 
     const validateImage = (file, type) => {
         const allowedTypes = ["image/png", "image/webp", "image/jpeg"];
-        const maxSize = 2 * 1024 * 1024;
+        const maxSize = 1 * 1024 * 1024;
 
         const reader = new FileReader();
 
         return new Promise((resolve, reject) => {
             if (file.size > maxSize) {
-                alert("File size exceeds 2 MB");
-                return reject(new Error("File size exceeds 2 MB"));
+                alert("File size exceeds 1 MB");
+                return reject(new Error("File size exceeds 1 MB"));
             }
 
             const img = new Image();
             img.onload = () => {
                 let isValidResolution = false;
 
-                if (type === 'desktop' && img.width === 1920 && img.height === 1080) {
+                if (type === 'desktop' && img.width === 2225 && img.height === 1065) {
                     isValidResolution = true;
-                } else if (type === 'mobile' && img.width === 375 && img.height === 667) {
+                } else if (type === 'mobile' && img.width === 600 && img.height === 600) {
                     isValidResolution = true;
-                } else if (type === 'tablet' && img.width === 768 && img.height === 1024) {
+                } else if (type === 'tablet' && img.width === 820 && img.height === 820) {
                     isValidResolution = true;
                 }
 
                 if (!isValidResolution) {
                     alert(`Invalid resolution for ${type} image. Expected resolution is: ${
-                        type === 'desktop' ? '1920x1080' :
-                        type === 'mobile' ? '375x667' :
-                        '768x1024'
+                        type === 'desktop' ? '2225 x 1065' :
+                        type === 'mobile' ? '600 x 600' :
+                        '820 x 820'
                     }`);
                     return reject(new Error(`Invalid resolution for ${type} image.`));
                 }
@@ -209,7 +209,7 @@ export default function AddBannerImage() {
                                                 <div className="col-md-4">
                                                     <div className="card mb-3">
                                                         <div className="card-body">
-                                                            <label className="label_field">Desktop Image (1920x1080, Max 2MB)</label>
+                                                            <label className="label_field">Desktop Image (2225 x 1065, Max 1MB)</label>
                                                             <input
                                                                 type="file"
                                                                 name={`desktop_image`}
@@ -244,7 +244,7 @@ export default function AddBannerImage() {
                                                 <div className="col-md-4">
                                                     <div className="card mb-3">
                                                         <div className="card-body">
-                                                            <label className="label_field">Mobile Image (375x667, Max 2MB)</label>
+                                                            <label className="label_field">Mobile Image (600 x 600, Max 1MB)</label>
                                                             <input
                                                                 type="file"
                                                                 name={`mobile_image`}
@@ -279,7 +279,7 @@ export default function AddBannerImage() {
                                                 <div className="col-md-4">
                                                     <div className="card mb-3">
                                                         <div className="card-body">
-                                                            <label className="label_field">Tablet Image (768x1024, Max 2MB)</label>
+                                                            <label className="label_field">Tablet Image (820 x 820, Max 1MB)</label>
                                                             <input
                                                                 type="file"
                                                                 name={`tablet_image`}

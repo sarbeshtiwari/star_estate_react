@@ -296,28 +296,7 @@ export default function AddLocation() {
                                                                         <div className="invalid-feedback">{validationErrors.metaDescription}</div>
                                                                     )}
                                                 </div>
-                                                    <div className="col-md-6 form-group">
-                                                        <label className="label_field">Location Type</label>
-                                                        <select name="location_type" id="location_type" value={formData.location_type} onChange={handleInputChange} className={`form-control ${validationErrors.location_type ? 'is-invalid' : ''}`}>
-                                                            <option value=""></option>
-                                                            <option value="Common">Common</option>
-                                                            <option value="Apartment">Apartment</option>
-                                                            <option value="New Projects">New Projects</option>
-                                                            <option value="Flat">Flat</option>
-                                                            <option value="Commercial">Commercial</option>
-                                                            <option value="studio">Studio</option>
-                                                        </select>
-                                                        {validationErrors.location_type && (
-                                                            <div className='invalid-feedback'>{validationErrors.location_type}</div>
-                                                        )}
-                                                    </div>
-                                                    <div className="col-md-6 form-group">
-                                                        <label className="label_field">Location</label>
-                                                        <input type="text" name="location" id="location" value={formData.location} onChange={handleInputChange} className={`form-control ${validationErrors.location ? 'is-invalid' : ''}`} />
-                                                        {validationErrors.location && (
-                                                            <div className="invalid-feedback">{validationErrors.location}</div>
-                                                        )}
-                                                    </div>
+                                                    
                                                     <div className="col-md-6 form-group">
                                                             <label className="label_field">State</label>
                                                             <select 
@@ -367,6 +346,29 @@ export default function AddLocation() {
                                                                 <div className="invalid-feedback">{validationErrors.state}</div>
                                                             )}
                                                         </div>
+                                                    <div className="col-md-6 form-group">
+                                                        <label className="label_field">City</label>
+                                                        <input type="text" name="location" id="location" value={formData.location} onChange={handleInputChange} className={`form-control ${validationErrors.location ? 'is-invalid' : ''}`} />
+                                                        {validationErrors.location && (
+                                                            <div className="invalid-feedback">{validationErrors.location}</div>
+                                                        )}
+                                                    </div>
+                                                    <div className="col-md-6 form-group">
+                                                        <label className="label_field">Property Type</label>
+                                                        <select name="location_type" id="location_type" value={formData.location_type} onChange={handleInputChange} className={`form-control ${validationErrors.location_type ? 'is-invalid' : ''}`}>
+                                                            <option value=""></option>
+                                                            <option value="common">Common</option>
+                                                            <option value="apartments">Apartment</option>
+                                                            <option value="mew-projects">New Projects</option>
+                                                            <option value="flats">Flat</option>
+                                                            <option value="commercial">Commercial</option>
+                                                            <option value="residential">Residential</option>
+                                                            <option value="studio">Studio</option>
+                                                        </select>
+                                                        {validationErrors.location_type && (
+                                                            <div className='invalid-feedback'>{validationErrors.location_type}</div>
+                                                        )}
+                                                    </div>
 
                                                     <div className="col-md-6 form-group">
                                                         <label className="label_field">Priority</label>

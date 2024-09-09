@@ -277,11 +277,12 @@ export default function AddSubCity() {
                                                         <label className="label_field">Content Type</label>
                                                         <select name="content_type" id="content_type" value={formData.content_type} onChange={handleInputChange} className={`form-control ${validationErrors.content_type ? 'is-invalid' : ''}`}>
                                                             <option value=""></option>
-                                                            <option value="Common">Common</option>
-                                                            <option value="Apartment">Apartment</option>
-                                                            <option value="New Projects">New Projects</option>
-                                                            <option value="Flat">Flat</option>
-                                                            <option value="Residential">Residential</option>
+                                                            <option value="common">Common</option>
+                                                            <option value="apartments">Apartment</option>
+                                                            <option value="new-projects">New Projects</option>
+                                                            <option value="flats">Flat</option>
+                                                            <option value="residential">Residential</option>
+                                                            <option value="commercial">Commercial</option>
                                                             <option value="studio">Studio</option>
                                                         </select>
                                                         {validationErrors.content_type && (

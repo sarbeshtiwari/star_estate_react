@@ -25,6 +25,7 @@ export default function AddContentSEO() {
                     setFormData({
                         schema: data[0].schema || '',
                         projectname: data[0].projectname || id,
+                        briefDescription: data[0].briefDescription || '',
                         description: data[0].description || ''
                     });
                     setEditorHtml(data[0].description || '');
@@ -56,6 +57,7 @@ export default function AddContentSEO() {
 
     const validateForm = () => {
         const errors = {};
+        if (!formData.briefDescription) { errors.briefDescription = 'Brief Description is required';}
         const trimmedEditorHtml = editorHtml.replace(/<(.|\n)*?>/g, '').trim();
 
         if (!trimmedEditorHtml) {
@@ -71,7 +73,7 @@ export default function AddContentSEO() {
             setValidationErrors(errors);
             return;
         }
-        const { schema, projectname, description } = formData;
+        const { schema, projectname, briefDescription, description } = formData;
 
         setLoading(true);
         try {
@@ -79,10 +81,10 @@ export default function AddContentSEO() {
             const result = response.data;
 
             if (result.success) {
-                alert('ContentSEO saved successfully');
+                alert('Description saved successfully');
                 navigate(-1);
             } else {
-                alert(`Failed to save ContentSEO: ${result.message}`);
+                alert(`Failed to save Description: ${result.message}`);
             }
         } catch (error) {
             console.error('Error submitting form:', error);
@@ -120,6 +122,22 @@ export default function AddContentSEO() {
                                         <div className="full price_table padding_infor_info">
                                             <form method="POST" encType="multipart/form-data" onSubmit={handleSubmit}>
                                                 <div className="form-row">
+                                                <div className="col-md-12 form-group" style={{ marginBottom: '20px' , marginTop: '30px' }}>
+                                                        <label className="label_field">Brief Description</label>
+                                                        <textarea
+                                                            type="text"
+                                                            name="briefDescription"
+                                                            className={`form-control ${validationErrors.briefDescription ? 'is-invalid' : ''}`}
+                                                            value={formData.briefDescription}
+                                                            onChange={handleInputChange}
+                                                            rows={5}
+                                                        />
+                                                        {validationErrors.briefDescription && (
+                                                                <div className="invalid-feedback" style={{ display: 'block' }}>
+                                                                    {validationErrors.briefDescription}
+                                                                </div>
+                                                            )}
+                                                    </div>
                                                     <div className="col-md-12 form-group" style={{ marginBottom: '20px' }}>
                                                         <label className="label_field">Description</label>
                                                         {validationErrors.description && (

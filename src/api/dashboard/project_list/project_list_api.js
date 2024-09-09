@@ -2,6 +2,8 @@ import axios from "axios";
 
 const API_BASE_URL = 'https://ecis.in/apis/star-estate-API/addProjects';
 // const API_BASE_URL = 'http://localhost:4000/addProjects'
+
+
 export const fetchProjects = async (id) => {
     try {
         
@@ -17,6 +19,17 @@ export const fetchProjects = async (id) => {
 export const updateStatus = async (id,  status, slugURL) => {
     try {
         const response = await axios.put(`${API_BASE_URL}/updateProjectStatus/${id}`, { status, slugURL });
+        return response; // Ensure response is returned
+    } catch (error) {
+        console.error('Unexpected error:', error);
+        throw error; // Rethrow the error to be handled in the caller function
+    }
+};
+
+export const updateSimilarPropStatus = async (id,  status) => {
+    console.log(status)
+    try {
+        const response = await axios.put(`${API_BASE_URL}/updateShowSimilarProperties/${id}`, { status});
         return response; // Ensure response is returned
     } catch (error) {
         console.error('Unexpected error:', error);

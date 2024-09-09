@@ -196,7 +196,7 @@ const AddApprovedBanks = () => {
                                                     <div className="clone_fields" key={index}>
                                                         <div className="form-row">
                                                             <div className="col-md-6 form-group">
-                                                                <label className="label_field">Title</label>
+                                                                <label className="label_field">Configuration</label>
                                                                 <input
                                                                     type="text"
                                                                     name="title"
