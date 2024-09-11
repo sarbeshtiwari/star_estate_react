@@ -73,7 +73,8 @@ export default function AddProject() {
                         if (data.cityLocation) {
                             // Fetch localities for the city
                             const localitiesData = await fetchLocalitiesByCity(data.cityLocation);
-                            setLocality(localitiesData);
+                            if (localitiesData)
+                                setLocality(localitiesData);
                         }
                     }
                 })
@@ -492,7 +493,7 @@ export default function AddProject() {
                                                 <option value="Retail-Shop">Retail Shop</option>
                                                 <option value="Office-Space">Office Space</option>
                                                 
-                                                <option value="studio">Sudio Apartments</option>
+                                                <option value="studio">Studio Apartments</option>
                                             </select>
                                             {validationErrors.projectConfiguration && (
                                                 <div className="invalid-feedback">{validationErrors.projectConfiguration}</div>

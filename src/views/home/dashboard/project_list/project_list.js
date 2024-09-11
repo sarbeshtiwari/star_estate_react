@@ -33,6 +33,8 @@ const filteredProperty = projects.filter(item =>
     (item.projectBy || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
     (item.projectConfiguration || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
     (item.projectType || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (item.projectPrice || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (item.projectAddress || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
     (item.projectPrice || '').toLowerCase().includes(searchQuery.toLowerCase())
 );
 

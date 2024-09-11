@@ -13,7 +13,7 @@ export default function AddAdvertisements() {
         metaDescription: '',
         advertisementType: '',
         advertisementDate: '',
-        advertisementLocation: '',
+        advertisementTitle: '',
         videoURL: '',
         advertisementImage: null
     });
@@ -106,7 +106,7 @@ export default function AddAdvertisements() {
         if (!formData.metaDescription) errors.metaDescription = 'Meta Description is required';
         if (!formData.advertisementType) errors.advertisementType = 'Advertisement Type is required';
         if (!formData.advertisementDate) errors.advertisementDate = 'Date is required';
-        if (!formData.advertisementLocation) errors.advertisementLocation = 'Location is required';
+        if (!formData.advertisementTitle) errors.advertisementTitle = 'Location is required';
 
         if (formData.advertisementType !== 'radio' && !formData.advertisementImage) {
             errors.advertisementImage = 'Image is required';
@@ -248,22 +248,23 @@ export default function AddAdvertisements() {
                                                     )}
                                                 </div>
                                                 <div className="col-md-6 form-group">
-                                                    <label className="label_field">Advertisement Location</label>
+                                                    <label className="label_field">Advertisement Title</label>
                                                     <input
                                                         type="text"
-                                                        name="advertisementLocation"
-                                                        id="advertisementLocation"
-                                                        className={`form-control ${validationErrors.advertisementLocation ? 'is-invalid' : ''}`}
-                                                        value={formData.advertisementLocation}
+                                                        name="advertisementTitle"
+                                                        id="advertisementTitle"
+                                                        className={`form-control ${validationErrors.advertisementTitle ? 'is-invalid' : ''}`}
+                                                        value={formData.advertisementTitle}
                                                         onChange={handleInputChange}
                                                     />
-                                                    {validationErrors.advertisementLocation && (
-                                                        <div className="invalid-feedback">{validationErrors.advertisementLocation}</div>
+                                                    {validationErrors.advertisementTitle && (
+                                                        <div className="invalid-feedback">{validationErrors.advertisementTitle}</div>
                                                     )}
                                                 </div>
 
                                                 {/* Conditionally render Video URL or Image Upload */}
                                                 {formData.advertisementType === 'radio' ? (
+                                                    <>
                                                     <div className="col-md-6 form-group">
                                                         <label className="label_field">Video URL</label>
                                                         <input
@@ -278,6 +279,20 @@ export default function AddAdvertisements() {
                                                             <div className="invalid-feedback">{validationErrors.videoURL}</div>
                                                         )}
                                                     </div>
+                                                    <div className="col-md-6 form-group">
+                                                    <label className="label_field">Advertisement Image</label>
+                                                    <input
+                                                        type="file"
+                                                        name="advertisementImage"
+                                                        id="advertisementImage"
+                                                        className={`form-control ${validationErrors.advertisementImage ? 'is-invalid' : ''}`}
+                                                        onChange={handleFileChange}
+                                                    />
+                                                    {validationErrors.advertisementImage && (
+                                                        <div className="invalid-feedback">{validationErrors.advertisementImage}</div>
+                                                    )}
+                                                </div>
+                                                </>
                                                 ) : (
                                                     <div className="col-md-6 form-group">
                                                         <label className="label_field">Advertisement Image</label>

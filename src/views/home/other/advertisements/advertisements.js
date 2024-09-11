@@ -87,7 +87,7 @@ export default function Advertisements() {
                                                                 <th>No</th>
                                                                 <th>Advertisements Image</th>
                                                                 <th>Advertisements Name</th>
-                                                                <th>Advertisements Location</th>
+                                                                <th>Advertisements Title</th>
                                                                 <th>Advertisements Date</th>
                                                                 <th>Actions</th>
                                                             </tr>
@@ -111,7 +111,7 @@ export default function Advertisements() {
                                                                     <td>{evt.advertisementType}</td>
                                                                     
                                                                     <td>
-                                                                        {evt.advertisementLocation}
+                                                                        {evt.advertisementTitle}
                                                                     </td>
                                                                     <td>{evt.advertisementDate}</td>
                                                                     <td>
