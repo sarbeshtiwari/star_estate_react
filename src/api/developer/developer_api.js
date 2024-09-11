@@ -1,7 +1,7 @@
 import axios from 'axios';
 import axiosInstance from '../../imageURL';
 
-const API_URL = 'https://ecis.in/apis/star-estate-API';
+const API_URL = 'http://localhost:4000';
 
 // Fetch all developers
 export const fetchDevelopers = async () => {
@@ -45,9 +45,11 @@ export const fetchDeveloperById = async (id) => {
 // Add a new developer
 export const addDeveloper = async (data) => {
     try {
-        const response = await axiosInstance.post(`/developers/addDeveloper`, data, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        const response = await axiosInstance.post(`/developers/addDeveloper`, data, 
+        //     {
+        //     headers: { 'Content-Type': 'multipart/form-data' }
+        // }
+    );
         return response.data;
     } catch (error) {
         throw new Error('Failed to add developer');

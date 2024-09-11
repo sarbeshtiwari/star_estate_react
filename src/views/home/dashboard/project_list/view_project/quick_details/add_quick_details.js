@@ -7,8 +7,8 @@ const AddQuickDetails = () => {
     const { ids, id } = useParams();
     const [headings, setHeadings] = useState([
         { heading: 'Unit Type', data: '', projectname: id },
-        { heading: 'Project Type', data: '', projectname: id },
-        { heading: 'Payment Plan', data: '', projectname: id },
+        { heading: 'Project Type', data: ' ', projectname: id },
+        { heading: 'Payment Plan', data: ' ', projectname: id },
     ]);
     const [validationErrors, setValidationErrors] = useState({});
     const [loading, setLoading] = useState(false);
@@ -84,9 +84,9 @@ const AddQuickDetails = () => {
     const validateForm = () => {
         const errors = {};
         headings.forEach((heading, index) => {
-            if (!heading.data.trim()) {
-                errors[`data${index}`] = 'Data is required';
-            } else if (heading.heading === 'Payment Plan' && !validatePaymentPlan(heading.data)) {
+            if (heading.heading === 'Unit Type' && !heading.data.trim()) {
+                errors[`data${index}`] = 'Unit Type is required';
+            } else if (heading.heading === 'Payment Plan' && heading.data.trim() && !validatePaymentPlan(heading.data)) {
                 errors[`data${index}`] = 'Please enter 2-4 numbers separated by ":" and ensure their sum equals 100';
             }
         });
@@ -194,7 +194,7 @@ const AddQuickDetails = () => {
                                         ))}
                                     </div>
                                     <div className="form-group">
-                                        <button className="btn btn-primary" type="submit" disabled={loading}>
+                                        <button className="main_bt" type="submit" disabled={loading}>
                                             {loading ? (
                                                 <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                             ) : (

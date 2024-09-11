@@ -155,7 +155,7 @@ export default function Sidebar() {
     const [showMedia, setShowMedia] = useState(false);
     const [showEnquiry, setShowEnquiry] = useState(false);
 
-    const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
+    const [timeLeft, setTimeLeft] = useState(7200); // 10 minutes in seconds
     const [warningMessage, setWarningMessage] = useState('');
     
     const location = useLocation();
@@ -391,9 +391,9 @@ export default function Sidebar() {
                             </Nav.Link>
                             {showEnquiry && (
                                 <Nav className="flex-column bg-light p-2 rounded" id="enquiry-items">
-                                    <Nav.Link as={Link} to="/luxuryProp" className="text-dark">
+                                    {/* <Nav.Link as={Link} to="/luxuryProp" className="text-dark">
                                         Luxury Property Show
-                                    </Nav.Link>
+                                    </Nav.Link> */}
                                     <Nav.Link as={Link} to="/ProjectQueries" className="text-dark">
                                         Project Queries
                                     </Nav.Link>
@@ -419,7 +419,7 @@ export default function Sidebar() {
                     </Button>
                     <span className="text-danger">
                         {warningMessage && <p>{warningMessage}</p>}
-                        {/* Session expires in: {formatTime(timeLeft)} */}
+                        Session expires in: {formatTime(timeLeft)}
                     </span>
                 </div>
             </Offcanvas>

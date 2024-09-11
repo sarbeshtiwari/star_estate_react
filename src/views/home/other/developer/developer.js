@@ -104,11 +104,9 @@ export default function Developer() {
                                                 <thead className="thead-dark">
                                                     <tr>
                                                         <th>No</th>
-                                                        <th>Developer Logo</th>
+                                                        
                                                         <th>Developer Name</th>
-                                                        <th>Establish Year</th>
-                                                        <th>Total Projects</th>
-                                                        <th>Ongoing Projects</th>
+                                                        
                                                         <th>Developer Priority</th>
                                                         <th></th>
                                                     </tr>
@@ -117,7 +115,7 @@ export default function Developer() {
                                                     {developers.map((developer, index) => (
                                                         <tr key={developer._id} className={index % 2 === 0 ? 'even' : 'odd'}>
                                                             <td className="sorting_1">{index + 1}</td>
-                                                            <td>
+                                                            {/* <td>
                                                                 <img 
                                                                    src={`${imageURL}/${developer.developerLogo}`}
 
@@ -127,11 +125,11 @@ export default function Developer() {
                                                                     width="50"
                                                                     height="50"
                                                                 />
-                                                            </td>
+                                                            </td> */}
                                                             <td>{developer.developerName}</td>
-                                                            <td>{developer.establishYear}</td>
+                                                            {/* <td>{developer.establishYear}</td>
                                                             <td>{developer.no_of_projects}</td>
-                                                            <td>{developer.ongoingProjects}</td>
+                                                            <td>{developer.ongoingProjects}</td> */}
                                                             <td>{developer.developerPriority}</td>
                                                             <td>
                                                                 <ul className="list-inline d-flex justify-content-end">

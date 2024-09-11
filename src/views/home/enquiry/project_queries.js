@@ -100,11 +100,11 @@ const ProjectQueries = () => {
     const downloadCSV = (data) => {
         const csvRows = [];
         // Adding headers
-        csvRows.push(['No', 'Name', 'Email', 'Mobile', 'Query', 'Note', 'Created at']); // Replace with actual headers
+        csvRows.push(['No', 'Name', 'Email', 'Mobile', 'Project Name', 'Created at']); // Replace with actual headers
 
         // Adding data rows
         data.forEach((row, index) => {
-            csvRows.push([index + 1, row.name, row.email, row.phoneNumber, row.user_message, row.note, row.created_at]);
+            csvRows.push([index + 1, row.Name, row.Email, row.phoneNumber, row.projectName, row.created_at]);
         });
 
         const csvString = csvRows.map(row => row.join(',')).join('\n');
@@ -120,7 +120,7 @@ const ProjectQueries = () => {
     };
 
     const downloadExcel = (data) => {
-        const ws = XLSX.utils.json_to_sheet(data, { header: ['No', 'Name', 'Email', 'Mobile', 'Query', 'Note', 'Created at'] });
+        const ws = XLSX.utils.json_to_sheet(data, { header: ['No', 'Name', 'Email', 'Mobile', 'Project Name', 'Created at'] });
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
         XLSX.writeFile(wb, 'data.xlsx');
@@ -130,7 +130,7 @@ const ProjectQueries = () => {
         const doc = new jsPDF();
         doc.text("PDF content here", 10, 10); // Customize as needed
         data.forEach((item, index) => {
-            doc.text(`${index + 1}: ${item.name}, ${item.email}, ${item.phoneNumber}, ${item.user_message}, ${item.note}`, 10, 20 + index * 10);
+            doc.text(`${index + 1}: ${item.Name}, ${item.Email}, ${item.phoneNumber}, ${item.projectName}, ${item.created_at}`, 10, 20 + index * 10);
         });
         doc.save('data.pdf');
     };
@@ -228,7 +228,7 @@ const ProjectQueries = () => {
                                                                 <th>Email</th>
                                                                 <th>Mobile</th>
                                                                 <th>Project Name</th>
-                                                                <th>Query</th>
+                                                                {/* <th>Query</th> */}
 
                                                                 <th>Created at</th>
                                                                 {/* <th>Note</th> */}
@@ -244,7 +244,7 @@ const ProjectQueries = () => {
                                                                     <td>{item.phoneNumber}</td>
                                                                     <th>{item.projectName}</th>
 
-                                                                    <td>{item.user_query}</td>
+                                                                    {/* <td>{item.user_query}</td> */}
                                                                     <td>{item.created_at.slice(0,10)}</td>
                                                                     {/* <td>{item.note ? item.note.slice(0,20) : item.note}</td> */}
                                                                     <td>

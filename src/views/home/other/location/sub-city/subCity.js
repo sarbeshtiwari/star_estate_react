@@ -136,10 +136,10 @@ export default function SubCities() {
                                                                     <td>{subCity.priority}</td>
                                                                     <td>
                                                                         <ul className="list-inline d-flex justify-content-center">
-                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/New`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
-                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/Residential`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
-                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
-                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
+                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/new-projects`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
+                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/residential`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
+                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/flats`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
+                                                                            <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/apartments`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
                                                                             <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
                                                                             <li><Link to={`/SubCityfooterFAQ/${subCity.slugURL}/residential`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
                                                                         </ul>

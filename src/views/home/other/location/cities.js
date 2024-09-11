@@ -120,15 +120,15 @@ export default function Cities() {
                                                                     </td>
                                                                     <td>
                                                                         <ul className="list-inline d-flex justify-content-center">
-                                                                            <li><Link to={`/footerFAQ/${city.slugURL}/Common`} className="btn btn-success btn-xs">Go</Link></li>
+                                                                            <li><Link to={`/footerFAQ/${city.slugURL}/common`} className="btn btn-success btn-xs">Go</Link></li>
                                                                         </ul>
                                                                     </td>
                                                                     <td>
                                                                         <ul className="list-inline d-flex justify-content-center">
-                                                                            <li><Link to={`/footerFAQ/${city.slugURL}/new`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
+                                                                            <li><Link to={`/footerFAQ/${city.slugURL}/new-projects`} className="btn btn-primary btn-xs"><i className="fa fa-edit"></i>New Projects</Link></li>
                                                                             <li><Link to={`/footerFAQ/${city.slugURL}/commercial`} className="btn btn-success btn-xs"><i className="fa fa-edit"></i>Commercial</Link></li>
-                                                                            <li><Link to={`/footerFAQ/${city.slugURL}/flat`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
-                                                                            <li><Link to={`/footerFAQ/${city.slugURL}/apartment`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
+                                                                            <li><Link to={`/footerFAQ/${city.slugURL}/flats`} className="btn btn-info btn-xs"><i className="fa fa-edit"></i>Flats</Link></li>
+                                                                            <li><Link to={`/footerFAQ/${city.slugURL}/apartments`} className="btn btn-warning btn-xs"><i className="fa fa-edit"></i>Apartments</Link></li>
                                                                             <li><Link to={`/footerFAQ/${city.slugURL}/studio`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Studio Apartments</Link></li>
                                                                             <li><Link to={`/footerFAQ/${city.slugURL}/residential`} className="btn btn-secondary btn-xs"><i className="fa fa-edit"></i>Residential</Link></li>
                                                                         </ul>

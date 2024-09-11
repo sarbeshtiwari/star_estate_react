@@ -89,7 +89,7 @@ export default function ProjectRera() {
                                                                 <tr>
                                                                     <th>No</th>
                                                                     <th>Icon</th>
-                                                                    <th>Title</th>
+                                                                    <th>RERA No</th>
                                                                     <th>RERA Heading</th>
                                                                     <th>Rera Website</th>
                                                                     <th></th>

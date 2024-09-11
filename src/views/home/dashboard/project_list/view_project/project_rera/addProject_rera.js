@@ -199,7 +199,7 @@ const handleSubmit = async (event) => {
                                                         
                                                         <div className="form-row">
                                                             <div className="col-md-6 form-group">
-                                                                <label className="label_field">RERA Heading</label>
+                                                                <label className="label_field">RERA No</label>
                                                                 <input
                                                                     type="text"
                                                                     name="reraHeading"
@@ -227,7 +227,7 @@ const handleSubmit = async (event) => {
                                                                     )}
                                                             </div>
                                                             <div className="col-md-6 form-group">
-                                                                <label className="label_field">Title</label>
+                                                                <label className="label_field">Project Name</label>
                                                                 <input
                                                                     type="text"
                                                                     name="title"

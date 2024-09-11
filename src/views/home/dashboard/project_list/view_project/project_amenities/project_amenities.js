@@ -99,7 +99,7 @@ export default function ProjectAmenities() {
                                                             <thead className="thead-dark">
                                                                 <tr>
                                                                     <th>No</th>
-                                                                    <th>Category</th>
+                                                                   
                                                                     <th>Icon</th>
                                                                     <th>Title</th>
                                                                 </tr>
@@ -113,7 +113,7 @@ export default function ProjectAmenities() {
                                                                     amenities.map((amenity, index) => (
                                                                         <tr key={amenity._id} className={index % 2 === 0 ? 'even' : 'odd'}>
                                                                             <td className="sorting_1">{index + 1}</td>
-                                                                            <td>{amenity.category}</td>
+                                                                            
                                                                             <td> <img 
                                                                    src={`${imageURL}/${amenity.image}`}
 

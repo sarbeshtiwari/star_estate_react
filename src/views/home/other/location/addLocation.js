@@ -359,7 +359,7 @@ export default function AddLocation() {
                                                             <option value=""></option>
                                                             <option value="common">Common</option>
                                                             <option value="apartments">Apartment</option>
-                                                            <option value="mew-projects">New Projects</option>
+                                                            <option value="new-projects">New Projects</option>
                                                             <option value="flats">Flat</option>
                                                             <option value="commercial">Commercial</option>
                                                             <option value="residential">Residential</option>

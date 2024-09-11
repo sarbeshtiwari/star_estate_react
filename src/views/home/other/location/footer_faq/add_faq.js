@@ -149,11 +149,11 @@ const validateForm = () => {
                                                         className={`form-control ${validationErrors[`faqType`] ? 'is-invalid' : ''}`}
                                                     >
                                                         <option value="">Select Type</option>
-                                                        <option value="Common">Common</option>
+                                                        <option value="common">Common</option>
                                                         <option value="residential">Residential</option>
-                                                        <option value="flat">Flat</option>
-                                                        <option value="New">New</option>
-                                                        <option value="apartment">Apartment</option>
+                                                        <option value="flats">Flat</option>
+                                                        <option value="new-projects">New Project</option>
+                                                        <option value="apartments">Apartment</option>
                                                         <option value="commercial">Commercial</option>
                                                         <option value="studio">Studio</option>
                                                     </select>

@@ -56,7 +56,7 @@ export default function LuxuryPropery(){
 
         // Adding data rows
         data.forEach((row, index) => {
-            csvRows.push([index + 1, row.Name, row.Email, row.Mobile, row.Project_name, row.Query,  row.created_at]);
+            csvRows.push([index + 1, row.Name, row.Email, row.phoneNumber, row.projectName, row.user_query,  row.created_at]);
         });
 
         const csvString = csvRows.map(row => row.join(',')).join('\n');
@@ -82,7 +82,7 @@ export default function LuxuryPropery(){
         const doc = new jsPDF();
         doc.text("PDF content here", 10, 10); // Customize as needed
         data.forEach((item, index) => {
-            doc.text(`${index + 1}: ${item.Name}, ${item.Email}, ${item.Mobile}, ${item.Project_name}, ${item.Query},  ${item.Created_at}`, 10, 20 + index * 10);
+            doc.text(`${index + 1}: ${item.Name}, ${item.Email}, ${item.phoneNumber}, ${item.projectName}, ${item.user_query},  ${item.created_at}`, 10, 20 + index * 10);
         });
         doc.save('data.pdf');
     };

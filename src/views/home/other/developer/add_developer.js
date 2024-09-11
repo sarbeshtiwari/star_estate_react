@@ -12,13 +12,13 @@ export default function AddDeveloper() {
         metaKeyword: '',
         metaDescription: '',
         developerName: '',
-        no_of_projects: '',
-        establishYear: '',
-        ongoingProjects: '',
-        experience: '',
+        // no_of_projects: '',
+        // establishYear: '',
+        // ongoingProjects: '',
+        // experience: '',
         developerPriority: '',
         description: '',
-        developerLogo: null
+        // developerLogo: null
     });
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
@@ -137,7 +137,7 @@ export default function AddDeveloper() {
         if (!formData.metaDescription) errors.metaDescription = 'Meta Description is required';
         if (!formData.developerName) errors.developerName = 'Developer Name is required';
         if (!formData.description) errors.description = 'Description is required';
-        if (!formData.developerLogo) errors.developerLogo = 'Image is required';
+        // if (!formData.developerLogo) errors.developerLogo = 'Image is required';
         return errors;
     };
 
@@ -167,7 +167,7 @@ export default function AddDeveloper() {
                 response = await updateDeveloper(id, data);
                 console.log('Developer updated successfully');
             } else {
-                response = await addDeveloper(data);
+                response = await addDeveloper(formData);
                 console.log('Developer added successfully');
             }
             navigate('/developer'); // Navigate back to the developer list
@@ -266,7 +266,7 @@ export default function AddDeveloper() {
                                                             <div className="invalid-feedback">{validationErrors.developerName}</div>
                                                         )}
                                                 </div>
-                                                <div className="col-md-4 form-group">
+                                                {/* <div className="col-md-4 form-group">
                                                     <label className="label_field">No. Of Projects</label>
                                                     <input
                                                         type="number"
@@ -278,8 +278,8 @@ export default function AddDeveloper() {
                                                         
                                                     />
                                                    
-                                                </div>
-                                                <div className="col-md-4 form-group">
+                                                </div> */}
+                                                {/* <div className="col-md-4 form-group">
                                                     <label className="label_field">Establish Year</label>
                                                     <input
                                                         type="number"
@@ -291,8 +291,8 @@ export default function AddDeveloper() {
                                                         
                                                     />
                                                    
-                                                </div>
-                                                <div className="col-md-4 form-group">
+                                                </div> */}
+                                                {/* <div className="col-md-4 form-group">
                                                     <label className="label_field">Ongoing Projects</label>
                                                     <input
                                                         type="number"
@@ -302,8 +302,8 @@ export default function AddDeveloper() {
                                                         className="form-control"
                                                         
                                                     />
-                                                </div>
-                                                <div className="col-md-4 form-group">
+                                                </div> */}
+                                                {/* <div className="col-md-4 form-group">
                                                     <label className="label_field">Experience</label>
                                                     <input
                                                         type="number"
@@ -313,7 +313,7 @@ export default function AddDeveloper() {
                                                         className="form-control"
                                                        
                                                     />
-                                                </div>
+                                                </div> */}
                                                 <div className="col-md-4 form-group">
                                                     <label className="label_field">Developer Priority</label>
                                                     <input
@@ -340,7 +340,7 @@ export default function AddDeveloper() {
                                                             <div className="invalid-feedback">{validationErrors.description}</div>
                                                         )}
                                                 </div>
-                                                <div className="col-md-12 form-group">
+                                                {/* <div className="col-md-12 form-group">
                                                     <label className="label_field">Developer Logo</label>
                                                     <input
                                                         type="file"
@@ -360,7 +360,7 @@ export default function AddDeveloper() {
                                                             height="70"
                                                         />
                                                     )}
-                                                </div>
+                                                </div> */}
                                                 <div className="form-group margin_0">
                                                 {id === 'add' ? ( 
                                                     <button className="main_bt" type="submit" disabled={loading}>

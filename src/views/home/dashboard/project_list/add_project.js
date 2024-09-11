@@ -489,6 +489,8 @@ export default function AddProject() {
                                                 <option value="4-BHK">4 BHK</option>
                                                 <option value="5-BHK">5 BHK</option>
                                                 <option value="Villa">Villa</option>
+                                                <option value="Retail-Shop">Retail Shop</option>
+                                                <option value="Office-Space">Office Space</option>
                                                 
                                                 <option value="studio">Sudio Apartments</option>
                                             </select>

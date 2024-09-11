@@ -207,7 +207,7 @@ export default function AddProjectAmenities() {
                                                                 />
                                                                 <div>
                                                                     <h5 className="card-title mb-1">{detail.title}</h5>
-                                                                    <p className="card-text mb-1">{detail.category}</p>
+                                                                    
                                                                 </div>
                                                             </div>
                                                         </div>

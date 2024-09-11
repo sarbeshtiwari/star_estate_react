@@ -149,8 +149,8 @@ export default function ProjectGallery() {
                                                             <thead className="thead-dark">
                                                                 <tr>
                                                                     <th>No</th>
-                                                                    <th>Icon</th>
-                                                                    <th>Title</th>
+                                                                    <th>Desktop Image</th>
+                                                                    <th>Mobile Image</th>
                                                                     <th>Alt Tag</th>
                                                                     <th>Walkthrough Banner</th>
                                                                     <th></th>
@@ -162,16 +162,27 @@ export default function ProjectGallery() {
                                                                         <td className="sorting_1">{index + 1}</td>
                                                                         <td>
                                                                             <img 
-                                                                            src={`${imageURL}/${detail.image}`}
+                                                                            src={`${imageURL}/${detail.desktopImage}`}
 
                                                                                 className="rounded-circle"
                                                                                 style={{ objectFit: 'cover' }}
-                                                                                alt={detail.title}
+                                                                                alt={detail.alt}
                                                                                 width="50"
                                                                                 height="50"
                                                                             />
                                                                         </td>
-                                                                        <td>{detail.title}</td>
+                                                                        <td>
+                                                                            <img 
+                                                                            src={`${imageURL}/${detail.mobileImage}`}
+
+                                                                                className="rounded-circle"
+                                                                                style={{ objectFit: 'cover' }}
+                                                                                alt={detail.alt}
+                                                                                width="50"
+                                                                                height="50"
+                                                                            />
+                                                                        </td>
+                                                                        
                                                                         <td>{detail.alt}</td>
                                                                         <td>{detail.displayHome === false ? (
                                                                                         <button className="btn btn-warning btn-xs" onClick={() => handleDisplayHomeStatusUpdate(detail._id, true)}>Deactivate</button>
