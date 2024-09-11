@@ -8,6 +8,11 @@ export default function SubCities() {
     const [loading, setLoading] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState('');
+    
+    const [itemsPerPage, setItemsPerPage] = useState(10); // Items per page state
+    const [currentPage, setCurrentPage] = useState(1); // Current page state
+    
 
     useEffect(() => {
         const getSubCities = async () => {
@@ -54,6 +59,22 @@ export default function SubCities() {
         }
     };
 
+    const filteredSubcity = subCities.filter(item =>
+        (item.city || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (item.sub_city || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (item.priority || '').toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    // Calculate total pages based on filtered data
+    const totalPages = Math.ceil(filteredSubcity.length / itemsPerPage);
+
+    // Get data for the current page
+    const currentData = filteredSubcity.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
     return (
         <>
             <div>
@@ -87,7 +108,13 @@ export default function SubCities() {
                                             <div className="dataTables_length" id="subct_length">
                                                 <label>
                                                     Show
-                                                    <select name="subct_length" aria-controls="subct" className="">
+                                                    <select 
+                                                        name="subct_length" 
+                                                        aria-controls="subct" 
+                                                        className="" 
+                                                        value={itemsPerPage}
+                                                        onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                                                    >
                                                         <option value="10">10</option>
                                                         <option value="25">25</option>
                                                         <option value="50">50</option>
@@ -95,21 +122,27 @@ export default function SubCities() {
                                                     </select> entries
                                                 </label>
                                             </div>
-                                            <div id="subct_filter" className="dataTables_filter">
-                                                <label>
-                                                    Search:
-                                                    <input type="search" className="" placeholder="" aria-controls="subct" />
+                                            <div id="pjdataTable_filter" className="dataTables_filter">
+                                                <label>Search:
+                                                    <input
+                                                        type="search"
+                                                        className=""
+                                                        placeholder=""
+                                                        aria-controls="pjdataTable"
+                                                        value={searchQuery}
+                                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                                    />
                                                 </label>
                                             </div>
                                             <div className="table-responsive">
-                                            {loading ? (
-                                                            <div className="d-flex justify-content-center align-items-center">
-                                                                <div className="spinner-border text-primary" role="status">
-                                                                    <span className="sr-only">Loading...</span>
-                                                                </div>
-                                                                <span className="ml-2">Loading...</span>
-                                                            </div>
-                                                        ) : ''}
+                                                {loading ? (
+                                                    <div className="d-flex justify-content-center align-items-center">
+                                                        <div className="spinner-border text-primary" role="status">
+                                                            <span className="sr-only">Loading...</span>
+                                                        </div>
+                                                        <span className="ml-2">Loading...</span>
+                                                    </div>
+                                                ) : ''}
                                                 <table className="table table-striped projects dataTable no-footer">
                                                     <thead className="thead-dark">
                                                         <tr>
@@ -123,14 +156,14 @@ export default function SubCities() {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {subCities.length === 0 ? (
+                                                        {currentData.length === 0 ? (
                                                             <tr>
                                                                 <td colSpan="7">No Data Found</td>
                                                             </tr>
                                                         ) : (
-                                                            subCities.map((subCity, index) => (
+                                                            currentData.map((subCity, index) => (
                                                                 <tr key={index} className={index % 2 === 0 ? 'even' : 'odd'}>
-                                                                    <td className="sorting_1">{index + 1}</td>
+                                                                    <td className="sorting_1">{(currentPage - 1) * itemsPerPage + index + 1}</td>
                                                                     <td>{subCity.city}</td>
                                                                     <td>{subCity.sub_city}</td>
                                                                     <td>{subCity.priority}</td>
@@ -182,16 +215,37 @@ export default function SubCities() {
                                                     </tbody>
                                                 </table>
                                                 <div className="dataTables_info" id="subct_info" role="status" aria-live="polite">
-                                                    Showing 1 to {subCities.length} of {subCities.length} entries
+                                                    Showing {currentData.length} of {filteredSubcity.length} entries
                                                 </div>
                                                 <div className="dataTables_paginate paging_simple_numbers" id="subct_paginate">
-                                                    <Link className="paginate_button previous disabled" aria-controls="subct" aria-disabled="true" data-dt-idx="previous" tabIndex="-1" id="subct_previous">Previous</Link>
+                                                    <button 
+                                                        className="paginate_button previous" 
+                                                        aria-controls="subct" 
+                                                        onClick={() => handlePageChange(currentPage - 1)}
+                                                        disabled={currentPage === 1}
+                                                    >
+                                                        Previous
+                                                    </button>
                                                     <span>
-                                                        {[...Array(Math.ceil(subCities.length / 10)).keys()].map(page => (
-                                                            <Link key={page} className="paginate_button current" aria-controls="subct" aria-current="page" data-dt-idx={page} tabIndex="0">{page + 1}</Link>
+                                                        {[...Array(totalPages).keys()].map(page => (
+                                                            <button 
+                                                                key={page} 
+                                                                className={`paginate_button ${page + 1 === currentPage ? 'current' : ''}`} 
+                                                                aria-controls="subct" 
+                                                                onClick={() => handlePageChange(page + 1)}
+                                                            >
+                                                                {page + 1}
+                                                            </button>
                                                         ))}
                                                     </span>
-                                                    <Link className="paginate_button next" aria-controls="subct" data-dt-idx="next" tabIndex="0" id="subct_next">Next</Link>
+                                                    <button 
+                                                        className="paginate_button next" 
+                                                        aria-controls="subct" 
+                                                        onClick={() => handlePageChange(currentPage + 1)}
+                                                        disabled={currentPage === totalPages}
+                                                    >
+                                                        Next
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>

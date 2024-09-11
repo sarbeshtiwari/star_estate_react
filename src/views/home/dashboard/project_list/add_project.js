@@ -19,7 +19,7 @@ export default function AddProject() {
     const [locality, setLocality] = useState([]);
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
-    const [priceUnit, setPriceUnit] = useState('Cr');
+    const [priceUnit, setPriceUnit] = useState('');
     const [isPriceRevealingSoon, setIsPriceRevealingSoon] = useState(false); // New state for checkbox
 
     const [formData, setFormData] = useState({
@@ -547,6 +547,7 @@ export default function AddProject() {
                                                         onChange={handleUnitChange}
                                                         className={`form-control ml-2 ${validationErrors.projectPriceUnit ? 'is-invalid' : ''}`}
                                                     >
+                                                        <option value=""></option>
                                                         <option value="Cr">Cr</option>
                                                         <option value="Lakh">Lakh</option>
                                                         <option value="K">K</option>

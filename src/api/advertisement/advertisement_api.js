@@ -25,7 +25,7 @@ export const updateAdvertisementStatus = async (id, status) => {
 // Delete an Advertisement
 export const deleteAdvertisement = async (id, image) => {
     try {
-        await axiosInstance.delete(`/advertisement/deleteAdvertisement/${id}`, { data: { image } });
+        await axiosInstance.delete(`/advertisement/deleteAdvertisements/${id}`, { data: { image } });
     } catch (error) {
         throw new Error('Failed to delete Advertisement');
     }

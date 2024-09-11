@@ -18,6 +18,9 @@ export default function ProjectList() {
     const [searchQuery, setSearchQuery] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
     const [showErrorModal, setShowErrorModal] = useState(false);
+    const [itemsPerPage, setItemsPerPage] = useState(10); // Items per page state
+    const [currentPage, setCurrentPage] = useState(1); // Current page state
+
     useEffect(() => {
         handlefetchProjects(id);
         console.log(imageURL)
@@ -120,6 +123,16 @@ const filteredProperty = projects.filter(item =>
         }
     };
 
+    // Calculate total pages based on filtered data
+    const totalPages = Math.ceil(filteredProperty.length / itemsPerPage);
+
+    // Get data for the current page
+    const currentData = filteredProperty.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
 
     return (
         <>  
@@ -148,17 +161,23 @@ const filteredProperty = projects.filter(item =>
                                 </button>
                                     </div>
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
-                                        <div className="dataTables_length" id="subct_length">
-                                            <label>
-                                                Show 
-                                                <select name="subct_length" aria-controls="subct" className="">
-                                                    <option value="10">10</option>
-                                                    <option value="25">25</option>
-                                                    <option value="50">50</option>
-                                                    <option value="100">100</option>
-                                                </select> entries
-                                            </label>
-                                        </div>
+                                    <div className="dataTables_length" id="subct_length">
+                                                <label>
+                                                    Show
+                                                    <select 
+                                                        name="subct_length" 
+                                                        aria-controls="subct" 
+                                                        className="" 
+                                                        value={itemsPerPage}
+                                                        onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                                                    >
+                                                        <option value="10">10</option>
+                                                        <option value="25">25</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select> entries
+                                                </label>
+                                            </div>
                                         <div id="pjdataTable_filter" className="dataTables_filter">
                                                         <label>Search:
                                                         <input
@@ -203,9 +222,9 @@ const filteredProperty = projects.filter(item =>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {filteredProperty.map((project, index) => (
+                                                    {currentData.map((project, index) => (
                                                         <tr key={project._id} className={index % 2 === 0 ? 'even' : 'odd'}>
-                                                            <td className="sorting_1">{index + 1}</td>
+                                                            <td className="sorting_1">{(currentPage - 1) * itemsPerPage + index + 1}</td>
                                                             <td>
                                                                 <img 
                                                                    src={`${imageURL}/${project.project_logo}`}
@@ -278,17 +297,38 @@ const filteredProperty = projects.filter(item =>
                                             </table>
                                         </div> </div>
                                         <div className="dataTables_info" id="subct_info" role="status" aria-live="polite">
-                                            Showing 1 to {projects.length} of {projects.length} entries
-                                        </div>
-                                        <div className="dataTables_paginate paging_simple_numbers" id="subct_paginate">
-                                            <Link className="paginate_button previous disabled" aria-controls="subct" aria-disabled="true" data-dt-idx="previous" tabIndex="-1" id="subct_previous">Previous</Link>
-                                            <span>
-                                                {[...Array(Math.ceil(projects.length / 10)).keys()].map(page => (
-                                                    <Link key={page} className="paginate_button current" aria-controls="subct" aria-current="page" data-dt-idx={page} tabIndex="0">{page + 1}</Link>
-                                                ))}
-                                            </span>
-                                            <Link className="paginate_button next" aria-controls="subct" data-dt-idx="next" tabIndex="0" id="subct_next">Next</Link>
-                                        </div>
+                                                    Showing {currentData.length} of {filteredProperty.length} entries
+                                                </div>
+                                                <div className="dataTables_paginate paging_simple_numbers" id="subct_paginate">
+                                                    <button 
+                                                        className="paginate_button previous" 
+                                                        aria-controls="subct" 
+                                                        onClick={() => handlePageChange(currentPage - 1)}
+                                                        disabled={currentPage === 1}
+                                                    >
+                                                        Previous
+                                                    </button>
+                                                    <span>
+                                                        {[...Array(totalPages).keys()].map(page => (
+                                                            <button 
+                                                                key={page} 
+                                                                className={`paginate_button ${page + 1 === currentPage ? 'current' : ''}`} 
+                                                                aria-controls="subct" 
+                                                                onClick={() => handlePageChange(page + 1)}
+                                                            >
+                                                                {page + 1}
+                                                            </button>
+                                                        ))}
+                                                    </span>
+                                                    <button 
+                                                        className="paginate_button next" 
+                                                        aria-controls="subct" 
+                                                        onClick={() => handlePageChange(currentPage + 1)}
+                                                        disabled={currentPage === totalPages}
+                                                    >
+                                                        Next
+                                                    </button>
+                                                </div>
                                     </div>
                                 </div>
                             </div>

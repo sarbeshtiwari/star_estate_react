@@ -124,15 +124,15 @@ export default function Events() {
                                                                         </td>
                                                                     <td>{evt.eventName}</td>
                                                                     <td>
-                                                                        <button className="btn btn-success btn-xs" onClick={() => openModal(evt._id)}>Add Events Gallery</button>
+                                                                        <button className="btn btn-success btn-xs" onClick={() => openModal(evt.slugURL)}>Add Events Gallery</button>
                                                                         <GalleryModal
-                                                                            showModal={showModal && eventId === evt._id}
+                                                                            showModal={showModal && eventId === evt.slugURL}
                                                                             handleClose={closeModal}
                                                                             eventId={eventId}
                                                                         />
                                                                     </td>
                                                                     <td>
-                                                                        <Link to={`/eventsGallery/${evt._id}`} className="btn btn-success btn-xs">View Gallery</Link>
+                                                                        <Link to={`/eventsGallery/${evt.slugURL}`} className="btn btn-success btn-xs">View Gallery</Link>
                                                                     </td>
                                                                     <td>{evt.eventDate}</td>
                                                                     <td>
