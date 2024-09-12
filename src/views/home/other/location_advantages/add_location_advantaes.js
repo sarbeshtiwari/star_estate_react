@@ -48,16 +48,27 @@ const AddLocationAdvantages = () => {
    const handleHeadingChange = (index, field, value) => {
     const updatedHeadings = [...headings];
     if (field === 'image') {
-        validateImage(value[0])
+        const file = value[0]; // Access the selected file
+    
+        // Check if a file is selected; if not, return early
+        if (!file) {
+            return; // Exit if no file is selected (e.g., user clicked "Cancel")
+        }
+    
+        validateImage(file)
             .then((file) => {
+                // Update the headings with the validated file
                 updatedHeadings[index] = { ...updatedHeadings[index], [field]: file };
                 setHeadings(updatedHeadings);
                 setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: '' }));
+    
+                // Generate and set the preview URL for the newly selected image
                 const newPreviewUrl = [...previewUrl];
                 newPreviewUrl[index] = URL.createObjectURL(file);
                 setPreviewUrl(newPreviewUrl);
             })
             .catch((error) => {
+                // Handle validation error
                 setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: error }));
             });
     } else {

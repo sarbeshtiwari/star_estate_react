@@ -285,6 +285,7 @@ export default function AddBlogs() {
                                                     >
                                                         <option value="">Select category</option>
                                                         <option value="blog">Blog</option>
+                                                        <option value="news">News</option>
                                                        
                                                         
                                                     </select>

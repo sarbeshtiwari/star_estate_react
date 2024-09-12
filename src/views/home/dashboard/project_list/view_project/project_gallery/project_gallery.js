@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { deleteProjectGallery, getProjectGalleryByProject, getProjectGalleryByID, updateProjectGalleryHomeStatus, updateProjectGalleryStatus, getGalleryContent, projectGalleryContent } from '../../../../../../api/dashboard/project_list/view_project/project_gallery_api';
+import { deleteProjectGallery, getProjectGalleryByProject, updateProjectGalleryAmenityStatus, getProjectGalleryByID, updateProjectGalleryHomeStatus, updateProjectGalleryStatus, getGalleryContent, projectGalleryContent } from '../../../../../../api/dashboard/project_list/view_project/project_gallery_api';
 import { imageURL } from '../../../../../../imageURL';
 import Modal from '../../../../enquiry/modal';
 
@@ -48,6 +48,16 @@ export default function ProjectGallery() {
     const handleDisplayHomeStatusUpdate = async (detailId, displayHome) => {
         try {
             await updateProjectGalleryHomeStatus(detailId, displayHome);
+            const response =  await getProjectGalleryByProject(id);
+            setDetails(response);
+        } catch (error) {
+            console.error('Error updating status:', error);
+        }
+    };
+
+    const handleDisplayAmenityStatusUpdate = async (detailId, amenityImage) => {
+        try {
+            await updateProjectGalleryAmenityStatus(detailId, amenityImage);
             const response =  await getProjectGalleryByProject(id);
             setDetails(response);
         } catch (error) {
@@ -153,6 +163,7 @@ export default function ProjectGallery() {
                                                                     <th>Mobile Image</th>
                                                                     <th>Alt Tag</th>
                                                                     <th>Walkthrough Banner</th>
+                                                                    <th>Amenity Banner</th>
                                                                     <th></th>
                                                                 </tr>
                                                             </thead>
@@ -185,15 +196,22 @@ export default function ProjectGallery() {
                                                                         
                                                                         <td>{detail.alt}</td>
                                                                         <td>{detail.displayHome === false ? (
-                                                                                        <button className="btn btn-warning btn-xs" onClick={() => handleDisplayHomeStatusUpdate(detail._id, true)}>Deactivate</button>
+                                                                                        <button className="btn btn-warning btn-xs" onClick={() => handleDisplayHomeStatusUpdate(detail._id, true)}>Deactive</button>
                                                                                     ) : (
                                                                                         <button className="btn btn-success btn-xs" onClick={() => handleDisplayHomeStatusUpdate(detail._id, false)}>Active</button>
                                                                                     )}</td>
+                                                                                    <td>{detail.amenityImage === false ? (
+                                                                                        <button className="btn btn-warning btn-xs" onClick={() => handleDisplayAmenityStatusUpdate(detail._id, true)}>Deactive</button>
+                                                                                    ) : (
+                                                                                        <button className="btn btn-success btn-xs" onClick={() => handleDisplayAmenityStatusUpdate(detail._id, false)}>Active</button>
+                                                                                    )}</td>
+                                                                        
                                                                         <td>
+                                                                            
                                                                             <ul className="list-inline d-flex justify-content-end">
                                                                                 <li>
                                                                                     {detail.status === false ? (
-                                                                                        <button className="btn btn-warning btn-xs" onClick={() => handleStatusUpdate(detail._id, true)}>Deactivate</button>
+                                                                                        <button className="btn btn-warning btn-xs" onClick={() => handleStatusUpdate(detail._id, true)}>Deactive</button>
                                                                                     ) : (
                                                                                         <button className="btn btn-success btn-xs" onClick={() => handleStatusUpdate(detail._id, false)}>Active</button>
                                                                                     )}

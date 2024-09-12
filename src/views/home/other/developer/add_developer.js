@@ -164,7 +164,7 @@ export default function AddDeveloper() {
         try {
             let response;
             if (id !== 'add') {
-                response = await updateDeveloper(id, data);
+                response = await updateDeveloper(id, formData);
                 console.log('Developer updated successfully');
             } else {
                 response = await addDeveloper(formData);

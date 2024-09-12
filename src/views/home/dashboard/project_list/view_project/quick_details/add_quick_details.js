@@ -15,7 +15,7 @@ const AddQuickDetails = () => {
 
     const navigate = useNavigate();
 
-    const projectTypeOptions = ['New Launch', 'Luxury', 'Featured', 'Recent'];
+    const projectTypeOptions = ['New Launch', 'Luxury', 'Featured', 'Apartments', 'Flats', 'Retail Shops', 'Offices'];
 
     useEffect(() => {
         if (ids !== 'add') {
@@ -96,20 +96,24 @@ const AddQuickDetails = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+    
         if (!validateForm()) {
             return; // Stop submission if validation fails
         }
-
+    
         setLoading(true);
-
+    
+        // Filter out headings where the data field is empty
+        const filteredHeadings = headings.filter((heading) => heading.data.trim() !== '');
+    
         try {
             let response;
             if (ids !== 'add') {
-                response = await updateQuickDetails(id, headings);
+                response = await updateQuickDetails(id, filteredHeadings);
             } else {
-                response = await addQuickDetails(headings);
+                response = await addQuickDetails(filteredHeadings);
             }
+    
             if (response && response.success) {
                 alert('Data saved successfully');
                 navigate(-1);
@@ -120,9 +124,10 @@ const AddQuickDetails = () => {
             console.error('Error:', error);
             alert('An error occurred while saving data. Please try after some time');
         }
-
+    
         setLoading(false);
     };
+    
 
     return (
         <div>

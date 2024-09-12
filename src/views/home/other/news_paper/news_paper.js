@@ -65,7 +65,7 @@ export default function NewsPaper() {
                                 <div className="white_shd full margin_bottom_30">
                                     <div className="full graph_head">
                                         <Link to="/addNewsPaper/add" className="btn btn-success btn-xs">Add News Paper</Link>
-                                        <Link to="" className="btn btn-primary btn-xs float-right">Back</Link>
+                                       
                                     </div>
                                     <div className="full price_table padding_infor_info">
                                     {loading ? (

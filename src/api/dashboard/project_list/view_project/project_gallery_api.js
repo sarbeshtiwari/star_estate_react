@@ -69,6 +69,14 @@ export const updateProjectGalleryHomeStatus = async (cat_id, displayHome) => {
     }
 };
 
+export const updateProjectGalleryAmenityStatus = async (cat_id, amenityImage) => {
+    try {
+        await axios.put(`${BASE_URL}/updateProjectGalleryAmenityStatus/${cat_id}`, { amenityImage });
+    } catch (error) {
+        throw new Error('Error updating Location Advantages status.');
+    }
+};
+
 // Delete ProjectGallery
 export const deleteProjectGallery = async (cat_id) => {
     try {

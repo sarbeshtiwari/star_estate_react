@@ -34,8 +34,8 @@ export default function AddProjectBannerImage() {
 
         return new Promise((resolve, reject) => {
             if (file.size > maxSize) {
-                alert("File size exceeds 1 MB");
-                return reject(new Error("File size exceeds 1 MB"));
+                alert("File size exceeds 2 MB");
+                return reject(new Error("File size exceeds 2 MB"));
             }
 
             const img = new Image();

@@ -38,6 +38,12 @@ const AddProjectGallery = () => {
 
     const handleFieldChange = (index, field, value) => {
         const updatedFields = [...galleryFields];
+    
+        // If it's a file input and no file is selected, simply return without doing anything.
+        if ((field === 'desktopImage' || field === 'mobileImage') && (!value || !value[0])) {
+            return;
+        }
+    
         if (field === 'desktopImage' || field === 'mobileImage') {
             validateImage(value[0], field)
                 .then((file) => {
@@ -53,10 +59,11 @@ const AddProjectGallery = () => {
             setGalleryFields(updatedFields);
         }
     };
+    
 
     const validateImage = (file, field) => {
         const allowedTypes = ["image/png", "image/webp", "image/jpeg"];
-        const maxSize = 1 * 1024 * 1024; // 1 MB
+        const maxSize = 2 * 1024 * 1024; // 2 MB
 
         return new Promise((resolve, reject) => {
             if (!allowedTypes.includes(file.type)) {
@@ -65,7 +72,7 @@ const AddProjectGallery = () => {
             }
 
             if (file.size > maxSize) {
-                reject("Image size must be less than 1 MB.");
+                reject("Image size must be less than 2 MB.");
                 return;
             }
 

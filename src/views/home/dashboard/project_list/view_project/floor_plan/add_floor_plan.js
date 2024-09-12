@@ -39,10 +39,46 @@ const AddApprovedBanks = () => {
     };
 
     // Function to handle input change for headings
+    // const handleHeadingChange = (index, field, value) => {
+    //     const updatedHeadings = [...headings];
+    //     if (field === 'image') {
+    //         validateImage(value[0])
+    //             .then((file) => {
+    //                 updatedHeadings[index] = { ...updatedHeadings[index], [field]: file };
+    //                 setHeadings(updatedHeadings);
+    //                 setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: '' }));
+    //             })
+    //             .catch((error) => {
+    //                 setValidationErrors((prevErrors) => ({ ...prevErrors, [`image${index}`]: error }));
+    //             });
+    //     } else if (field === 'areaRangeSqft' || field === 'areaRangeSqm') {
+    //         const [min, max] = value.split('-').map(val => val.trim());
+    //         if (field === 'areaRangeSqft') {
+    //             const minSqm = (parseFloat(min) * 0.092903).toFixed(2);
+    //             const maxSqm = (parseFloat(max) * 0.092903).toFixed(2);
+    //             updatedHeadings[index] = { ...updatedHeadings[index], areaRangeSqft: value, areaRangeSqm: `${minSqm} - ${maxSqm}` };
+    //         } else if (field === 'areaRangeSqm') {
+    //             const minSqft = (parseFloat(min) / 0.092903).toFixed(2);
+    //             const maxSqft = (parseFloat(max) / 0.092903).toFixed(2);
+    //             updatedHeadings[index] = { ...updatedHeadings[index], areaRangeSqm: value, areaRangeSqft: `${minSqft} - ${maxSqft}` };
+    //         }
+    //         setHeadings(updatedHeadings);
+    //     } else {
+    //         updatedHeadings[index] = { ...updatedHeadings[index], [field]: value };
+    //         setHeadings(updatedHeadings);
+    //     }
+    // };
     const handleHeadingChange = (index, field, value) => {
         const updatedHeadings = [...headings];
         if (field === 'image') {
-            validateImage(value[0])
+            const file = value[0];
+    
+            // Check if a file is selected; if not, return early
+            if (!file) {
+                return;
+            }
+    
+            validateImage(file)
                 .then((file) => {
                     updatedHeadings[index] = { ...updatedHeadings[index], [field]: file };
                     setHeadings(updatedHeadings);
@@ -53,14 +89,26 @@ const AddApprovedBanks = () => {
                 });
         } else if (field === 'areaRangeSqft' || field === 'areaRangeSqm') {
             const [min, max] = value.split('-').map(val => val.trim());
+    
+            const minValue = min || ''; // Use the first value as min if it's present, or an empty string
+            const maxValue = max || '0'; // If no second value is provided, treat max as min
+            
             if (field === 'areaRangeSqft') {
-                const minSqm = (parseFloat(min) * 0.092903).toFixed(2);
-                const maxSqm = (parseFloat(max) * 0.092903).toFixed(2);
-                updatedHeadings[index] = { ...updatedHeadings[index], areaRangeSqft: value, areaRangeSqm: `${minSqm} - ${maxSqm}` };
+                const minSqm = isNaN(parseFloat(minValue)) ? '' : (parseFloat(minValue) * 0.092903).toFixed(2);
+                const maxSqm = isNaN(parseFloat(maxValue)) ? '' : (parseFloat(maxValue) * 0.092903).toFixed(2);
+                updatedHeadings[index] = { 
+                    ...updatedHeadings[index], 
+                    areaRangeSqft: value, 
+                    areaRangeSqm: minSqm && maxSqm ? `${minSqm} - ${maxSqm}` : '' 
+                };
             } else if (field === 'areaRangeSqm') {
-                const minSqft = (parseFloat(min) / 0.092903).toFixed(2);
-                const maxSqft = (parseFloat(max) / 0.092903).toFixed(2);
-                updatedHeadings[index] = { ...updatedHeadings[index], areaRangeSqm: value, areaRangeSqft: `${minSqft} - ${maxSqft}` };
+                const minSqft = isNaN(parseFloat(minValue)) ? '' : (parseFloat(minValue) / 0.092903).toFixed(2);
+                const maxSqft = isNaN(parseFloat(maxValue)) ? '' : (parseFloat(maxValue) / 0.092903).toFixed(2);
+                updatedHeadings[index] = { 
+                    ...updatedHeadings[index], 
+                    areaRangeSqm: value, 
+                    areaRangeSqft: minSqft && maxSqft ? `${minSqft} - ${maxSqft}` : '' 
+                };
             }
             setHeadings(updatedHeadings);
         } else {
@@ -68,6 +116,8 @@ const AddApprovedBanks = () => {
             setHeadings(updatedHeadings);
         }
     };
+    
+    
 
     const validateImage = (file) => {
         const allowedTypes = ["image/png", "image/webp", "image/jpeg"];

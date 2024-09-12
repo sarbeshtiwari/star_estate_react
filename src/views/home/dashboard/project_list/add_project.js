@@ -120,6 +120,10 @@ export default function AddProject() {
     
         if (type === 'file') {
             const file = files[0];
+
+            if (!file) {
+                return;
+            }
             
             // Validate image file
             try {

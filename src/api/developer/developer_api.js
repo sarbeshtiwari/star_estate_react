@@ -59,9 +59,11 @@ export const addDeveloper = async (data) => {
 // Update an existing developer
 export const updateDeveloper = async (id, data) => {
     try {
-        const response = await axiosInstance.put(`/developers/updateDeveloper/${id}`, data, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        const response = await axiosInstance.put(`/developers/updateDeveloper/${id}`, data, 
+        //     {
+        //     headers: { 'Content-Type': 'multipart/form-data' }
+        // }
+    );
         return response.data;
     } catch (error) {
         throw new Error('Failed to update developer');

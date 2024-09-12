@@ -102,7 +102,7 @@ export default function ProjectFAQ() {
                                                                 <ul className="list-inline d-flex justify-content-end">
                                                                     <li>
                                                                         {faqItem.status === false ? (
-                                                                            <button className="btn btn-warning btn-xs" onClick={() => handleStatusUpdate(faqItem._id, true)}>Deactivate</button>
+                                                                            <button className="btn btn-warning btn-xs" onClick={() => handleStatusUpdate(faqItem._id, true)}>Deactive</button>
                                                                         ) : (
                                                                             <button className="btn btn-success btn-xs" onClick={() => handleStatusUpdate(faqItem._id, false)}>Active</button>
                                                                         )}

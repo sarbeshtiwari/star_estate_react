@@ -165,9 +165,9 @@ export default function BrochureWalkthrough() {
                                                                                 <ul className="list-inline d-flex justify-content-end">
                                                                                     <li>
                                                                                         {detail.status === false ? (
-                                                                                            <button className="btn btn-warning btn-xs" onClick={() => handleStatusUpdate(detail._id, true)}>Deactivate</button>
+                                                                                            <button className="btn btn-warning btn-xs" onClick={() => handleStatusUpdate(detail._id, true)}>Deactive</button>
                                                                                         ) : (
-                                                                                            <button className="btn btn-success btn-xs" onClick={() => handleStatusUpdate(detail._id, false)}>Activate</button>
+                                                                                            <button className="btn btn-success btn-xs" onClick={() => handleStatusUpdate(detail._id, false)}>Active</button>
                                                                                         )}
                                                                                     </li>
                                                                                     <li>
