@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../sidebar';
 import { fetchCityDetails, addCity, updateCity } from '../../../../api/location/location_api';
+import Swal from 'sweetalert2';
 
 export default function AddLocation() {
     const navigate = useNavigate();
@@ -24,6 +25,11 @@ export default function AddLocation() {
     const [validationErrors, setValidationErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [previewUrl, setPreviewUrl] = useState('');
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
 
     useEffect(() => {
@@ -214,13 +220,28 @@ export default function AddLocation() {
             }
     
             if (result.success) {
-                alert('City saved successfully');
-                navigate('/location');
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data added successfully.',
+                    confirmButtonText: 'OK'
+                });
+                navigate(-1);
             } else {
-                alert(`Failed to save City: ${result.message}`);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to add/update data.',
+                    confirmButtonText: 'OK'
+                });
             }
         } catch (error) {
-            alert('Faild to add Data at the moment, Please try after some time.')
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
             console.error('Error submitting form:', error);
         }
         setLoading(false)
@@ -348,7 +369,7 @@ export default function AddLocation() {
                                                         </div>
                                                     <div className="col-md-6 form-group">
                                                         <label className="label_field">City</label>
-                                                        <input type="text" name="location" id="location" value={formData.location} onChange={handleInputChange} className={`form-control ${validationErrors.location ? 'is-invalid' : ''}`} />
+                                                        <input type="text" name="location" id="location" value={formData.location} onChange={handleInputChange} style={{ textTransform: 'capitalize' }} className={`form-control ${validationErrors.location ? 'is-invalid' : ''}`} />
                                                         {validationErrors.location && (
                                                             <div className="invalid-feedback">{validationErrors.location}</div>
                                                         )}

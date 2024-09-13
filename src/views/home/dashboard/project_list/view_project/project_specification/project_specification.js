@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { fetchSpecificationsByProjectId, updateSpecificationStatus, deleteSpecification } from '../../../../../../api/dashboard/project_list/view_project/project_specification_api'; 
+import Swal from 'sweetalert2';
 
 const ProjectSpecification = () => {
     const [details, setDetails] = useState([]);
@@ -12,12 +13,17 @@ const ProjectSpecification = () => {
         fetchDetails();
     }, [id]);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const fetchDetails = async () => {
         try {
             const data = await fetchSpecificationsByProjectId(id);
             setDetails(data);
         } catch (err) {
-            console.error('Unexpected error:', err);
+            // console.error('Unexpected error:', err);
         }
     };
 
@@ -25,22 +31,35 @@ const ProjectSpecification = () => {
         try {
             const result = await updateSpecificationStatus(specId, status);
             if (result.success) {
-                console.log('Details status updated successfully!');
+                // console.log('Details status updated successfully!');
                 fetchDetails();
             } else {
                 console.error('Error updating Details status:', result.message);
             }
         } catch (error) {
-            console.error('Unexpected error:', error);
+            // console.error('Unexpected error:', error);
         }
     };
 
     const handleDelete = async (specId) => {
         try {
             await deleteSpecification(specId);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             fetchDetails();
         } catch (error) {
-            console.error('Error deleting Details:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
         }
     };
 

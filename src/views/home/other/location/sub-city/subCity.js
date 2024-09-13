@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { fetchSubCities, updateSubCityStatus, deleteSubCity } from '../../../../../api/location/sub_city/sub_city_api';
+import Swal from 'sweetalert2';
 
 export default function SubCities() {
     const [subCities, setSubCities] = useState([]);
@@ -24,7 +25,7 @@ export default function SubCities() {
                 }
                 setSubCities(data);
             } catch (error) {
-                console.error('Error fetching subCities:', error);
+                // console.error('Error fetching subCities:', error);
             }
             setLoading(false);
         };
@@ -32,19 +33,24 @@ export default function SubCities() {
         getSubCities();
     }, [id]);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const handleUpdateStatus = async (subCityId, status) => {
         try {
             const result = await updateSubCityStatus(subCityId, status);
             if (result.success) {
-                console.log('City status updated successfully!');
+                // console.log('City status updated successfully!');
                 setSubCities(prev => prev.map(subCity =>
                     subCity._id === subCityId ? { ...subCity, status } : subCity
                 ));
             } else {
-                console.error('Error updating city status:', result.message);
+                // console.error('Error updating city status:', result.message);
             }
         } catch (error) {
-            console.error('Unexpected error:', error);
+            // console.error('Unexpected error:', error);
         }
     };
 
@@ -52,10 +58,23 @@ export default function SubCities() {
         try {
             if (window.confirm('Are you sure you want to delete this category?')) {
                 await deleteSubCity(subCityId);
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data Deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000, 
+                    timerProgressBar: true, 
+                });
                 setSubCities(prev => prev.filter(subCity => subCity._id !== subCityId));
             }
         } catch (error) {
-            console.error('Error deleting city:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
         }
     };
 

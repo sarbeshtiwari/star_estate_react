@@ -5,6 +5,7 @@ import Sidebar from '../sidebar';
 import Modal from './modal'; // Import the modal component
 import { deleteCareer, fetchCareer, updateCareer } from '../../../api/enquiry/career';
 import { imageURL } from '../../../imageURL';
+import Swal from 'sweetalert2';
 
 
 
@@ -15,6 +16,11 @@ const Career = () => {
     const [noteText, setNoteText] = useState(''); // Track the note text
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
 
     useEffect(() => {
@@ -41,6 +47,14 @@ const Career = () => {
     const handleDelete = async (id) => {
         try {
             await deleteCareer(id);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             fetchUserQuery();
         } catch (error) {
             console.error('Error deleting query:', error);

@@ -5,6 +5,7 @@ import { fetchImages, updateImageStatus, deleteImage } from '../../../../api/eve
 import GalleryModal from '../../../widgets/gallery_model';
 import image from '../../../../assets/images/logo.png';
 import { imageURL } from '../../../../imageURL';
+import Swal from 'sweetalert2';
 
 export default function EventsGallery() {
     const [showModal, setShowModal] = useState(false);
@@ -17,13 +18,17 @@ export default function EventsGallery() {
             fetchImagesData(id);
         }
     }, [id]);
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchImagesData = async (eventId) => {
         try {
             const response = await fetchImages(eventId);
             setImages(response.data.images);
         } catch (error) {
-            console.error('Error fetching images:', error);
+            // console.error('Error fetching images:', error);
         }
     };
 
@@ -32,16 +37,29 @@ export default function EventsGallery() {
             await updateImageStatus(imageId, status);
             fetchImagesData(id);
         } catch (error) {
-            console.log('Error updating image status:', error);
+            // console.log('Error updating image status:', error);
         }
     };
 
     const handleDeleteImage = async (imageId, imagePath) => {
         try {
             await deleteImage(imageId, imagePath);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             fetchImagesData(id);
         } catch (error) {
-            console.log('Error deleting image:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
         }
     };
 

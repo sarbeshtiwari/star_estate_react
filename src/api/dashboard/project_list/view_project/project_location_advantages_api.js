@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const $API_URL = 'https://ecis.in/apis/star-estate-API/projectLocationAdvantages';
+// const $API_URL = 'http://localhost:4000/projectLocationAdvantages';
 
 export const ProjectLocationAdvantages = async (locationId, status, projectname, title, proximity, unit) => {
     try{

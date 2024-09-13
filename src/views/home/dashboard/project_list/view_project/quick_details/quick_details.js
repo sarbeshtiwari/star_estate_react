@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { fetchDetails, updateStatus, deleteDetails } from '../../../../../../api/dashboard/project_list/view_project/quick_details_api';
+import Swal from 'sweetalert2';
 
 export default function QuickDetails() {
     const [details, setDetails] = useState([]);
@@ -13,13 +14,18 @@ export default function QuickDetails() {
         fetchDetailsHandler();
     }, [id]);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const fetchDetailsHandler = async () => {
         setLoading(true)
         try {
             const data = await fetchDetails(id);
             setDetails(data);
         } catch (err) {
-            console.error('Error fetching details:', err);
+            // console.error('Error fetching details:', err);
         }
         setLoading(false)
     };
@@ -30,19 +36,27 @@ export default function QuickDetails() {
             if (response.success) {
                 fetchDetailsHandler();
             } else {
-                console.error('Error updating status:', response.message);
+                // console.error('Error updating status:', response.message);
             }
         } catch (error) {
-            console.error('Error updating status:', error);
+            // console.error('Error updating status:', error);
         }
     };
 
     const handleDelete = async (detailId) => {
         try {
             await deleteDetails(detailId);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             fetchDetailsHandler();
         } catch (error) {
-            console.error('Error deleting detail:', error);
+            // console.error('Error deleting detail:', error);
         }
     };
 

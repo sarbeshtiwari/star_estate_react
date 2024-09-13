@@ -7,7 +7,7 @@ import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import { Link } from 'react-router-dom';
 import { deleteProjectQuery, fetchProjectQuery, updateProjectQuery } from '../../../api/enquiry/project_quires';
-
+import Swal from 'sweetalert2';
 
 const ProjectQueries = () => {
     const [data, setData] = useState([]);
@@ -25,6 +25,11 @@ const ProjectQueries = () => {
         };
         fetchData();
     }, []); // Empty dependency array to fetch data only once on component mount
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     
   // Filter data based on the search query
@@ -59,6 +64,14 @@ const ProjectQueries = () => {
     const handleDelete = async (id) => {
         try {
             await deleteProjectQuery(id);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             fetchUserQuery();
         } catch (error) {
             console.error('Error deleting query:', error);

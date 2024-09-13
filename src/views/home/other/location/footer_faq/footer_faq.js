@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../../sidebar';
 import { fetchFAQs, updateFAQStatus, deleteFAQ } from '../../../../../api/location/footer_faq_api';
+import Swal from 'sweetalert2';
 
 export default function FooterFAQ() {
     const [faq, setFAQ] = useState([]);
@@ -14,8 +15,13 @@ export default function FooterFAQ() {
         if (city && projectType) {
             fetchFAQsData(city, projectType);
         }
-        console.log(projectType)
+        // console.log(projectType)
     }, [city, projectType]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchFAQsData = async (city, projectType) => {
         setLoading(true);
@@ -23,7 +29,7 @@ export default function FooterFAQ() {
             const faqs = await fetchFAQs(city, projectType);
             setFAQ(faqs);
         } catch (error) {
-            console.error('Error fetching FAQs:', error);
+            // console.error('Error fetching FAQs:', error);
         }
         setLoading(false);
     };
@@ -33,16 +39,24 @@ export default function FooterFAQ() {
             await updateFAQStatus(id, status);
             fetchFAQsData(city, projectType);  // Refresh FAQs after update
         } catch (error) {
-            console.error('Error updating FAQ status:', error);
+            // console.error('Error updating FAQ status:', error);
         }
     };
 
     const handleDeleteFAQ = async (id) => {
         try {
             await deleteFAQ(id);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             fetchFAQsData(city, projectType);  // Refresh FAQs after delete
         } catch (error) {
-            console.error('Error deleting FAQ:', error);
+            // console.error('Error deleting FAQ:', error);
         }
     };
 

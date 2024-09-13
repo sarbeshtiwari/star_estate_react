@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../../sidebar';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { fetchDetailById, addProjectSpecifications, updateProjectSpecifications } from '../../../../../../api/dashboard/project_list/view_project/project_specification_api';
+import Swal from 'sweetalert2';
 
 const AddProjectSpecification = () => {
     const { ids, id } = useParams();
@@ -16,6 +17,11 @@ const AddProjectSpecification = () => {
             fetchDetail(ids);
         }
     }, [ids, id]); // id and ids are dependencies
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchDetail = async (detailId) => {
         try {
@@ -88,14 +94,30 @@ const AddProjectSpecification = () => {
             }
 
             if (response && response.success) {
-                alert('Data saved successfully');
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data added successfully.',
+                    confirmButtonText: 'OK'
+                });
                 navigate(-1);
             } else {
-                alert(`Failed to save data: ${response.message}`);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: `Failed to add/update data. ${response.message}`,
+                    confirmButtonText: 'OK'
+                });
+                
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while saving data. Please check the console for more details.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
         }
         setLoading(false);
     };

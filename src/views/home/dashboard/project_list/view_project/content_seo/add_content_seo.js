@@ -3,12 +3,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../../../sidebar';
 import ReactQuill from 'react-quill';
 import { fetchContent, saveContentSEO } from '../../../../../../api/dashboard/project_list/view_project/content_seo_api';
+import Swal from 'sweetalert2';
 
 export default function AddContentSEO() {
     const { id, ids } = useParams();
     const [formData, setFormData] = useState({
         schema: '',
         projectname: id,
+        briefDescription: '',
         description: ''
     });
 
@@ -38,6 +40,11 @@ export default function AddContentSEO() {
             getContent();
         }
     }, [id, ids]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const handleChange = (value) => {
         setEditorHtml(value);
@@ -81,14 +88,30 @@ export default function AddContentSEO() {
             const result = response.data;
 
             if (result.success) {
-                alert('Description saved successfully');
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data added successfully.',
+                    confirmButtonText: 'OK'
+                });
                 navigate(-1);
             } else {
-                alert(`Failed to save Description: ${result.message}`);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: `Failed to add/update data. ${result.message}`,
+                    confirmButtonText: 'OK'
+                });
+                
             }
         } catch (error) {
             console.error('Error submitting form:', error);
-            alert('Error submitting form. Please try again later.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Submitting form please try after sometime',
+                confirmButtonText: 'OK'
+            });
         }
         setLoading(false);
     };

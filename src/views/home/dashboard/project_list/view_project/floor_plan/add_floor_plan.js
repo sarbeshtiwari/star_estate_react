@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../../../sidebar';
 import { addFloorPlan, getFloorPlanByID, updateFloorPlan } from '../../../../../../api/dashboard/project_list/view_project/floor_plan_api';
+import Swal from 'sweetalert2';
 
 const AddApprovedBanks = () => {
     const { ids, id } = useParams();
@@ -15,6 +16,10 @@ const AddApprovedBanks = () => {
             fetchData(ids);
         }
     }, [ids, id]);
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchData = async (ids) => {
         try {
@@ -205,8 +210,20 @@ const AddApprovedBanks = () => {
             }
 
             if (response && response.success) {
-                setTimeout(() => navigate(-1), 500);
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data added successfully.',
+                    confirmButtonText: 'OK'
+                });
+                navigate(-1)
             } else {
+                Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to add/update data.',
+            confirmButtonText: 'OK'
+        });
                 console.error('Error:', response.message);
             }
         } catch (error) {

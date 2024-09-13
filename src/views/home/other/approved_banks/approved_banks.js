@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import image from '../../../../assets/images/logo.png'
 import { deleteBankList, getBankList, updateBankListStatus } from '../../../../api/bank_list/bank_list_api';
 import { imageURL } from '../../../../imageURL';
+import Swal from 'sweetalert2';
 
 export default function ApprovedBanks(){
     const [data, setData] = useState([]);
@@ -14,6 +15,11 @@ export default function ApprovedBanks(){
     useEffect(() => {
         fetchData();
     },[])
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchData = async () => {
         setLoading(true);
@@ -35,7 +41,7 @@ export default function ApprovedBanks(){
                 setData(data);
            
         } catch (error) {
-            console.error('Unexpected error:', error.message);
+            // console.error('Unexpected error:', error.message);
         }
     };
 
@@ -43,10 +49,23 @@ export default function ApprovedBanks(){
         if (window.confirm('Are you sure you want to delete this Data?')) {
             try {
                 await deleteBankList(id, image);
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data Deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000, 
+                    timerProgressBar: true, 
+                });
                 const data = await getBankList();
                 setData(data);
             } catch (error) {
-                console.error('Error deleting data:', error.message);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error Deleting data.',
+                    confirmButtonText: 'OK'
+                });
             }
         }
     };

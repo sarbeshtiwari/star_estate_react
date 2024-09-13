@@ -2,9 +2,15 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../home/sidebar';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addBannerImage } from '../../api/bannerImage/bannerImage';
+import Swal from 'sweetalert2';
 
 export default function AddBannerImage() {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const [banners, setBanners] = useState([{
         desktop_image_path: '',
@@ -170,11 +176,21 @@ export default function AddBannerImage() {
 
         try {
             await addBannerImage(formDataToSend);
-            alert('Banner saved successfully');
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data added successfully.',
+                confirmButtonText: 'OK'
+            });
             navigate(-1);
         } catch (error) {
             console.error('Error submitting form:', error);
-            alert(`Failed to save banner: ${error.message}`);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
         }
         setLoading(false);
     };

@@ -3,6 +3,7 @@ import Sidebar from '../../sidebar';
 import { Link } from 'react-router-dom';
 import { fetchNews, updateNewsStatus, deleteNews } from '../../../../api/news/news_api'; // Adjust the path as needed
 import { imageURL } from '../../../../imageURL';
+import Swal from 'sweetalert2';
 
 export default function NewsPaper() {
     const [news, setNews] = useState([]);
@@ -13,13 +14,18 @@ export default function NewsPaper() {
         fetchNewsData();
     }, []);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const fetchNewsData = async () => {
         setLoading(true)
         try {
             const response = await fetchNews();
             setNews(response.data);
         } catch (err) {
-            console.error('Failed to fetch news:', err);
+            // console.error('Failed to fetch news:', err);
         }
         setLoading(false)
     };
@@ -28,22 +34,36 @@ export default function NewsPaper() {
         try {
             const response = await updateNewsStatus(id, status);
             if (response.data.success) {
-                console.log('News status updated successfully!');
+                // console.log('News status updated successfully!');
                 fetchNewsData();
             } else {
-                console.error('Error updating news status:', response.data.message);
+                // console.error('Error updating news status:', response.data.message);
             }
         } catch (error) {
-            console.error('Unexpected error:', error);
+            // console.error('Unexpected error:', error);
         }
     };
 
     const handleDeleteNews = async (id, image, image2) => {
         try {
             await deleteNews(id, image, image2);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             fetchNewsData();
         } catch (error) {
-            console.error('Error deleting news:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
+            // console.error('Error deleting news:', error);
         }
     };
 

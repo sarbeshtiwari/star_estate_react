@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../sidebar';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addClientWords, fetchClientWordsById, updateClientWords } from '../../../../api/clientSpeak/clientSpeak_api';
+import Swal from 'sweetalert2';
 
 export default function AddClientSpeak() {
     const navigate = useNavigate();
@@ -22,6 +23,11 @@ export default function AddClientSpeak() {
             fetchEvent(id);
         }
     }, [id]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchEvent = async (id) => {
         try {
@@ -77,11 +83,21 @@ export default function AddClientSpeak() {
             } else {
                 response = await addClientWords(formData);
             }
-            console.log('Success:', response.data);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data added successfully.',
+                confirmButtonText: 'OK'
+            });
             navigate(-1);
         } catch (error) {
             console.error('Error:', error.response ? error.response.data : error.message);
-            alert('An error occurred. Please try again.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
         }
         setLoading(false);
     };

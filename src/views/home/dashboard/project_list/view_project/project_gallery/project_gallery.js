@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { deleteProjectGallery, getProjectGalleryByProject, updateProjectGalleryAmenityStatus, getProjectGalleryByID, updateProjectGalleryHomeStatus, updateProjectGalleryStatus, getGalleryContent, projectGalleryContent } from '../../../../../../api/dashboard/project_list/view_project/project_gallery_api';
 import { imageURL } from '../../../../../../imageURL';
 import Modal from '../../../../enquiry/modal';
+import Swal from 'sweetalert2';
 
 export default function ProjectGallery() {
     
@@ -23,6 +24,11 @@ export default function ProjectGallery() {
         fetchDetailsHandler();
     }, [id]);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const fetchDetailsHandler = async () => {
         setLoading(true);
         try {
@@ -30,7 +36,7 @@ export default function ProjectGallery() {
             const data = await getProjectGalleryByProject(id);
             setDetails(data);
         } catch (err) {
-            console.error('Error fetching details:', err);
+            // console.error('Error fetching details:', err);
         }
         setLoading(false)
     };
@@ -41,7 +47,7 @@ export default function ProjectGallery() {
             const response =  await getProjectGalleryByProject(id);
             setDetails(response);
         } catch (error) {
-            console.error('Error updating status:', error);
+            // console.error('Error updating status:', error);
         }
     };
 
@@ -51,7 +57,7 @@ export default function ProjectGallery() {
             const response =  await getProjectGalleryByProject(id);
             setDetails(response);
         } catch (error) {
-            console.error('Error updating status:', error);
+            // console.error('Error updating status:', error);
         }
     };
 
@@ -61,17 +67,25 @@ export default function ProjectGallery() {
             const response =  await getProjectGalleryByProject(id);
             setDetails(response);
         } catch (error) {
-            console.error('Error updating status:', error);
+            // console.error('Error updating status:', error);
         }
     };
 
     const handleDelete = async (detailId) => {
         try {
             await deleteProjectGallery(detailId);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             const response =  await getProjectGalleryByProject(id);
             setDetails(response);
         } catch (error) {
-            console.error('Error deleting detail:', error);
+            // console.error('Error deleting detail:', error);
         }
     };
 
@@ -93,7 +107,7 @@ export default function ProjectGallery() {
                     projectGalleryContent: text, // Assuming the text corresponds to `projectGalleryContent`
                 });
     
-                console.log('Submitted text:', { ...formData, projectGalleryContent: text }, id);
+                // console.log('Submitted text:', { ...formData, projectGalleryContent: text }, id);
     
                 await projectGalleryContent(id, { ...formData, projectGalleryContent: text }); // Pass the updated formData to the API
     
@@ -102,10 +116,16 @@ export default function ProjectGallery() {
                 setSelectedItemId(null);
                 setNoteText('');
             } catch (error) {
-                console.error('Error saving query:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error Saving data.',
+                    confirmButtonText: 'OK'
+                });
+                // console.error('Error saving query:', error);
             }
         } else {
-            console.error('No item selected for saving.');
+            // console.error('No item selected for saving.');
         }
     };
 

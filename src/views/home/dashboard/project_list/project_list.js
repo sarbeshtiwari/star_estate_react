@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-
 import Sidebar from '../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { deleteProject, fetchProjects, updateProjectStatusCategory, updateSimilarPropStatus, updateStatus } from '../../../../api/dashboard/project_list/project_list_api';
-
 import {imageURL} from '../../../../imageURL'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import Swal from 'sweetalert2';
 
-export default function ProjectList() {
-   
+export default function ProjectList() {   
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -26,33 +24,28 @@ export default function ProjectList() {
         console.log(imageURL)
     }, [id]);
 
-  // Filter data based on the search query
-  // Filter data based on the search query
-const filteredProperty = projects.filter(item =>
-    (item.projectName || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (item.projectBy || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (item.projectConfiguration || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (item.projectType || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (item.projectPrice || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (item.projectAddress || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (item.projectPrice || '').toLowerCase().includes(searchQuery.toLowerCase())
-);
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, [id]);
 
-
-
-    
+    const filteredProperty = projects.filter(item =>
+        (item.projectName || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (item.projectBy || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (item.projectConfiguration || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (item.projectType || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (item.projectPrice || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (item.projectAddress || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (item.projectPrice || '').toLowerCase().includes(searchQuery.toLowerCase())
+    );   
 
     const handlefetchProjects = async (id) => {
         setLoading(true);
         try {
             const data = await fetchProjects(id);
-            // console.log(id)
-            // const response = await axios.get(`http://localhost:3010/getProjectByType/${id}`);
             setProjects(data);
-            
         } catch (err) {
-            setError('Failed to fetch data');
-           
+            setError('Failed to fetch data');           
         }
         setLoading(false);
     };
@@ -61,26 +54,20 @@ const filteredProperty = projects.filter(item =>
         try {
             const response = await updateStatus(projectID, status, slugURL);
             if (response.data && response.data.success) {
-                // Update the project status locally in the state
                 setProjects(prevProjects =>
                     prevProjects.map(project =>
                         project._id === projectID ? { ...project, status } : project
                     )
                 );
             } else {
-                // Display the error message from the API
-                setErrorMsg(response.data.message || 'Error updating project status.');
-                setShowErrorModal(true); // Show the modal with the error message
             }
         } catch (error) {
             console.error('Unexpected error:', error);
-            // Show any unexpected error in the modal
             setErrorMsg(error.response?.data?.message || 'An unexpected error occurred.');
             setShowErrorModal(true);
         }
     };
     
-    // Function to close the modal
     const handleCloseModal = () => setShowErrorModal(false);
     
     const handleupdateProjectStatusCategory = async (projectID, value) => {
@@ -99,15 +86,13 @@ const filteredProperty = projects.filter(item =>
 
     const handleshowSimilarProp = async (projectID, status) => {
         try {
-            const response = await updateSimilarPropStatus(projectID, status); // Use await here
+            const response = await updateSimilarPropStatus(projectID, status);
             if (response.data && response.data.success) {
                 const data = await fetchProjects(id);
                 setProjects(data);
             } else {
-                console.error('Error updating Project Data:', response.data.message);
             }
         } catch (error) {
-            console.log('Unexpected error:', error);
         }
     };
     
@@ -116,19 +101,27 @@ const filteredProperty = projects.filter(item =>
     const handledeleteProject = async (projectID, image) => {
         try {
             await deleteProject(projectID ,image);
-            // await axios.delete(`http://localhost:3010/deleteProject/${id}`, { data: { image } });
-            // const data = await fetchProjects(id);
-            //     setProjects(data);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             handlefetchProjects(id);
         } catch (error) {
-            console.error('Error deleting Project:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
         }
     };
 
-    // Calculate total pages based on filtered data
     const totalPages = Math.ceil(filteredProperty.length / itemsPerPage);
 
-    // Get data for the current page
     const currentData = filteredProperty.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     const handlePageChange = (page) => {
@@ -137,8 +130,7 @@ const filteredProperty = projects.filter(item =>
 
 
     return (
-        <>  
-       
+        <>         
             <div id="">
                 <Sidebar/>
                 <div className="midde_cont">
@@ -211,14 +203,11 @@ const filteredProperty = projects.filter(item =>
                                                         <th>Project URI</th>
                                                         <th>Project By</th>
                                                         <th>Project Configuration</th>
-                                                        {/* <th>Project Type</th> */}
                                                         <th>Project Address</th>
                                                         <th>Project Price</th>
                                                         <th>Project Details</th>
                                                         <th>Banner Image</th>
                                                         <th>Show Similar Properties</th>
-                                                        {/* <th>Top Rated</th>
-                                                        <th>Recent</th> */}
                                                         <th></th>
                                                         
                                                     </tr>
@@ -242,7 +231,6 @@ const filteredProperty = projects.filter(item =>
                                                             <td>{project.slugURL}</td>
                                                             <td>{project.projectBy}</td>
                                                             <td>{project.projectConfiguration}</td>
-                                                            {/* <td>{project.projectType}</td> */}
                                                             <td>{project.projectAddress}</td>
                                                             <td>{project.projectPrice}</td>
                                                             <td> 

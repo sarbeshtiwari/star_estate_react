@@ -3,10 +3,16 @@ import Sidebar from '../../sidebar';
 import { useNavigate, useParams } from 'react-router-dom';
 import { imageURL } from '../../../../imageURL';
 import { addAdvertisement, fetchAdvertisementById, updateAdvertisement } from '../../../../api/advertisement/advertisement_api';
+import Swal from 'sweetalert2';
 
 export default function AddAdvertisements() {
     const navigate = useNavigate();
     const { id } = useParams();
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
     const [formData, setFormData] = useState({
         metaTitle: '',
         metaKeyword: '',
@@ -140,11 +146,21 @@ export default function AddAdvertisements() {
         try {
             let response;
             response = await addAdvertisement(data);
-            console.log('Success:', response.data);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data added successfully.',
+                confirmButtonText: 'OK'
+            });
             navigate(-1);
         } catch (error) {
             console.error('Error:', error.response ? error.response.data : error.message);
-            alert('An error occurred. Please try again.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
         }
         setLoading(false);
     };

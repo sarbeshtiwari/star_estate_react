@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../../sidebar';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { fetchFAQById, updateFAQ, addFAQs } from '../../../../../../api/dashboard/project_list/view_project/project_faq_api';
+import Swal from 'sweetalert2';
 
 const AddProjectFAQ = () => {
     const { ids, id } = useParams();
@@ -16,6 +17,10 @@ const AddProjectFAQ = () => {
             fetchFAQ(ids);
         }
     }, [ids, id]);
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchFAQ = async (faqId) => {
         try {
@@ -97,13 +102,29 @@ const AddProjectFAQ = () => {
             }
     
             if (result.success) {
-                alert('Data saved successfully');
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data added successfully.',
+                    confirmButtonText: 'OK'
+                });
                 navigate(-1);
             } else {
-                alert(`Failed to save data: ${result.message}`);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: `Failed to add/update data. ${result.message}`,
+                    confirmButtonText: 'OK'
+                });
+                
             }
         } catch (error) {
-            alert('An error occurred while saving data. Please check the console for more details.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
         }
         setLoading(false);
     };

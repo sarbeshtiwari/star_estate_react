@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const GalleryModal = ({ showModal, handleClose, handleFormSubmit, eventId }) => {
     const [files, setFiles] = useState([]);
@@ -23,6 +24,12 @@ const GalleryModal = ({ showModal, handleClose, handleFormSubmit, eventId }) => 
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
+            });
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data added successfully.',
+                confirmButtonText: 'OK'
             });
             handleClose(); // Close modal after submission
         } catch (error) {

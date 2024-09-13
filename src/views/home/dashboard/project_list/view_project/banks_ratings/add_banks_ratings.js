@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../../../sidebar';
 import { getProjectbanksRatings, addProjectBanksRatings } from '../../../../../../api/dashboard/project_list/view_project/project_banks_api';
+import Swal from 'sweetalert2';
 
 export default function AddBanksandRatings() {
     const [formData, setFormData] = useState({
@@ -20,6 +21,11 @@ export default function AddBanksandRatings() {
     useEffect(() => {
         fetchDetailsHandler(id);
     }, [id]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchDetailsHandler = async (id) => {
         try {
@@ -58,6 +64,12 @@ export default function AddBanksandRatings() {
         try {
             const response = await addProjectBanksRatings(formData, id);
             if (response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data added successfully.',
+                    confirmButtonText: 'OK'
+                });
                 navigate(-1);
             }
         } catch (error) {

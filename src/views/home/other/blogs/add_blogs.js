@@ -3,6 +3,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import Sidebar from '../../sidebar';
 import { fetchBlogById, addBlog, updateBlog } from '../../../../api/blogs/blogs_api';
 import { imageURL } from '../../../../imageURL';
+import Swal from 'sweetalert2';
 
 export default function AddBlogs() {
     const navigate = useNavigate();
@@ -30,6 +31,11 @@ export default function AddBlogs() {
             fetchBlog(id);
         }
     }, [id]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchBlog = async (id) => {
         try {
@@ -158,8 +164,20 @@ export default function AddBlogs() {
             } else {
                 await addBlog(data);
             }
-            navigate('/blogs');
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data added successfully.',
+                confirmButtonText: 'OK'
+            });
+            navigate(-1);
         } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
             console.error('Error:', error.message);
         }
         setLoading(false);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { fetchFAQs, updateFAQStatus, deleteFAQ } from '../../../../../../api/dashboard/project_list/view_project/project_faq_api';
+import Swal from 'sweetalert2';
 
 export default function ProjectFAQ() {
     
@@ -16,6 +17,10 @@ export default function ProjectFAQ() {
             fetchFAQsData(id);
         }
     }, [id]);
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchFAQsData = async (projectId) => {
         setLoading(true)
@@ -23,7 +28,7 @@ export default function ProjectFAQ() {
             const data = await fetchFAQs(projectId);
             setFAQ(data);
         } catch (error) {
-            console.error('Error fetching FAQs:', error);
+            // console.error('Error fetching FAQs:', error);
         }
         setLoading(false)
     };
@@ -34,7 +39,7 @@ export default function ProjectFAQ() {
             // Refresh FAQs after update
             fetchFAQsData(id);
         } catch (error) {
-            console.error('Error updating status:', error);
+            // console.error('Error updating status:', error);
         }
     };
 
@@ -42,9 +47,17 @@ export default function ProjectFAQ() {
         try {
             await deleteFAQ(faqId);
             // Refresh FAQs after delete
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             fetchFAQsData(id);
         } catch (error) {
-            console.error('Error deleting FAQ:', error);
+            // console.error('Error deleting FAQ:', error);
         }
     };
 

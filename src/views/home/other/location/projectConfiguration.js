@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../sidebar';
 import { Link, useParams } from 'react-router-dom';
 import { deleteConfiguration, fetchProjectConfiguration, updateConfigurationStatus } from '../../../../api/location/configuration_api';
+import Swal from 'sweetalert2';
 
 export default function ProjectConfiguration() {
     const [projectConfiguration, setProjectConfiguration] = useState([]);
@@ -12,6 +13,11 @@ export default function ProjectConfiguration() {
     useEffect(() => {
         loadProjectConfiguration(id);
     }, [id]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const loadProjectConfiguration = async (id) => {
         setLoading(true);
@@ -42,7 +48,7 @@ export default function ProjectConfiguration() {
         setProjectConfiguration(data);
         // setProjectConfiguration1(commonConfigurations);
         } catch (error) {
-            console.error('Error loading Project Configuration:', error);
+            // console.error('Error loading Project Configuration:', error);
         }
         setLoading(false);
     };
@@ -53,22 +59,36 @@ export default function ProjectConfiguration() {
         try {
             const result = await updateConfigurationStatus(ids, status);
             if (result.success) {
-                console.log('City status updated successfully!');
+                // console.log('City status updated successfully!');
                 loadProjectConfiguration(id);
             } else {
-                console.error('Error updating city status:', result.message);
+                // console.error('Error updating city status:', result.message);
             }
         } catch (error) {
-            console.error('Unexpected error:', error);
+            // console.error('Unexpected error:', error);
         }
     };
 
     const handleDeleteCity = async (ids) => {
         try {
             await deleteConfiguration(ids);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             loadProjectConfiguration(id);
         } catch (error) {
-            console.error('Error deleting city:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
+            // console.error('Error deleting city:', error);
         }
     };
 

@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import Sidebar from "../../../../sidebar";
 import { addBrochure, getBrochureByID, updateBrochure } from "../../../../../../api/dashboard/project_list/view_project/brochure_walkthrough_api";
 import { imageURL } from "../../../../../../imageURL";
+import Swal from 'sweetalert2';
 
 export default function AddBrochureWalkthrough() {
     const { id, ids } = useParams();
@@ -21,6 +22,11 @@ export default function AddBrochureWalkthrough() {
             fetchBrochureByID(ids);
         }
     }, [id, ids]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchBrochureByID = async (ids) => {
         try {
@@ -136,6 +142,12 @@ export default function AddBrochureWalkthrough() {
                 await addBrochure(id, formData)
                 // await addBrochure(id, { ...formData, walkthrough: youtubeEmbedLink });
             }
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data added successfully.',
+                confirmButtonText: 'OK'
+            });
             navigate(-1);
         } catch (error) {
             console.error('Error:', error.message);

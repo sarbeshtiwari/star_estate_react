@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Sidebar from '../../sidebar';
 import { imageURL } from '../../../../imageURL';
 import { deleteAdvertisement, fetchAdvertisements, updateAdvertisementStatus } from '../../../../api/advertisement/advertisement_api';
+import Swal from 'sweetalert2';
 
 export default function Advertisements() {
 
@@ -25,6 +26,10 @@ export default function Advertisements() {
 
         loadEvents();
     }, []);
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const handleStatusUpdate = async (id, currentStatus) => {
         try {
@@ -41,6 +46,14 @@ export default function Advertisements() {
         if (window.confirm('Are you sure you want to delete this Event?')) {
             try {
                 await deleteAdvertisement(id, image);
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data Deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000, 
+                    timerProgressBar: true, 
+                });
                 setEvent(prevEvents => prevEvents.filter(evt => evt._id !== id));
             } catch (error) {
                 setError(error.message);

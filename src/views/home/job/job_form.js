@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchJobDetails, addJob, updateJob } from '../../../api/job/job_api';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const useJobForm = (id) => {
     const [formData, setFormData] = useState({
@@ -26,6 +27,11 @@ const useJobForm = (id) => {
             loadJobDetails(id);
         }
     }, [id]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const loadJobDetails = async (id) => {
         setfetchLoading(true);
@@ -108,6 +114,12 @@ const useJobForm = (id) => {
             }
 
             if (result.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data added successfully.',
+                    confirmButtonText: 'OK'
+                });
                 navigate(-1);
                 return { success: true, message: 'Job saved successfully' };
                 
@@ -115,6 +127,12 @@ const useJobForm = (id) => {
                 return { success: false, message: `Failed to save job: ${result.message}` };
             }
         } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
             console.error('Error submitting form:', error);
             return { success: false, message: 'Error submitting form' };
         } finally {

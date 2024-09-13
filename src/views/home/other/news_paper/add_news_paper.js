@@ -3,6 +3,7 @@ import Sidebar from '../../sidebar';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchNewsById, addNews, updateNews } from '../../../../api/news/news_api'; // Adjust the path as needed
 import { imageURL } from '../../../../imageURL';
+import Swal from 'sweetalert2';
 
 export default function AddNewsPaper() {
     // const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -31,6 +32,11 @@ export default function AddNewsPaper() {
             fetchNews(id);
         }
     }, [id]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchNews = async (id) => {
         try {
@@ -175,9 +181,20 @@ export default function AddNewsPaper() {
                 // Add new news
                 response = await addNews(data);
             }
-            console.log('Success:', response.data);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data added successfully.',
+                confirmButtonText: 'OK'
+            });
             navigate(-1); // Navigate back to the previous page
         } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
             console.error('Error:', error.response ? error.response.data : error.message);
         }
         setLoading(false);

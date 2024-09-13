@@ -7,6 +7,11 @@ export default function ViewProject(){
     const {id} = useParams();
  
     useEffect(() => {},[id]);
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, [id]);
+    const navigate = useNavigate();
 
     return(
         <div >
@@ -14,16 +19,27 @@ export default function ViewProject(){
             <div id="">
                 <div className="midde_cont">
                     <div className="container-fluid">
+                        
                         <div className="row column_title">
+                            
                             <div className="col-md-12">
                                 
                                 <div className="page_title">
+                               
                                     <h2>Projects Section</h2>
                                     
                                 </div>
+                                <button 
+                                    className="btn btn-primary btn-xs float-right"
+                                    onClick={() => navigate(-1)}
+                                >
+                                    Back
+                                </button>
                                 
                             </div>
+                            
                         </div>
+                        
                         <div className="row column1">
                             <div className="col-md-6 col-lg-4">
                                 <Link to={`/quickDetails/${id}`}>
@@ -39,6 +55,7 @@ export default function ViewProject(){
                                                 <p className="head_couter">Quick Details</p>
                                             </div>
                                         </div>
+
                                     </div>
                                 </Link>
                             </div>

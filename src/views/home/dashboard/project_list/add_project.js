@@ -11,6 +11,7 @@ import {
     fetchCitiesByState
 } from '../../../../api/dashboard/project_list/project_list_api'; 
 import { imageURL } from "../../../../imageURL";
+import Swal from 'sweetalert2';
 
 export default function AddProject() {
     const { id, id1 } = useParams();
@@ -85,18 +86,35 @@ export default function AddProject() {
         fetchDevelopers().then(data => setDevelopers(data)).catch(console.error);
     }, [id, id1]);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const fetchCity = async (state) => {
         try {
             console.log(state)
             const data = await fetchCitiesByState(state);
             if (!data) {
-                alert("No data Found for this State");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No data Found for this State.',
+                    confirmButtonText: 'OK'
+                });
+               
             } else {
                 setCities(data);
             }
             
         } catch (error) {
-            alert("No data Found for this State");
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No data Found for this State',
+                confirmButtonText: 'OK'
+            });
+            
             console.error('Error fetching localities:', error);
         }
     };
@@ -105,7 +123,13 @@ export default function AddProject() {
         try {
             const data = await fetchLocalitiesByCity(cityId);
             if (!data) {
-                alert("No data Found for this city, add this Locality or choose another city");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No data Found for this city, add this Locality or choose another city.',
+                    confirmButtonText: 'OK'
+                });
+                
             } else {
                 setLocality(data);
             }
@@ -262,7 +286,12 @@ export default function AddProject() {
             return;
         }
         if (formData.project_status.length === 0){  
-            alert( 'At least one Project Status is required');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Atleast One Project Status is required.',
+                confirmButtonText: 'OK'
+            });
             setValidationErrors(errors);
             return;
         }
@@ -375,6 +404,7 @@ export default function AddProject() {
                                                 className={`form-control ${validationErrors.projectName ? 'is-invalid' : ''}`}
                                                 value={formData.projectName}
                                                 onChange={handleChange}
+                                                style={{ textTransform: 'capitalize' }} // This ensures the first letter of every word is capitalized
                                             />
                                             {validationErrors.projectName && (
                                                             <div className="invalid-feedback">{validationErrors.projectName}</div>
@@ -389,6 +419,7 @@ export default function AddProject() {
                                                 className={`form-control ${validationErrors.projectAddress ? 'is-invalid' : ''}`}
                                                 value={formData.projectAddress}
                                                 onChange={handleChange}
+                                                style={{ textTransform: 'capitalize' }}
                                             />
                                             {validationErrors.projectAddress && (
                                                 <div className="invalid-feedback">{validationErrors.projectAddress}</div>
@@ -481,6 +512,21 @@ export default function AddProject() {
                                         </div>
                                         <div className="col-md-3 form-group">
                                             <label className="label_field">Project Configuration</label>
+                                            <input
+                                                type="text"
+                                                name="projectConfiguration"
+                                                className={`form-control ${validationErrors.projectConfiguration ? 'is-invalid' : ''}`}
+                                                value={formData.projectConfiguration}
+                                                onChange={handleChange}
+                                                style={{ textTransform: 'uppercase' }} // This ensures the text is displayed in uppercase
+                                            />
+                                            {validationErrors.projectConfiguration && (
+                                                <div className="invalid-feedback">{validationErrors.projectConfiguration}</div>
+                                            )}
+                                        </div>
+
+                                        {/* <div className="col-md-3 form-group">
+                                            <label className="label_field">Project Configuration</label>
                                             <select
                                                 name="projectConfiguration"
                                                 className={`form-control ${validationErrors.projectConfiguration ? 'is-invalid' : ''}`}
@@ -502,9 +548,9 @@ export default function AddProject() {
                                             {validationErrors.projectConfiguration && (
                                                 <div className="invalid-feedback">{validationErrors.projectConfiguration}</div>
                                             )}
-                                        </div>
+                                        </div> */}
                                         <div className="col-md-3 form-group">
-                                            <label className="label_field">Project BY</label>
+                                            <label className="label_field">Developer</label>
                                             <select
                                                 name="projectBy"
                                                 className={`form-control ${validationErrors.projectBy ? 'is-invalid' : ''}`}

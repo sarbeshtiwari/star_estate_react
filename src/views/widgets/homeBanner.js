@@ -6,6 +6,7 @@ import { imageURL } from '../../imageURL';
 // import image from '../../../assets/images/logo.png';
 // import { fetchHomeBanner, updateHomeBannerStatus, deleteHomeBanner, globals } from '../../api/bannerImage/bannerImage';
 // import ImageModal from '../../widgets/imageModel';
+import Swal from 'sweetalert2';
 
 export default function HomeBanner() {
     const [homeBanner, setHomeBanner] = useState([]);
@@ -27,6 +28,11 @@ export default function HomeBanner() {
 
         loadHomeBanner();
     }, []);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
     
     const loadHomeBanner = async () => {
         try {
@@ -35,7 +41,7 @@ export default function HomeBanner() {
             setHomeBanner(homeBannerData);
         } catch (err) {
             setError('Failed to load data');
-            console.log('Failed to fetch data:', err);
+            // console.log('Failed to fetch data:', err);
         } finally {
             setLoading(false);
         }
@@ -51,10 +57,10 @@ export default function HomeBanner() {
                     )
                 );
             } else {
-                console.error('Error updating home banner status:', result.message);
+                // console.error('Error updating home banner status:', result.message);
             }
         } catch (error) {
-            console.error('Unexpected error:', error);
+            // console.error('Unexpected error:', error);
         }
     };
 
@@ -62,14 +68,31 @@ export default function HomeBanner() {
         try {
             const result = await deleteBanner(id);
             if (result.success) {
-                alert('Banner deleted successfully');
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data Deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000, 
+                    timerProgressBar: true, 
+                });
                 loadHomeBanner();
             } else {
-                alert(`Error: ${result.message}`);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error Deleting data.',
+                    confirmButtonText: 'OK'
+                });
             }
         } catch (error) {
             console.error('Error deleting home banner:', error);
-            alert(`Error: ${error.message}`);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
         }
     };
 

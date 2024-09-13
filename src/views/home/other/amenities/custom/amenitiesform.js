@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { fetchAmenityData, updateAmenityStatus, deleteAmenity, getAllTheAmenities } from '../../../../../api/amenities/amenities_api'; 
+import Swal from 'sweetalert2';
 
 const useAmenities = () => {
     const [amenities, setAmenities] = useState([]);
@@ -24,6 +25,10 @@ const useAmenities = () => {
 
         fetchData();
     }, []);
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const handleUpdateStatus = async (cat_id, status) => {
         try {
@@ -41,11 +46,24 @@ const useAmenities = () => {
     const handleDeleteAmenity = async (cat_id) => {
         try {
             await deleteAmenity(cat_id);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             setAmenities(prevAmenities =>
                 prevAmenities.filter(amenity => amenity._id !== cat_id)
             );
         } catch (error) {
-            setError('Failed to delete amenity.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
         }
     };
 

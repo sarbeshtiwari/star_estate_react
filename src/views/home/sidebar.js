@@ -148,6 +148,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Button, Offcanvas } from 'react-bootstrap';
 import logo from '../../assets/images/logo.png';
 import Cookies from 'js-cookie';
+import Swal from 'sweetalert2';
 
 export default function Sidebar() {
     const [showSidebar, setShowSidebar] = useState(false);
@@ -203,6 +204,12 @@ export default function Sidebar() {
     };
 
     const handleLogout = () => {
+        Swal.fire({
+            icon: 'success',
+            title:  'Success!',
+            text:  'You have logged Out!',
+            confirmButtonText: 'OK'
+        });
         
         Cookies.remove('authToken');
         Cookies.remove('expiryTime');

@@ -3,6 +3,7 @@ import Sidebar from '../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { imageURL } from '../../../../imageURL';
 import { deleteStarRera, getStarRera, updateStarReraStatus } from '../../../../api/starRera/starRera_api';
+import Swal from 'sweetalert2';
 
 export default function StarRera() {
    
@@ -14,13 +15,18 @@ export default function StarRera() {
         fetchDetailsHandler();
     }, []);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const fetchDetailsHandler = async () => {
         setLoading(true)
         try {
             const data = await getStarRera();
             setDetails(data);
         } catch (err) {
-            console.error('Error fetching details:', err);
+            // console.error('Error fetching details:', err);
         }
         setLoading(false)
     };
@@ -31,17 +37,31 @@ export default function StarRera() {
             const response =  await getStarRera();
             setDetails(response);
         } catch (error) {
-            console.error('Error updating status:', error);
+            // console.error('Error updating status:', error);
         }
     };
 
     const handleDelete = async (detailId) => {
         try {
             await deleteStarRera(detailId);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             const response =  await getStarRera();
             setDetails(response);
         } catch (error) {
-            console.error('Error deleting detail:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
+            // console.error('Error deleting detail:', error);
         }
     };
 

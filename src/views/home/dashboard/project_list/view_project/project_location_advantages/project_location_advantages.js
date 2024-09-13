@@ -17,6 +17,11 @@ export default function ProjectLocationAdvantage() {
         fetchDetailsHandler();
     }, [id]);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const fetchDetailsHandler = async () => {
         setLoading(true)
         try {
@@ -102,13 +107,13 @@ export default function ProjectLocationAdvantage() {
                                     </div>
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
                                     {loading ? (
-    <div className="d-flex justify-content-center align-items-center">
-        <div className="spinner-border text-primary" role="status">
-            <span className="sr-only">Loading...</span>
-        </div>
-        <span className="ml-2">Loading...</span>
-    </div>
-) : ''} 
+                                        <div className="d-flex justify-content-center align-items-center">
+                                            <div className="spinner-border text-primary" role="status">
+                                                <span className="sr-only">Loading...</span>
+                                            </div>
+                                            <span className="ml-2">Loading...</span>
+                                        </div>
+                                    ) : ''} 
                                         <div className="full price_table padding_infor_info">
                                             <div className="row">
                                                 <div className="col-lg-12">
@@ -140,7 +145,7 @@ export default function ProjectLocationAdvantage() {
                                                                         ) : (
                                                                             <span>No Image Available</span>
                                                                         )}</td>
-                                                                        <td>{detail.title}</td>
+                                                                        <td>{details[index].title}</td>
                                                                         <td>{details[index].proximity} {details[index].unit}</td>
                                                                         {/* <td>
                                                                             <ul className="list-inline d-flex justify-content-end">

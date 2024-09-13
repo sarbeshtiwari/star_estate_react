@@ -17,6 +17,11 @@ export default function ProjectAmenities() {
         fetchDetailsHandler();
     }, [id]);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const fetchDetailsHandler = async () => {
         setLoading(true)
         try {
@@ -33,20 +38,20 @@ export default function ProjectAmenities() {
             // Ensure allAmenitiesResponse.data is an array
             let allAmenities = Array.isArray(allAmenitiesResponse.data) ? allAmenitiesResponse.data : [];
             
-            console.log('Active Amenities:', activeAmenities);
-            console.log('All Amenities:', allAmenities);
+            // console.log('Active Amenities:', activeAmenities);
+            // console.log('All Amenities:', allAmenities);
     
             // Map IDs of active amenities to their details from all amenities
             const amenitiesMap = new Map(allAmenities.map(amenity => [amenity._id, amenity]));
             const matchedAmenities = activeAmenities.map(amenity => amenitiesMap.get(amenity.amenityId)).filter(Boolean);
     
             // Update state with matched amenities
-            console.log('Matched Amenities:', matchedAmenities);
+            // console.log('Matched Amenities:', matchedAmenities);
             setDetails(activeAmenities);
             setAmenities(matchedAmenities);
     
         } catch (err) {
-            console.error('Error fetching details:', err);
+            // console.error('Error fetching details:', err);
             setDetails([]);
             setAmenities([]);
         }

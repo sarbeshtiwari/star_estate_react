@@ -6,6 +6,7 @@ import './amenities.module.css';
 import { ProjectAmenities, getProjectAmenities, projectAmenitiesContent } from '../../../../../../api/dashboard/project_list/view_project/project_amenity_api';
 import _ from 'lodash';
 import { imageURL } from '../../../../../../imageURL';
+import Swal from 'sweetalert2';
 
 export default function AddProjectAmenities() {
     const [details, setDetails] = useState([]);
@@ -23,6 +24,11 @@ export default function AddProjectAmenities() {
     useEffect(() => {
         fetchDetailsHandler(id);
     }, [id]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchDetailsHandler = async (id) => {
         setfetchLoading(true)
@@ -76,9 +82,21 @@ export default function AddProjectAmenities() {
             
             const response = await projectAmenitiesContent(formData, id);
             if (response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data added successfully.',
+                    confirmButtonText: 'OK'
+                });
                 navigate(-1);
             }
         }catch(error){
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
             console.error(error)
         }
         setLoading(false);
@@ -107,8 +125,14 @@ export default function AddProjectAmenities() {
     const debouncedStatus = _.debounce(async (amenityId, status, id) => {
         try {
             const response = await ProjectAmenities(amenityId, status, id);
-            console.log(response);
+            
         } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
             console.error('Error updating status:', error);
         }
     }, 300); // Adjust debounce delay as needed
@@ -141,13 +165,13 @@ export default function AddProjectAmenities() {
                                 </div>
                                 <div id="subct_wrapper" className="dataTables_wrapper no-footer">
                                 {fetchloading ? (
-    <div className="d-flex justify-content-center align-items-center">
-        <div className="spinner-border text-primary" role="status">
-            <span className="sr-only">Loading...</span>
-        </div>
-        <span className="ml-2">Loading...</span>
-    </div>
-) : ''} 
+                                    <div className="d-flex justify-content-center align-items-center">
+                                        <div className="spinner-border text-primary" role="status">
+                                            <span className="sr-only">Loading...</span>
+                                        </div>
+                                        <span className="ml-2">Loading...</span>
+                                    </div>
+                                ) : ''} 
                                     <div className="full price_table padding_infor_info">
                                         <div className="row">
                                         <form onSubmit={handleSubmit} id="submit" encType="multipart/form-data">

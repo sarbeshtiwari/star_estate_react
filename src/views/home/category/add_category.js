@@ -3,6 +3,7 @@ import { useNavigate, Link, useParams } from 'react-router-dom';
 import Sidebar from '../sidebar';
 import { addCategories, getCategoryById, updateCategories } from '../../../api/category/category_api';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const AddCategory = () => {
     const [formData, setFormData] = useState({
@@ -23,6 +24,11 @@ const AddCategory = () => {
             // Fetch category details based on id
             fetchCategoryDetails(id);
         }
+    }, [id]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
     }, [id]);
 
     const fetchCategoryDetails = async (id) => {
@@ -99,13 +105,23 @@ const AddCategory = () => {
            
 
             if (response.success) {
-                alert('Category saved successfully');
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data added successfully.',
+                    confirmButtonText: 'OK'
+                });
                 navigate(-1);
             } else {
                 setStatusMessage(`Failed to save category: ${response.message}`);
             }
         } catch (error) {
-            setStatusMessage('Error submitting category');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
         } finally {
             setLoading(false);
         }

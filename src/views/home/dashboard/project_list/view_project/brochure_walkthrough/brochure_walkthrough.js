@@ -3,6 +3,7 @@ import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getBrochure, updateStatus, deleteDetails } from '../../../../../../api/dashboard/project_list/view_project/brochure_walkthrough_api';
 import { imageURL } from '../../../../../../imageURL';
+import Swal from 'sweetalert2';
 
 export default function BrochureWalkthrough() {
     const { id } = useParams();
@@ -15,13 +16,18 @@ export default function BrochureWalkthrough() {
         fetchDetailsHandler();
     }, [id]);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const fetchDetailsHandler = async () => {
         setLoading(true);
         try {
             const data = await getBrochure(id);
             setDetails(data);
         } catch (err) {
-            console.error('Error fetching details:', err);
+            // console.error('Error fetching details:', err);
         }
         setLoading(false)
     };
@@ -32,19 +38,27 @@ export default function BrochureWalkthrough() {
             if (response.success) {
                 fetchDetailsHandler();
             } else {
-                console.error('Error updating status:', response.message);
+                // console.error('Error updating status:', response.message);
             }
         } catch (error) {
-            console.error('Error updating status:', error);
+            // console.error('Error updating status:', error);
         }
     };
 
     const handleDelete = async (detailId) => {
         try {
             await deleteDetails(detailId);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             fetchDetailsHandler();
         } catch (error) {
-            console.error('Error deleting detail:', error);
+            // console.error('Error deleting detail:', error);
         }
     };
 

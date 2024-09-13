@@ -3,6 +3,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import Sidebar from '../../sidebar';
 import { fetchDeveloperById, addDeveloper, updateDeveloper } from '../../../../api/developer/developer_api';
 import { imageURL } from '../../../../imageURL';
+import Swal from 'sweetalert2';
 
 export default function AddDeveloper() {
     const navigate = useNavigate();
@@ -49,6 +50,11 @@ export default function AddDeveloper() {
             setLoading(false);
         }
     }, [id]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -165,14 +171,30 @@ export default function AddDeveloper() {
             let response;
             if (id !== 'add') {
                 response = await updateDeveloper(id, formData);
-                console.log('Developer updated successfully');
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data updated successfully.',
+                    confirmButtonText: 'OK'
+                });;
             } else {
                 response = await addDeveloper(formData);
-                console.log('Developer added successfully');
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data added successfully.',
+                    confirmButtonText: 'OK'
+                });
             }
-            navigate('/developer'); // Navigate back to the developer list
+            navigate(-1); // Navigate back to the developer list
         } catch (error) {
             console.error('Error:', error.message);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
         } finally {
             setLoading(false);
         }

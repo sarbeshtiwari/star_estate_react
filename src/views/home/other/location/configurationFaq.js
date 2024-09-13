@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../sidebar';
 import { deleteFAQ, fetchFAQs, updateFAQStatus } from '../../../../api/location/configurationFAQ_api';
+import Swal from 'sweetalert2';
 
 export default function ConfigurationFAQ() {
     const [faq, setFAQ] = useState([]);
@@ -17,6 +18,11 @@ export default function ConfigurationFAQ() {
         }
     }, [slugURL, propertyType]);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const fetchFAQsData = async (slugURL, propertyType) => {
         setLoading(true);
         try {
@@ -24,7 +30,7 @@ export default function ConfigurationFAQ() {
             console.log(faqs)
             setFAQ(faqs);
         } catch (error) {
-            console.error('Error fetching FAQs:', error);
+            // console.error('Error fetching FAQs:', error);
         }
         setLoading(false);
     };
@@ -34,16 +40,30 @@ export default function ConfigurationFAQ() {
             await updateFAQStatus(id, status);
             fetchFAQsData(slugURL, propertyType);  // Refresh FAQs after update
         } catch (error) {
-            console.error('Error updating FAQ status:', error);
+            // console.error('Error updating FAQ status:', error);
         }
     };
 
     const handleDeleteFAQ = async (id) => {
         try {
             await deleteFAQ(id);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             fetchFAQsData(slugURL, propertyType);  // Refresh FAQs after delete
         } catch (error) {
-            console.error('Error deleting FAQ:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
+            // console.error('Error deleting FAQ:', error);
         }
     };
 

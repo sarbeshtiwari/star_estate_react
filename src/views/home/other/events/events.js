@@ -5,6 +5,7 @@ import GalleryModal from '../../../widgets/gallery_model';
 import image from '../../../../assets/images/logo.png';
 import { fetchEvents, updateEventStatus, deleteEvent } from '../../../../api/events/events_api';
 import { imageURL } from '../../../../imageURL';
+import Swal from 'sweetalert2';
 
 export default function Events() {
     const [showModal, setShowModal] = useState(false);
@@ -18,6 +19,12 @@ export default function Events() {
 
         loadEvents();
     }, []);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const loadEvents = async () => {
         setLoading(true);
         try {
@@ -55,6 +62,14 @@ export default function Events() {
         if (window.confirm('Are you sure you want to delete this Event?')) {
             try {
                 await deleteEvent(id);
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data Deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000, 
+                    timerProgressBar: true, 
+                });
                 loadEvents();
                 // setEvent(prevEvents => prevEvents.filter(evt => evt._id !== id));
             } catch (error) {

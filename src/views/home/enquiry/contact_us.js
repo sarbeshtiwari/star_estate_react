@@ -7,7 +7,7 @@ import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import { Link } from 'react-router-dom';
 import { deleteContactUS, fetchContactUS, updateContactUS } from '../../../api/enquiry/contact_us';
-
+import Swal from 'sweetalert2';
 
 const ContactUs = () => {
     const [data, setData] = useState([    ]);
@@ -25,6 +25,11 @@ const ContactUs = () => {
         };
         fetchData();
     }, []); // Empty dependency array to fetch data only once on component mount
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     
   // Filter data based on the search query
@@ -49,8 +54,8 @@ const ContactUs = () => {
             const result = await fetchContactUS();
             setData(result);
         } catch (error) {
-            setError('Error fetching data');
-            console.error('Error fetching data:', error);
+            // setError('Error fetching data');
+            // console.error('Error fetching data:', error);
         } finally {
             setLoading(false);
         }
@@ -59,9 +64,17 @@ const ContactUs = () => {
     const handleDelete = async (id) => {
         try {
             await deleteContactUS(id);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             fetchUserQuery();
         } catch (error) {
-            console.error('Error deleting query:', error);
+            // console.error('Error deleting query:', error);
         }
     };
 
@@ -74,7 +87,7 @@ const ContactUs = () => {
     const handleModalSubmit = async (text) => {
         if (selectedItemId !== null) {
             try {
-                console.log('Submitted text:', text);
+                // console.log('Submitted text:', text);
                 await updateContactUS(selectedItemId, text); // Pass the selectedItemId to saveQuery
                 fetchUserQuery(); // Refresh the data after saving
                 setModalOpen(false); // Close the modal

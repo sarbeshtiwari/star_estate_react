@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '../../sidebar';
 import { deleteClientWords, fetchClientWords, updateClientWordstatus } from '../../../../api/clientSpeak/clientSpeak_api';
+import Swal from 'sweetalert2';
 
 export default function ClientSpeak() {
 
@@ -24,6 +25,11 @@ export default function ClientSpeak() {
         loadEvents();
     }, []);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const handleStatusUpdate = async (id, currentStatus) => {
         try {
             await updateClientWordstatus(id, !currentStatus);
@@ -39,8 +45,17 @@ export default function ClientSpeak() {
         if (window.confirm('Are you sure you want to delete this Event?')) {
             try {
                 await deleteClientWords(id, image);
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data Deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000, 
+                    timerProgressBar: true, 
+                });
                 setEvent(prevEvents => prevEvents.filter(evt => evt._id !== id));
             } catch (error) {
+                
                 setError(error.message);
             }
         }

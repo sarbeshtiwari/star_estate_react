@@ -4,6 +4,7 @@ import Sidebar from '../../sidebar';
 import axios from 'axios';
 import { addLocationAdvantages, getLocationAdvantagesByID, updateLocationAdvantages } from '../../../../api/location_advantages/location_advantages_api';
 import { imageURL } from '../../../../imageURL';
+import Swal from 'sweetalert2';
 
 const AddLocationAdvantages = () => {
     const [headings, setHeadings] = useState([{ image: '', title: '', alt_tag: ''}]);
@@ -18,6 +19,11 @@ const AddLocationAdvantages = () => {
             fetchData(id);
         }
     },[id])
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchData = async (id) => {
         try{
@@ -167,14 +173,29 @@ const AddLocationAdvantages = () => {
             }
     
             if (response && response.success) {
-                alert('Data Saved Successfully')
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data added successfully.',
+                    confirmButtonText: 'OK'
+                });
                 navigate(-1);
             } else {
-                alert('Unable to Save data. Please try after some time')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to add/update data.',
+                    confirmButtonText: 'OK'
+                });
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Unable to Save data. Please try after some time')
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
             
         }
         setLoading(false);

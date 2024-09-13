@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../../../sidebar';
 import { addProjectGallery, getProjectGalleryByID, updateProjectGallery } from '../../../../../../api/dashboard/project_list/view_project/project_gallery_api';
+import Swal from 'sweetalert2';
 
 const AddProjectGallery = () => {
     const { ids, id } = useParams();
@@ -15,6 +16,11 @@ const AddProjectGallery = () => {
             fetchData(ids);
         }
     }, [ids, id]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchData = async (ids) => {
         try {
@@ -147,9 +153,20 @@ const AddProjectGallery = () => {
             }
 
             if (response && response.success) {
-                setTimeout(() => navigate(-1), 500);
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data added successfully.',
+                    confirmButtonText: 'OK'
+                });
+                navigate(-1)
             } else {
-                // Handle error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to add/update data.',
+                    confirmButtonText: 'OK'
+                });
             }
         } catch (error) {
             console.error('Error:', error);

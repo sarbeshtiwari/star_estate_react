@@ -4,6 +4,7 @@ import Sidebar from '../../sidebar';
 import { Link } from 'react-router-dom';
 import { deleteLocationAdvantages, getLocationAdvantages, updateLocationAdvantagesStatus } from '../../../../api/location_advantages/location_advantages_api';
 import { imageURL } from '../../../../imageURL';
+import Swal from 'sweetalert2';
 
 export default function LocationAdvantages(){
     const [data, setData] = useState([]);
@@ -12,6 +13,11 @@ export default function LocationAdvantages(){
     useEffect(() => {
         fetchData();
     },[])
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchData = async () => {
         setLoading(true);
@@ -35,7 +41,7 @@ export default function LocationAdvantages(){
                 setData(data);
            
         } catch (error) {
-            console.error('Unexpected error:', error.message);
+            // console.error('Unexpected error:', error.message);
         }
     };
 
@@ -43,10 +49,24 @@ export default function LocationAdvantages(){
         if (window.confirm('Are you sure you want to delete this Data?')) {
             try {
                 await deleteLocationAdvantages(id, image);
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data Deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000, 
+                    timerProgressBar: true, 
+                });
                 const data = await getLocationAdvantages();
                 setData(data);
             } catch (error) {
-                console.error('Error deleting developer:', error.message);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error Deleting data.',
+                    confirmButtonText: 'OK'
+                });
+                // console.error('Error deleting developer:', error.message);
             }
         }
     };

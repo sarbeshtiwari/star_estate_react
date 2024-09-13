@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../sidebar';
 import { Link } from 'react-router-dom';
 import { fetchCities, updateCityStatus, deleteCity } from '../../../../api/location/location_api';
+import Swal from 'sweetalert2';
 
 export default function Cities() {
     const [cities, setCities] = useState([]);
@@ -19,37 +20,55 @@ export default function Cities() {
                 };
                 fetchData();
             } catch (error) {
-                console.error('Error loading cities:', error);
+                // console.error('Error loading cities:', error);
             } 
         };
 
         loadCities();
     }, []);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const handleUpdateStatus = async (id, status) => {
         try {
             const result = await updateCityStatus(id, status);
             if (result.success) {
-                console.log('City status updated successfully!');
+                // console.log('City status updated successfully!');
                 // Re-fetch cities or update state accordingly
                 const updatedCities = cities.map(city =>
                     city._id === id ? { ...city, status } : city
                 );
                 setCities(updatedCities);
             } else {
-                console.error('Error updating city status:', result.message);
+                // console.error('Error updating city status:', result.message);
             }
         } catch (error) {
-            console.error('Unexpected error:', error);
+            // console.error('Unexpected error:', error);
         }
     };
 
     const handleDeleteCity = async (id) => {
         try {
             await deleteCity(id);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             setCities(cities.filter(city => city._id !== id));
         } catch (error) {
-            console.error('Error deleting city:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
         }
     };
 

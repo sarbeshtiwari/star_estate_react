@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../sidebar';
 import { Link } from 'react-router-dom';
 import { fetchCategories, updateCategoryStatus, deleteCategory } from '../../../api/category/category_api';
+import Swal from 'sweetalert2';
 
 const Category = () => {
     const [categories, setCategories] = useState([]);
@@ -16,11 +17,16 @@ const Category = () => {
                 setCategories(data);
             } catch (error) {
                 // Display error message to users if needed
-                console.error('Failed to fetch categories:', error);
+                // console.error('Failed to fetch categories:', error);
             }
             setLoading(false)
         };
         loadCategories();
+    }, []);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
     }, []);
 
     const handleUpdateStatus = async (id, status) => {
@@ -33,10 +39,10 @@ const Category = () => {
                     )
                 );
             } else {
-                console.error('Failed to update status:', result.message);
+                // console.error('Failed to update status:', result.message);
             }
         } catch (error) {
-            console.error('Unexpected error:', error);
+            // console.error('Unexpected error:', error);
         }
     };
 
@@ -44,12 +50,19 @@ const Category = () => {
         if (window.confirm('Are you sure you want to delete this category?')) {
             try {
                 await deleteCategory(id);
-                alert("Category Deleted Successfully")
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data Deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000, 
+                    timerProgressBar: true, 
+                });
                 setCategories((prevCategories) =>
                     prevCategories.filter((cat) => cat._id !== id)
                 );
             } catch (error) {
-                console.error('Error deleting category:', error);
+                // console.error('Error deleting category:', error);
             }
         }
     };

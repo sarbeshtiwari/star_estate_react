@@ -17,8 +17,8 @@ const Modal = ({ isOpen, onClose, onSubmit, text }) => {
 
     return (
         <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" aria-hidden="true">
-            <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content">
+            <div className="modal-dialog modal-dialog-centered" style={{ maxWidth: '800px', width: '80%' }}> {/* Increased width */}
+                <div className="modal-content" style={{ height: '500px' }}> {/* Increased height */}
                     <div className="modal-header">
                         <h5 className="modal-title">{text ? 'Update Content' : 'Add Content'}</h5>
                         <button type="button" className="btn-close" onClick={onClose}></button>
@@ -26,9 +26,10 @@ const Modal = ({ isOpen, onClose, onSubmit, text }) => {
                     <div className="modal-body">
                         <textarea
                             className="form-control"
-                            rows="4"
+                            rows="10"  // Increased number of rows for the textarea
                             value={localText}
                             onChange={(e) => setLocalText(e.target.value)}
+                            style={{ height: '300px' }}  // Increased height of the textarea
                         />
                     </div>
                     <div className="modal-footer">
@@ -46,4 +47,3 @@ const Modal = ({ isOpen, onClose, onSubmit, text }) => {
 };
 
 export default Modal;
-

@@ -5,6 +5,7 @@ import { getLocationAdvantages } from '../../../../../../api/location_advantages
 import { getProjectLocationAdvantages, ProjectLocationAdvantages, projectLocationContent } from '../../../../../../api/dashboard/project_list/view_project/project_location_advantages_api';
 import _ from 'lodash';
 import { imageURL } from '../../../../../../imageURL';
+import Swal from 'sweetalert2';
 
 export default function AddProjectLocationAdvantages() {
     const [details, setDetails] = useState([]);
@@ -24,6 +25,11 @@ export default function AddProjectLocationAdvantages() {
     useEffect(() => {
         fetchDetailsHandler(id);
     }, [id]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchDetailsHandler = async (id) => {
         setfetchLoading(true)
@@ -67,17 +73,39 @@ export default function AddProjectLocationAdvantages() {
         setSelectedLocation((prevSelected) => {
             const updatedSelected = new Set(prevSelected);
             const newStatus = !updatedSelected.has(locationId);
-
+    
             if (newStatus) {
                 updatedSelected.add(locationId);
             } else {
                 updatedSelected.delete(locationId);
             }
-
-            // Update the state
+    
+            // Call handleAddClick with the new status
+            handleAddClick(locationId, newStatus);  // Pass the new status (true/false)
+    
             return updatedSelected;
         });
     };
+    
+    
+
+    // const handleCheckboxChange = (locationId) => {
+    //     setSelectedLocation((prevSelected) => {
+    //         const updatedSelected = new Set(prevSelected);
+    //         const newStatus = !updatedSelected.has(locationId);
+
+    //         if (newStatus) {
+    //             updatedSelected.add(locationId);
+    //         } else {
+    //             updatedSelected.delete(locationId);
+    //         }
+
+    //         // debouncedStatus(locationId, newStatus, id);
+
+    //         // Update the state
+    //         return updatedSelected;
+    //     });
+    // };
 
     const handleTextBoxChange = (id, field, value) => {
         setTextBoxValues((prev) => ({
@@ -97,33 +125,75 @@ export default function AddProjectLocationAdvantages() {
         }));
     };
 
-    const handleAddClick = async (locationId) => {
+    const handleAddClick = async (locationId, status) => {
         const title = textBoxValues[locationId]?.title || '';
         const proximity = textBoxValues[locationId]?.proximity || '';
         const unit = proximityUnits[locationId] || '';
-
     
-        if (!unit && proximity) {
-            alert('Please select a proximity unit.');
+        // If it's checked (status = true) and title is missing, show an alert and prevent the update
+        if (status && !title) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Title is Mandatory',
+                text: 'Please provide a title before submitting.',
+                confirmButtonText: 'OK'
+            });
             return;
         }
-
-        if(!title) {
-            alert("Title is mandatory");
-            return;
-        }
+    
         setLoading(true);
     
         try {
-            const isExisting = selectedLocation.has(locationId);
-            const response = await ProjectLocationAdvantages(locationId, isExisting, id, title, proximity, unit);
-            alert(isExisting ? 'Data updated successfully.' : 'Data added successfully.');
+            // Use the status (true/false) passed from handleCheckboxChange
+            const response = await ProjectLocationAdvantages(locationId, status, id, title, proximity, unit);
+            Swal.fire({
+                icon: 'success',
+                title: status ? 'Success!' : 'Unchecked Successfully',
+                text: status ? 'Data updated successfully.' : 'Data unchecked successfully.',
+                confirmButtonText: 'OK'
+            });
         } catch (error) {
             console.error('Error adding/updating data:', error);
-            alert('Failed to add/update data.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
         }
+    
         setLoading(false);
     };
+    
+    
+
+    // const handleAddClick = async (locationId) => {
+    //     const title = textBoxValues[locationId]?.title || '';
+    //     const proximity = textBoxValues[locationId]?.proximity || '';
+    //     const unit = proximityUnits[locationId] || '';
+
+    
+    //     // if (!unit && proximity) {
+    //     //     alert('Please select a proximity unit.');
+    //     //     return;
+    //     // }
+
+    //     if(!title) {
+    //         alert("Title is mandatory");
+    //         return;
+    //     }
+    //     setLoading(true);
+    
+    //     try {
+    //         const isExisting = selectedLocation.has(locationId);
+    //         const response = await ProjectLocationAdvantages(locationId, isExisting, id, title, proximity, unit);
+    //         alert(isExisting ? 'Data updated successfully.' : 'Data added successfully.');
+    //     } catch (error) {
+    //         console.error('Error adding/updating data:', error);
+    //         alert('Failed to add/update data.');
+    //     }
+    //     setLoading(false);
+    // };
     
     const isChecked = (locationId) => selectedLocation.has(locationId);
 
@@ -154,13 +224,19 @@ export default function AddProjectLocationAdvantages() {
             
             const response = await projectLocationContent(formData, id);
             if (response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data added successfully.',
+                    confirmButtonText: 'OK'
+                });
                 navigate(-1);
             }
         }catch(error){
             console.error(error)
         }
         setLoading(false);
-        // Add form submission logic here
+       
     };
 
     return (
@@ -189,13 +265,13 @@ export default function AddProjectLocationAdvantages() {
                                     </div>
                                     <div id="subct_wrapper" className="dataTables_wrapper no-footer">
                                     {fetchloading ? (
-    <div className="d-flex justify-content-center align-items-center">
-        <div className="spinner-border text-primary" role="status">
-            <span className="sr-only">Loading...</span>
-        </div>
-        <span className="ml-2">Loading...</span>
-    </div>
-) : ''} 
+                                        <div className="d-flex justify-content-center align-items-center">
+                                            <div className="spinner-border text-primary" role="status">
+                                                <span className="sr-only">Loading...</span>
+                                            </div>
+                                            <span className="ml-2">Loading...</span>
+                                        </div>
+                                    ) : ''} 
                                         <div className="full price_table padding_infor_info">
                                             <div className="row">
                                             <form onSubmit={handleSubmit} id="submit" encType="multipart/form-data">

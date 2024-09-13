@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { fetchFAQs, updateFAQStatus, deleteFAQ } from '../../../../../../api/location/sub_city/sub_city_faq_api';
+import Swal from 'sweetalert2';
 
 export default function SubCityFooterFAQ() {
     const [faq, setFAQ] = useState([]);
@@ -18,7 +19,7 @@ export default function SubCityFooterFAQ() {
                     const faqs = await fetchFAQs(sub_city, content_type);
                     setFAQ(faqs);
                 } catch (error) {
-                    console.error('Error loading FAQs:', error);
+                    // console.error('Error loading FAQs:', error);
                 }
                 setLoading(false)
             };
@@ -27,23 +28,42 @@ export default function SubCityFooterFAQ() {
         }
     }, [sub_city, content_type]);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const handleUpdateStatus = async (id, status) => {
         try {
             await updateFAQStatus(id, status);
             const faqs = await fetchFAQs(sub_city, content_type);
             setFAQ(faqs);
         } catch (error) {
-            console.error('Error updating status:', error);
+            // console.error('Error updating status:', error);
         }
     };
 
     const handleDeleteFAQ = async (id) => {
         try {
             await deleteFAQ(id);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             const faqs = await fetchFAQs(sub_city, content_type);
             setFAQ(faqs);
         } catch (error) {
-            console.error('Error deleting FAQ:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
+            // console.error('Error deleting FAQ:', error);
         }
     };
 

@@ -3,6 +3,7 @@ import Sidebar from '../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {fetchCityDetails, addSubCity, updateSubCity } from '../../../../../api/location/sub_city/sub_city_api';
 import { fetchCities } from '../../../../../api/location/location_api';
+import Swal from 'sweetalert2';
 
 export default function AddSubCity() {
     const [cities, setCities] = useState([]);
@@ -25,6 +26,11 @@ export default function AddSubCity() {
 
     const navigate = useNavigate();
     const { id, ids } = useParams();
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
         const loadData = async () => {
@@ -192,13 +198,29 @@ export default function AddSubCity() {
                 : await updateSubCity(id, ids, formDataToSend);
 
             if (result.success) {
-                alert('City saved successfully');
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data added successfully.',
+                    confirmButtonText: 'OK'
+                });
                 navigate(-1);
             } else {
-                alert(`Failed to save City: ${result.message}`);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: `Failed to add/update data. ${result.message}`,
+                    confirmButtonText: 'OK'
+                });
+                
             }
         } catch (error) {
-            alert(`Failed to save City`);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
             console.error('Error submitting form:', error);
         }
         setLoading(false);
@@ -303,7 +325,7 @@ export default function AddSubCity() {
                                                     </div>
                                                     <div className="col-md-4 form-group">
                                                         <label className="label_field">Sub City</label>
-                                                        <input type="text" name="sub_city" id="sub_city" value={formData.sub_city} onChange={handleInputChange} className={`form-control ${validationErrors.sub_city ? 'is-invalid' : ''}`} />
+                                                        <input type="text" name="sub_city" id="sub_city" value={formData.sub_city} onChange={handleInputChange} style={{ textTransform: 'capitalize' }} className={`form-control ${validationErrors.sub_city ? 'is-invalid' : ''}`} />
                                                     </div>
                                                     {validationErrors.sub_city && (
                                                             <div className='invalid-feedback'>{validationErrors.sub_city}</div>

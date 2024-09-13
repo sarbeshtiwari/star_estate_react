@@ -4,6 +4,7 @@ import Sidebar from '../../sidebar';
 import { fetchDevelopers, updateDeveloperStatus, deleteDeveloper } from '../../../../api/developer/developer_api';
 import image from '../../../../assets/images/logo.png'; // Default image
 import { imageURL } from '../../../../imageURL';
+import Swal from 'sweetalert2';
 
 export default function Developer() {
     const [developers, setDevelopers] = useState([]);
@@ -26,18 +27,23 @@ export default function Developer() {
         loadDevelopers();
     }, []);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const handleUpdateStatus = async (id, status) => {
         try {
             const response = await updateDeveloperStatus(id, status);
             if (response.success) {
-                console.log('Developer status updated successfully!');
+                // console.log('Developer status updated successfully!');
                 const data = await fetchDevelopers();
                 setDevelopers(data);
             } else {
-                console.error('Error updating developer status:', response.message);
+                // console.error('Error updating developer status:', response.message);
             }
         } catch (error) {
-            console.error('Unexpected error:', error.message);
+            // console.error('Unexpected error:', error.message);
         }
     };
 
@@ -45,10 +51,23 @@ export default function Developer() {
         if (window.confirm('Are you sure you want to delete this developer?')) {
             try {
                 await deleteDeveloper(id, image);
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data Deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000, 
+                    timerProgressBar: true, 
+                });
                 const data = await fetchDevelopers();
                 setDevelopers(data);
             } catch (error) {
-                console.error('Error deleting developer:', error.message);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error Deleting data.',
+                    confirmButtonText: 'OK'
+                });
             }
         }
     };

@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { deleteFloorPlan, getFloorContent, getFloorPlanByProject, projectFloorContent, updateFloorPlanStatus } from '../../../../../../api/dashboard/project_list/view_project/floor_plan_api';
 import { imageURL } from '../../../../../../imageURL';
 import Modal from '../../../../enquiry/modal';
+import Swal from 'sweetalert2';
 
 export default function FloorPlan() {
     
@@ -23,13 +24,18 @@ export default function FloorPlan() {
         fetchDetailsHandler();
     }, [id]);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const fetchDetailsHandler = async () => {
         setLoading(true)
         try {
             const data = await getFloorPlanByProject(id);
             setDetails(data);
         } catch (err) {
-            console.error('Error fetching details:', err);
+            // console.error('Error fetching details:', err);
         }
         setLoading(false)
     };
@@ -48,9 +54,22 @@ export default function FloorPlan() {
         try {
             await deleteFloorPlan(detailId);
              const response =  await getFloorPlanByProject(id);
+             Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             setDetails(response);
         } catch (error) {
-            console.error('Error deleting detail:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
         }
     };
 
@@ -72,7 +91,7 @@ export default function FloorPlan() {
                     floorPlanContent: text, // Assuming the text corresponds to `floorPlanContent`
                 });
     
-                console.log('Submitted text:', { ...formData, floorPlanContent: text }, id);
+                // console.log('Submitted text:', { ...formData, floorPlanContent: text }, id);
     
                 await projectFloorContent(id, { ...formData, floorPlanContent: text }); // Pass the updated formData to the API
     
@@ -81,10 +100,10 @@ export default function FloorPlan() {
                 setSelectedItemId(null);
                 setNoteText('');
             } catch (error) {
-                console.error('Error saving query:', error);
+                // console.error('Error saving query:', error);
             }
         } else {
-            console.error('No item selected for saving.');
+            // console.error('No item selected for saving.');
         }
     };
 
@@ -141,7 +160,7 @@ export default function FloorPlan() {
                                                             <thead className="thead-dark">
                                                                 <tr>
                                                                     <th>No</th>
-                                                                    <th>Image</th>
+                                                                    {/* <th>Image</th> */}
                                                                     <th>Property Configuration</th>
                                                                     <th>Area (sqft)</th>
                                                                     <th>Area (sqm)</th>
@@ -153,7 +172,7 @@ export default function FloorPlan() {
                                                                 {details.map((detail, index) => (
                                                                     <tr key={detail._id} className={index % 2 === 0 ? 'even' : 'odd'}>
                                                                         <td className="sorting_1">{index + 1}</td>
-                                                                        <td>
+                                                                        {/* <td>
                                                                             <img 
                                                                             src={`${imageURL}/${detail.image}`}
 
@@ -163,7 +182,7 @@ export default function FloorPlan() {
                                                                                 width="50"
                                                                                 height="50"
                                                                             />
-                                                                        </td>
+                                                                        </td> */}
                                                                         <td>{detail.title}</td>
                                                                         <td>{detail.area ? detail.area : detail.areaRangeSqft}</td>
                                                                         <td>{detail.areaRangeSqm}</td>

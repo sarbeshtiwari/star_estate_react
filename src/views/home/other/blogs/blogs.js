@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { fetchBlogs, updateBlogStatus, deleteBlog } from '../../../../api/blogs/blogs_api';
 import image from '../../../../assets/images/logo.png';
 import { imageURL } from '../../../../imageURL';
+import Swal from 'sweetalert2';
 
 export default function Blogs() {
     const [blogs, setBlogs] = useState([]);
@@ -17,7 +18,7 @@ export default function Blogs() {
                 const blogData = await fetchBlogs();
                 setBlogs(blogData);
             } catch (err) {
-                console.log('Failed to fetch data');
+                // console.log('Failed to fetch data');
             }
             setLoading(false)
         };
@@ -25,26 +26,45 @@ export default function Blogs() {
         loadBlogs();
     }, []);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const handleUpdateStatus = async (id, status) => {
         try {
             const response = await updateBlogStatus(id, status);
             if (response.success) {
-                console.log('Blog status updated successfully!');
+                // console.log('Blog status updated successfully!');
                 setBlogs(prevBlogs => prevBlogs.map(blog => blog._id === id ? { ...blog, status } : blog));
             } else {
-                console.error('Error updating blog status:', response.message);
+                // console.error('Error updating blog status:', response.message);
             }
         } catch (error) {
-            console.error('Unexpected error:', error);
+            // console.error('Unexpected error:', error);
         }
     };
 
     const handleDeleteBlog = async (id, image) => {
         try {
             await deleteBlog(id, image);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             setBlogs(prevBlogs => prevBlogs.filter(blog => blog._id !== id));
         } catch (error) {
-            console.error('Error deleting blog:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
+            // console.error('Error deleting blog:', error);
         }
     };
 

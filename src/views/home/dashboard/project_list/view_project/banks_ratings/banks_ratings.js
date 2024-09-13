@@ -13,6 +13,11 @@ export default function ProjectBanksRatings() {
         fetchDetailsHandler();
     }, [id]);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const fetchDetailsHandler = async () => {
         try {
             const response = await getProjectBanks(id);
@@ -20,7 +25,7 @@ export default function ProjectBanksRatings() {
             // setDetails(response)
             // Assuming `response` is an object with a property that holds the array
             if (response && response.data) {
-                console.log('data')
+                // console.log('data')
                 // Check if response.data is an array
                 // if (Array.isArray(response.data)) {
                     
@@ -28,11 +33,11 @@ export default function ProjectBanksRatings() {
                 // } 
             } else {
                 // No data received
-                console.error('No data received:', response);
+                // console.error('No data received:', response);
                 setDetails([]);
             }
         } catch (err) {
-            console.error('Error fetching details:', err);
+            // console.error('Error fetching details:', err);
             setDetails([]);
         }
     };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../sidebar';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { addFAQ, fetchFAQ, updateFAQ } from '../../../../api/location/configurationFAQ_api';
+import Swal from 'sweetalert2';
 
 const AddConfigurationFAQ = () => {
     const { slugURL, id } = useParams();
@@ -17,6 +18,11 @@ const AddConfigurationFAQ = () => {
         }
         console.log(id)
     }, [id, slugURL]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchFAQData = async (faqId) => {
         try {
@@ -99,17 +105,32 @@ const validateForm = () => {
             if (response && response.data) {
                 const result = response.data;
                 if (result.success) {
-                    alert('Data saved successfully');
+                    Swal.fire({
+                        icon: 'success',
+                        title:  'Success!',
+                        text:  'Data added successfully.',
+                        confirmButtonText: 'OK'
+                    });
                     navigate(-1);
                 } else {
-                    alert(`Failed to save data: ${result.message}`);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to add/update data.',
+                        confirmButtonText: 'OK'
+                    });
                 }
             } else {
                 throw new Error('No response data');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while saving data. Please check the console for more details.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
         }
     };
 

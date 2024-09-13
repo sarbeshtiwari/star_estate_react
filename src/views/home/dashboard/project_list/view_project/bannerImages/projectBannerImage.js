@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import Sidebar from '../../../../sidebar';
 import { deleteBanner, fetchBannerByID, updateBannerStatus } from '../../../../../../api/bannerImage/projectBannerImage';
 import { imageURL } from '../../../../../../imageURL';
+import Swal from 'sweetalert2';
 // import image from '../../../assets/images/logo.png';
 // import { fetchHomeBanner, updateHomeBannerStatus, deleteHomeBanner, globals } from '../../api/bannerImage/bannerImage';
 // import ImageModal from '../../widgets/imageModel';
@@ -29,6 +30,11 @@ export default function ProjectHomeBanner() {
 
         loadHomeBanner(id);
     }, [id]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
     
     const loadHomeBanner = async (id) => {
         try {
@@ -62,14 +68,27 @@ export default function ProjectHomeBanner() {
         try {
             const result = await deleteBanner(imageID);
             if (result.success) {
-                alert('Banner deleted successfully');
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data Deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000, 
+                    timerProgressBar: true, 
+                });
+                
                 loadHomeBanner(id);
             } else {
                 alert(`Error: ${result.message}`);
             }
         } catch (error) {
             console.error('Error deleting home banner:', error);
-            alert(`Error: ${error.message}`);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
         }
     };
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { fetchJobs, updateJobStatus, deleteJob } from '../../../api/job/job_api';
 import Sidebar from '../sidebar';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const JobPost = () => {
     const [jobs, setJobs] = useState([]);
@@ -13,6 +14,11 @@ const JobPost = () => {
         loadJobs();
     }, []);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const loadJobs = async () => {
         setLoading(true);
         try {
@@ -20,7 +26,7 @@ const JobPost = () => {
             setJobs(jobData);
         } catch (error) {
             setError(error.message);
-            console.error('Error fetching jobs:', error);
+            // console.error('Error fetching jobs:', error);
         } finally {
             setLoading(false);
         }
@@ -34,11 +40,11 @@ const JobPost = () => {
                 loadJobs();
             } else {
                 setError(result.message);
-                console.error('Error updating job status:', result.message);
+                // console.error('Error updating job status:', result.message);
             }
         } catch (error) {
             setError(error.message);
-            console.error('Unexpected error:', error);
+            // console.error('Unexpected error:', error);
         } finally {
             setLoading(false);
         }
@@ -49,11 +55,18 @@ const JobPost = () => {
             setLoading(true);
             try {
                 await deleteJob(id);
-                alert("Data is Deleted");
+                Swal.fire({
+                    icon: 'success',
+                    title:  'Success!',
+                    text:  'Data Deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000, 
+                    timerProgressBar: true, 
+                });
                 loadJobs();
             } catch (error) {
                 setError(error.message);
-                console.error('Error deleting job:', error);
+                // console.error('Error deleting job:', error);
             } finally {
                 setLoading(false);
             }

@@ -3,6 +3,7 @@ import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { deleteProjectRera, getProjectReraByProject, updateProjectReraStatus } from '../../../../../../api/dashboard/project_list/view_project/project_rera_api';
 import { imageURL } from '../../../../../../imageURL';
+import Swal from 'sweetalert2';
 
 export default function ProjectRera() {
    
@@ -15,13 +16,18 @@ export default function ProjectRera() {
         fetchDetailsHandler();
     }, [id]);
 
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
+
     const fetchDetailsHandler = async () => {
         setLoading(true)
         try {
             const data = await getProjectReraByProject(id);
             setDetails(data);
         } catch (err) {
-            console.error('Error fetching details:', err);
+            // console.error('Error fetching details:', err);
         }
         setLoading(false)
     };
@@ -32,17 +38,30 @@ export default function ProjectRera() {
             const response =  await getProjectReraByProject(id);
             setDetails(response);
         } catch (error) {
-            console.error('Error updating status:', error);
+            // console.error('Error updating status:', error);
         }
     };
 
     const handleDelete = async (detailId) => {
         try {
             await deleteProjectRera(detailId);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             const response =  await getProjectReraByProject(id);
             setDetails(response);
         } catch (error) {
-            console.error('Error deleting detail:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
         }
     };
 
@@ -55,7 +74,7 @@ export default function ProjectRera() {
                         <div className="row column_title">
                             <div className="col-md-12">
                                 <div className="page_title">
-                                    <h2>QR Code</h2>
+                                    <h2>Project RERA Details</h2>
                                 </div>
                             </div>
                         </div>

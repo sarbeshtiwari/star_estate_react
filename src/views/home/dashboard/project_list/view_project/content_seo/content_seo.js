@@ -3,6 +3,7 @@ import Sidebar from '../../../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Overview from './overview';
 import { fetchDetails, updateStatus, deleteDetails } from '../../../../../../api/dashboard/project_list/view_project/content_seo_api';
+import Swal from 'sweetalert2';
 
 export default function ContentSEO() {
     const [details, setDetails] = useState([]);
@@ -19,13 +20,18 @@ export default function ContentSEO() {
                 const data = await fetchDetails(id);
                 setDetails(data);
             } catch (err) {
-                console.error('Unexpected error:', err);
+                // console.error('Unexpected error:', err);
             }
             setLoading(false)
         };
 
         getDetails();
     }, [id]);
+
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const openModal = (detail) => {
         setSelectedDetail(detail);
@@ -38,26 +44,39 @@ export default function ContentSEO() {
         try {
             const response = await updateStatus(detailId, status);
             if (response.success) {
-                console.log('Details status updated successfully!');
+                // console.log('Details status updated successfully!');
                 setDetails(prevDetails => 
                     prevDetails.map(detail =>
                         detail._id === detailId ? { ...detail, status } : detail
                     )
                 );
             } else {
-                console.error('Error updating Details status:', response.message);
+                // console.error('Error updating Details status:', response.message);
             }
         } catch (error) {
-            console.error('Unexpected error:', error);
+            // console.error('Unexpected error:', error);
         }
     };
 
     const handleDeleteDetails = async (detailId) => {
         try {
             await deleteDetails(detailId);
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data Deleted successfully.',
+                confirmButtonText: 'OK',
+                timer: 2000, 
+                timerProgressBar: true, 
+            });
             setDetails(prevDetails => prevDetails.filter(detail => detail._id !== detailId));
         } catch (error) {
-            console.error('Error deleting Details:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error Deleting data.',
+                confirmButtonText: 'OK'
+            });
         }
     };
 

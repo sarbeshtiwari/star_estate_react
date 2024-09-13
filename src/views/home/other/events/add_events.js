@@ -3,6 +3,7 @@ import Sidebar from '../../sidebar';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchEventById, addEvent, updateEvent } from '../../../../api/events/events_api'; // Adjust the path as needed
 import { imageURL } from '../../../../imageURL';
+import Swal from 'sweetalert2';
 
 export default function AddEvents() {
     const navigate = useNavigate();
@@ -24,6 +25,10 @@ export default function AddEvents() {
             fetchEvent(id);
         }
     }, [id]);
+    useEffect(() => {
+        // Scroll to the top of the page when the component mounts
+        window.scrollTo(0, 0);
+    }, []);
 
     const fetchEvent = async (id) => {
         try {
@@ -155,11 +160,21 @@ export default function AddEvents() {
             } else {
                 response = await addEvent(data);
             }
-            console.log('Success:', response.data);
-            navigate('/events');
+            Swal.fire({
+                icon: 'success',
+                title:  'Success!',
+                text:  'Data added successfully.',
+                confirmButtonText: 'OK'
+            });
+            navigate(-1);
         } catch (error) {
             console.error('Error:', error.response ? error.response.data : error.message);
-            alert('An error occurred. Please try again.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add/update data.',
+                confirmButtonText: 'OK'
+            });
         }
         setLoading(false);
     };
