@@ -136,7 +136,8 @@ export default function AddProjectLocationAdvantages() {
                 icon: 'warning',
                 title: 'Title is Mandatory',
                 text: 'Please provide a title before submitting.',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                timer: 1000,
             });
             return;
         }
@@ -144,12 +145,14 @@ export default function AddProjectLocationAdvantages() {
         setLoading(true);
     
         try {
-            // Use the status (true/false) passed from handleCheckboxChange
-            const response = await ProjectLocationAdvantages(locationId, status, id, title, proximity, unit);
+            // Ensure status is either true or false
+            const validStatus = status !== undefined ? status : true;
+    
+            const response = await ProjectLocationAdvantages(locationId, validStatus, id, title, proximity, unit);
             Swal.fire({
                 icon: 'success',
-                title: status ? 'Success!' : 'Unchecked Successfully',
-                text: status ? 'Data updated successfully.' : 'Data unchecked successfully.',
+                title: validStatus ? 'Success!' : 'Unchecked Successfully',
+                text: validStatus ? 'Data updated successfully.' : 'Data unchecked successfully.',
                 confirmButtonText: 'OK'
             });
         } catch (error) {
@@ -164,6 +167,7 @@ export default function AddProjectLocationAdvantages() {
     
         setLoading(false);
     };
+    
     
     
 
