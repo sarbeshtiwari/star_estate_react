@@ -51,26 +51,44 @@ export default function Cities() {
     };
 
     const handleDeleteCity = async (id) => {
-        try {
-            await deleteCity(id);
-            Swal.fire({
-                icon: 'success',
-                title:  'Success!',
-                text:  'Data Deleted successfully.',
-                confirmButtonText: 'OK',
-                timer: 2000, 
-                timerProgressBar: true, 
-            });
-            setCities(cities.filter(city => city._id !== id));
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Error Deleting data.',
-                confirmButtonText: 'OK'
-            });
+        // Show confirmation dialog
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "This action will permanently delete the selected city.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33', // Red for danger
+            cancelButtonColor: '#3085d6', // Blue for cancel
+            confirmButtonText: 'Yes, delete it!'
+        });
+    
+        if (result.isConfirmed) {
+            try {
+                await deleteCity(id);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'City deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 1000,
+                    timerProgressBar: true,
+                    willClose: () => {
+                        // Update state after the success message
+                        setCities(prevCities => prevCities.filter(city => city._id !== id));
+                    }
+                });
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Error deleting the city.',
+                    confirmButtonText: 'OK'
+                });
+                // Optional: console.error('Error deleting city:', error);
+            }
         }
     };
+    
 
     return (
         <>
@@ -178,9 +196,9 @@ export default function Cities() {
                                                                                 <button
                                                                                     className="btn btn-danger btn-xs"
                                                                                     onClick={() => {
-                                                                                        if (window.confirm('Are you sure you want to delete this city?')) {
+                                                                                       
                                                                                             handleDeleteCity(city._id);
-                                                                                        }
+                                                                           
                                                                                     }}
                                                                                 >
                                                                                     <i className="fa fa-trash"></i>

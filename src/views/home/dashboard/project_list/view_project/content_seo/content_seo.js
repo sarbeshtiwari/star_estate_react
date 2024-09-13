@@ -59,26 +59,44 @@ export default function ContentSEO() {
     };
 
     const handleDeleteDetails = async (detailId) => {
-        try {
-            await deleteDetails(detailId);
-            Swal.fire({
-                icon: 'success',
-                title:  'Success!',
-                text:  'Data Deleted successfully.',
-                confirmButtonText: 'OK',
-                timer: 2000, 
-                timerProgressBar: true, 
-            });
-            setDetails(prevDetails => prevDetails.filter(detail => detail._id !== detailId));
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Error Deleting data.',
-                confirmButtonText: 'OK'
-            });
+        // Show confirmation dialog
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "This action will permanently delete the detail.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33', // Red for delete
+            cancelButtonColor: '#3085d6', // Blue for cancel
+            confirmButtonText: 'Yes, delete it!'
+        });
+    
+        if (result.isConfirmed) {
+            try {
+                await deleteDetails(detailId);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'Detail deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 1000,
+                    timerProgressBar: true,
+                    willClose: () => {
+                        // Optionally, refresh or update data here if needed
+                        setDetails(prevDetails => prevDetails.filter(detail => detail._id !== detailId));
+                    }
+                });
+            } catch (error) {
+                console.error('Error deleting detail:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error deleting data.',
+                    confirmButtonText: 'OK'
+                });
+            }
         }
     };
+    
 
     return (
         <div>
@@ -158,9 +176,9 @@ export default function ContentSEO() {
                                                                                     <button
                                                                                         className="btn btn-danger btn-xs"
                                                                                         onClick={() => {
-                                                                                            if (window.confirm('Are you sure you want to delete this Detail?')) {
+                                                                                           
                                                                                                 handleDeleteDetails(detail._id);
-                                                                                            }
+                                                                                    
                                                                                         }}
                                                                                     >
                                                                                         <i className="fa fa-trash"></i>

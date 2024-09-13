@@ -55,28 +55,44 @@ export default function SubCities() {
     };
 
     const handleDelete = async (subCityId) => {
-        try {
-            if (window.confirm('Are you sure you want to delete this category?')) {
+        // Show confirmation dialog
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "This action will permanently delete the category.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33', // Red for confirm
+            cancelButtonColor: '#3085d6', // Blue for cancel
+            confirmButtonText: 'Yes, delete it!'
+        });
+    
+        if (result.isConfirmed) {
+            try {
                 await deleteSubCity(subCityId);
                 Swal.fire({
                     icon: 'success',
-                    title:  'Success!',
-                    text:  'Data Deleted successfully.',
+                    title: 'Deleted!',
+                    text: 'Category deleted successfully.',
                     confirmButtonText: 'OK',
-                    timer: 2000, 
-                    timerProgressBar: true, 
+                    timer: 2000,
+                    timerProgressBar: true,
+                    willClose: () => {
+                        // Update state after the success message
+                        setSubCities(prev => prev.filter(subCity => subCity._id !== subCityId));
+                    }
                 });
-                setSubCities(prev => prev.filter(subCity => subCity._id !== subCityId));
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Error deleting the category.',
+                    confirmButtonText: 'OK'
+                });
+                // Optional: console.error('Error deleting category:', error);
             }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Error Deleting data.',
-                confirmButtonText: 'OK'
-            });
         }
     };
+    
 
     const filteredSubcity = subCities.filter(item =>
         (item.city || '').toLowerCase().includes(searchQuery.toLowerCase()) ||

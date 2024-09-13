@@ -157,7 +157,9 @@ const AddProjectGallery = () => {
                     icon: 'success',
                     title:  'Success!',
                     text:  'Data added successfully.',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    timer: 1000,
+                    timerProgressBar: true
                 });
                 navigate(-1)
             } else {

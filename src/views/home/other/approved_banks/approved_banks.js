@@ -46,29 +46,40 @@ export default function ApprovedBanks(){
     };
 
     const handleDelete = async (id, image) => {
-        if (window.confirm('Are you sure you want to delete this Data?')) {
-            try {
+        try {
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "This action will permanently delete the data and associated image.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33', // Red for danger
+                cancelButtonColor: '#3085d6', // Blue for cancel
+                confirmButtonText: 'Yes, delete it!'
+            });
+    
+            if (result.isConfirmed) {
                 await deleteBankList(id, image);
                 Swal.fire({
                     icon: 'success',
-                    title:  'Success!',
-                    text:  'Data Deleted successfully.',
+                    title: 'Deleted!',
+                    text: 'Data deleted successfully.',
                     confirmButtonText: 'OK',
-                    timer: 2000, 
+                    timer: 2000,
                     timerProgressBar: true, 
                 });
                 const data = await getBankList();
-                setData(data);
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Error Deleting data.',
-                    confirmButtonText: 'OK'
-                });
+                setData(data); // Refresh the data list after deletion
             }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'Error deleting the data.',
+                confirmButtonText: 'OK'
+            });
         }
     };
+    
     
 
 

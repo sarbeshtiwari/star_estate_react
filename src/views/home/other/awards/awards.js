@@ -43,23 +43,38 @@ export default function Awards() {
     };
 
     const handleDeleteEvent = async (id) => {
-        if (window.confirm('Are you sure you want to delete this Event?')) {
-            try {
+        try {
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33', // Danger color for confirm button
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            });
+    
+            if (result.isConfirmed) {
                 await deleteAward(id);
                 Swal.fire({
                     icon: 'success',
-                    title:  'Success!',
-                    text:  'Data Deleted successfully.',
+                    title: 'Deleted!',
+                    text: 'The event has been deleted.',
                     confirmButtonText: 'OK',
-                    timer: 2000, 
-                    timerProgressBar: true, 
+                    timer: 2000,
+                    timerProgressBar: true,
                 });
                 setEvent(prevEvents => prevEvents.filter(evt => evt._id !== id));
-            } catch (error) {
-                setError(error.message);
             }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error.message || 'Something went wrong!',
+            });
         }
     };
+    
 
 
     return (

@@ -70,27 +70,45 @@ export default function ProjectConfiguration() {
     };
 
     const handleDeleteCity = async (ids) => {
-        try {
-            await deleteConfiguration(ids);
-            Swal.fire({
-                icon: 'success',
-                title:  'Success!',
-                text:  'Data Deleted successfully.',
-                confirmButtonText: 'OK',
-                timer: 2000, 
-                timerProgressBar: true, 
-            });
-            loadProjectConfiguration(id);
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Error Deleting data.',
-                confirmButtonText: 'OK'
-            });
-            // console.error('Error deleting city:', error);
+        // Show confirmation dialog
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "This action will permanently delete the selected city configurations.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33', // Red for danger
+            cancelButtonColor: '#3085d6', // Blue for cancel
+            confirmButtonText: 'Yes, delete it!'
+        });
+    
+        // Proceed if user confirms
+        if (result.isConfirmed) {
+            try {
+                await deleteConfiguration(ids);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'Data deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 1000,
+                    timerProgressBar: true,
+                    willClose: () => {
+                        // Refresh the project configuration list after the success message
+                        loadProjectConfiguration(); // Ensure 'id' is either available or remove if not needed
+                    }
+                });
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Error deleting data.',
+                    confirmButtonText: 'OK'
+                });
+                // Optional: console.error('Error deleting city:', error);
+            }
         }
     };
+    
 
     return (
         <>
@@ -179,9 +197,9 @@ export default function ProjectConfiguration() {
                                                                         <button
                                                                             className="btn btn-danger btn-xs"
                                                                             onClick={() => {
-                                                                                if (window.confirm('Are you sure you want to delete this city?')) {
+                                                                               
                                                                                     handleDeleteCity(data._id);
-                                                                                }
+                                                                            
                                                                             }}
                                                                         >
                                                                             <i className="fa fa-trash"></i>

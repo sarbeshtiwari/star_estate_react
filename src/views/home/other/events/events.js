@@ -59,24 +59,41 @@ export default function Events() {
     };
 
     const handleDeleteEvent = async (id, image) => {
-        if (window.confirm('Are you sure you want to delete this Event?')) {
-            try {
+        try {
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "This action will permanently delete the event.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33', // Red for danger
+                cancelButtonColor: '#3085d6', // Blue for cancel
+                confirmButtonText: 'Yes, delete it!'
+            });
+    
+            if (result.isConfirmed) {
                 await deleteEvent(id);
                 Swal.fire({
                     icon: 'success',
-                    title:  'Success!',
-                    text:  'Data Deleted successfully.',
+                    title: 'Deleted!',
+                    text: 'Event deleted successfully.',
                     confirmButtonText: 'OK',
-                    timer: 2000, 
+                    timer: 2000,
                     timerProgressBar: true, 
                 });
-                loadEvents();
-                // setEvent(prevEvents => prevEvents.filter(evt => evt._id !== id));
-            } catch (error) {
-                setError(error.message);
+    
+                loadEvents(); // Refresh the event list
             }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'Error deleting the event.',
+                confirmButtonText: 'OK'
+            });
+            setError(error.message); // Optional: update the state with the error message
         }
     };
+    
 
 
     return (

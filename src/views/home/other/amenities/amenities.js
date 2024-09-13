@@ -90,9 +90,9 @@ export default function Amenities() {
                                                                                 <button
                                                                                     className="btn btn-danger btn-xs"
                                                                                     onClick={() => {
-                                                                                        if (window.confirm('Are you sure you want to delete this amenity?')) {
+                                                                                       
                                                                                             handleDeleteAmenity(amenity._id);
-                                                                                        }
+                                                                                       
                                                                                     }}
                                                                                 >
                                                                                     <i className="fa fa-trash"></i>

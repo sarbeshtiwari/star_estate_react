@@ -44,21 +44,41 @@ export default function QuickDetails() {
     };
 
     const handleDelete = async (detailId) => {
-        try {
-            await deleteDetails(detailId);
-            Swal.fire({
-                icon: 'success',
-                title:  'Success!',
-                text:  'Data Deleted successfully.',
-                confirmButtonText: 'OK',
-                timer: 2000, 
-                timerProgressBar: true, 
-            });
-            fetchDetailsHandler();
-        } catch (error) {
-            // console.error('Error deleting detail:', error);
+        // Show confirmation dialog
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "This action will permanently delete the detail.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33', // Red for delete
+            cancelButtonColor: '#3085d6', // Blue for cancel
+            confirmButtonText: 'Yes, delete it!'
+        });
+    
+        if (result.isConfirmed) {
+            try {
+                await deleteDetails(detailId);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'Data deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 1000,
+                    timerProgressBar: true
+                });
+                fetchDetailsHandler(); // Refresh the details list
+            } catch (error) {
+                console.error('Error deleting detail:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error deleting data.',
+                    confirmButtonText: 'OK'
+                });
+            }
         }
     };
+    
 
     return (
         <div >
@@ -129,9 +149,9 @@ export default function QuickDetails() {
                                                                                     <button
                                                                                         className="btn btn-danger btn-xs"
                                                                                         onClick={() => {
-                                                                                            if (window.confirm('Are you sure you want to delete this Detail?')) {
+                                                                                            
                                                                                                 handleDelete(detail._id);
-                                                                                            }
+                                                                                         
                                                                                         }}
                                                                                     >
                                                                                         <i className="fa fa-trash"></i>

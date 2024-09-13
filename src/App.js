@@ -5,7 +5,6 @@ import Footer from './views/widgets/footer';
 
 import LogoutComponent from './views/widgets/logout';
 import Category from './views/home/category/category';
-import LuxuryPropery from './views/home/luxuryProp/luxuryProperty';
 import JobPost from './views/home/job/jobPost';
 import AddCategory from './views/home/category/add_category';
 import AddCareer from './views/home/job/add_career';
@@ -80,6 +79,7 @@ import ConfigurationFAQ from './views/home/other/location/configurationFaq';
 import AddConfigurationFAQ from './views/home/other/location/addConfigurationFAQ';
 import ProjectHomeBanner from './views/home/dashboard/project_list/view_project/bannerImages/projectBannerImage';
 import AddProjectBannerImage from './views/home/dashboard/project_list/view_project/bannerImages/addProjectBannerImage';
+import NRIQuery from './views/home/enquiry/nri_query';
 
 function App() {
   return (
@@ -121,10 +121,10 @@ function App() {
         <Route path="/:id/addBanks/:ids" element={<ProtectedRoute element ={<AddBanksandRatings/>}/>}/>
 
 
-        <Route path="/category" element ={<ProtectedRoute element ={<Category/>}/>}/>
-        
+        <Route path="/category" element ={<ProtectedRoute element ={<Category/>}/>}/>       
         <Route  path="/AddCategory/:id" element ={<ProtectedRoute element ={<AddCategory/>}/>}/>
-        <Route path="/luxuryProp" element ={<ProtectedRoute element ={<LuxuryPropery/>}/>}/>
+
+        <Route path="/nriQuery" element ={<ProtectedRoute element ={<NRIQuery/>}/>}/>
         <Route path="/jobPost" element = {<ProtectedRoute element ={<JobPost/>}/>}/>
         <Route path="/AddCareer/:id" element = {<ProtectedRoute element ={<AddCareer/>}/>}/>
         <Route path="/logout" element ={<ProtectedRoute element ={<LogoutComponent/>}/>}/>

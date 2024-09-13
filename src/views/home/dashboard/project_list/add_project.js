@@ -318,11 +318,23 @@ export default function AddProject() {
             } else {
                 await updateProject(id, updatedFormData);
             }
-            alert('Project saved successfully!');
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Project Added Successfully!',
+                confirmButtonText: 'OK',
+                timer: 1000,
+                timerProgressBar: true
+            });
             navigate(-1); // Redirect or clear form as needed
         } catch (error) {
             console.error('Error submitting form:', error);
-            alert('Failed to save project');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to add Project',
+                confirmButtonText: 'OK'
+            });
         }
         setLoading(false);
     };

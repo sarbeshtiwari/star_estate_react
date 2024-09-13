@@ -177,8 +177,9 @@ const handleSubmit = async (event) => {
                     icon: 'success',
                     title:  'Success!',
                     text:  'Data added successfully.',
-                    confirmButtonText: 'OK'
-                });
+                    confirmButtonText: 'OK',
+                    timer: true,
+                timerProgressBar: true,                });
                 navigate(-1)
             } else {
                 Swal.fire({

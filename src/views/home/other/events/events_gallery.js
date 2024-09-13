@@ -49,7 +49,7 @@ export default function EventsGallery() {
                 title:  'Success!',
                 text:  'Data Deleted successfully.',
                 confirmButtonText: 'OK',
-                timer: 2000, 
+                timer: 1000, 
                 timerProgressBar: true, 
             });
             fetchImagesData(id);

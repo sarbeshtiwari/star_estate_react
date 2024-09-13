@@ -203,18 +203,35 @@ export default function Sidebar() {
         return `${minutes}m ${secs}s`;
     };
 
-    const handleLogout = () => {
-        Swal.fire({
-            icon: 'success',
-            title:  'Success!',
-            text:  'You have logged Out!',
-            confirmButtonText: 'OK'
+    const handleLogout = async () => {
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You will be logged out of your account.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6', // Blue for confirm
+            cancelButtonColor: '#d33', // Red for cancel
+            confirmButtonText: 'Yes, log out!'
         });
-        
-        Cookies.remove('authToken');
-        Cookies.remove('expiryTime');
-        navigate('/', {replace: true});
+    
+        if (result.isConfirmed) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Logged Out!',
+                text: 'You have successfully logged out.',
+                confirmButtonText: 'OK',
+                timer: 2000,
+                timerProgressBar: true,
+                willClose: () => {
+                    // Perform logout actions after the success message
+                    Cookies.remove('authToken');
+                    Cookies.remove('expiryTime');
+                    navigate('/', { replace: true });
+                }
+            });
+        }
     };
+    
 
     return (
         <>
@@ -398,9 +415,9 @@ export default function Sidebar() {
                             </Nav.Link>
                             {showEnquiry && (
                                 <Nav className="flex-column bg-light p-2 rounded" id="enquiry-items">
-                                    {/* <Nav.Link as={Link} to="/luxuryProp" className="text-dark">
-                                        Luxury Property Show
-                                    </Nav.Link> */}
+                                    <Nav.Link as={Link} to="/nriQuery" className="text-dark">
+                                        NRI Query
+                                    </Nav.Link>
                                     <Nav.Link as={Link} to="/ProjectQueries" className="text-dark">
                                         Project Queries
                                     </Nav.Link>
@@ -424,10 +441,10 @@ export default function Sidebar() {
                     >
                         Log Out
                     </Button>
-                    <span className="text-danger">
+                    {/* <span className="text-danger">
                         {warningMessage && <p>{warningMessage}</p>}
                         Session expires in: {formatTime(timeLeft)}
-                    </span>
+                    </span> */}
                 </div>
             </Offcanvas>
         </>

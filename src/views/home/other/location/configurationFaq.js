@@ -45,27 +45,44 @@ export default function ConfigurationFAQ() {
     };
 
     const handleDeleteFAQ = async (id) => {
-        try {
-            await deleteFAQ(id);
-            Swal.fire({
-                icon: 'success',
-                title:  'Success!',
-                text:  'Data Deleted successfully.',
-                confirmButtonText: 'OK',
-                timer: 2000, 
-                timerProgressBar: true, 
-            });
-            fetchFAQsData(slugURL, propertyType);  // Refresh FAQs after delete
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Error Deleting data.',
-                confirmButtonText: 'OK'
-            });
-            // console.error('Error deleting FAQ:', error);
+        // Show confirmation dialog
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "This action will permanently delete the FAQ.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33', // Red for danger
+            cancelButtonColor: '#3085d6', // Blue for cancel
+            confirmButtonText: 'Yes, delete it!'
+        });
+    
+        if (result.isConfirmed) {
+            try {
+                await deleteFAQ(id);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'FAQ deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 1000,
+                    timerProgressBar: true,
+                    willClose: async () => {
+                        // Fetch FAQs data after the success message
+                        await fetchFAQsData(slugURL, propertyType);
+                    }
+                });
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Error deleting the FAQ.',
+                    confirmButtonText: 'OK'
+                });
+                // Optional: console.error('Error deleting FAQ:', error);
+            }
         }
     };
+    
 
     return (
         <div >
@@ -136,10 +153,8 @@ export default function ConfigurationFAQ() {
                                                                     <li>
                                                                         <button
                                                                             className="btn btn-danger btn-xs"
-                                                                            onClick={() => {
-                                                                                if (window.confirm('Are you sure you want to delete this FAQ?')) {
-                                                                                    handleDeleteFAQ(item._id);
-                                                                                }
+                                                                            onClick={() => {        handleDeleteFAQ(item._id);
+                                                                             
                                                                             }}
                                                                         >
                                                                             <i className="fa fa-trash"></i>

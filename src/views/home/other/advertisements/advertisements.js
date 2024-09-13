@@ -43,23 +43,39 @@ export default function Advertisements() {
     };
 
     const handleDeleteEvent = async (id, image) => {
-        if (window.confirm('Are you sure you want to delete this Event?')) {
-            try {
+        try {
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "This action will permanently delete the advertisement and its associated image.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33', // Red for danger
+                cancelButtonColor: '#3085d6', // Blue for cancel
+                confirmButtonText: 'Yes, delete it!'
+            });
+    
+            if (result.isConfirmed) {
                 await deleteAdvertisement(id, image);
                 Swal.fire({
                     icon: 'success',
-                    title:  'Success!',
-                    text:  'Data Deleted successfully.',
+                    title: 'Deleted!',
+                    text: 'The advertisement and image have been successfully deleted.',
                     confirmButtonText: 'OK',
-                    timer: 2000, 
-                    timerProgressBar: true, 
+                    timer: 2000,
+                    timerProgressBar: true,
                 });
                 setEvent(prevEvents => prevEvents.filter(evt => evt._id !== id));
-            } catch (error) {
-                setError(error.message);
             }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'There was an issue deleting the advertisement!',
+            });
+            setError(error.message);
         }
     };
+    
 
 
     return (

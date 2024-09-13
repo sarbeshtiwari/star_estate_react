@@ -44,22 +44,42 @@ export default function ProjectFAQ() {
     };
 
     const handleFAQDelete = async (faqId) => {
-        try {
-            await deleteFAQ(faqId);
-            // Refresh FAQs after delete
-            Swal.fire({
-                icon: 'success',
-                title:  'Success!',
-                text:  'Data Deleted successfully.',
-                confirmButtonText: 'OK',
-                timer: 2000, 
-                timerProgressBar: true, 
-            });
-            fetchFAQsData(id);
-        } catch (error) {
-            // console.error('Error deleting FAQ:', error);
+        // Show confirmation dialog
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "This action will permanently delete the FAQ.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33', // Red for delete
+            cancelButtonColor: '#3085d6', // Blue for cancel
+            confirmButtonText: 'Yes, delete it!'
+        });
+    
+        if (result.isConfirmed) {
+            try {
+                await deleteFAQ(faqId);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'FAQ deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 1000,
+                    timerProgressBar: true
+                });
+                // Refresh FAQs after delete
+                fetchFAQsData(id);
+            } catch (error) {
+                console.error('Error deleting FAQ:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error deleting FAQ.',
+                    confirmButtonText: 'OK'
+                });
+            }
         }
     };
+    
 
     return (
         <div >
@@ -127,9 +147,9 @@ export default function ProjectFAQ() {
                                                                         <button
                                                                             className="btn btn-danger btn-xs"
                                                                             onClick={() => {
-                                                                                if (window.confirm('Are you sure you want to delete this FAQ?')) {
+                                                                                
                                                                                     handleFAQDelete(faqItem._id);
-                                                                                }
+                                                                         
                                                                             }}
                                                                         >
                                                                             <i className="fa fa-trash"></i>

@@ -47,26 +47,39 @@ export default function Blogs() {
 
     const handleDeleteBlog = async (id, image) => {
         try {
-            await deleteBlog(id, image);
-            Swal.fire({
-                icon: 'success',
-                title:  'Success!',
-                text:  'Data Deleted successfully.',
-                confirmButtonText: 'OK',
-                timer: 2000, 
-                timerProgressBar: true, 
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this action!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33', // Red for danger
+                cancelButtonColor: '#3085d6', // Blue for cancel
+                confirmButtonText: 'Yes, delete it!'
             });
-            setBlogs(prevBlogs => prevBlogs.filter(blog => blog._id !== id));
+    
+            if (result.isConfirmed) {
+                await deleteBlog(id, image);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'Blog deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000, 
+                    timerProgressBar: true, 
+                });
+    
+                setBlogs(prevBlogs => prevBlogs.filter(blog => blog._id !== id));
+            }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Error Deleting data.',
+                text: error.message || 'Error deleting the blog.',
                 confirmButtonText: 'OK'
             });
-            // console.error('Error deleting blog:', error);
         }
     };
+    
 
     return (
         <div>
@@ -149,9 +162,9 @@ export default function Blogs() {
                                                                                 <button
                                                                                     className="btn btn-danger btn-xs"
                                                                                     onClick={() => {
-                                                                                        if (window.confirm('Are you sure you want to delete this Blog?')) {
+                                                                                        
                                                                                             handleDeleteBlog(blog._id, blog.blogsImage);
-                                                                                        }
+                                                                                    
                                                                                     }}
                                                                                 >
                                                                                     <i className="fa fa-trash"></i>

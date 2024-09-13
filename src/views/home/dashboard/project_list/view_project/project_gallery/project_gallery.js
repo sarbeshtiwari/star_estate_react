@@ -72,22 +72,42 @@ export default function ProjectGallery() {
     };
 
     const handleDelete = async (detailId) => {
-        try {
-            await deleteProjectGallery(detailId);
-            Swal.fire({
-                icon: 'success',
-                title:  'Success!',
-                text:  'Data Deleted successfully.',
-                confirmButtonText: 'OK',
-                timer: 2000, 
-                timerProgressBar: true, 
-            });
-            const response =  await getProjectGalleryByProject(id);
-            setDetails(response);
-        } catch (error) {
-            // console.error('Error deleting detail:', error);
+        // Show confirmation dialog
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "This action will permanently delete the gallery item.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33', // Red for delete
+            cancelButtonColor: '#3085d6', // Blue for cancel
+            confirmButtonText: 'Yes, delete it!'
+        });
+    
+        if (result.isConfirmed) {
+            try {
+                await deleteProjectGallery(detailId);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'Data deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 1000,
+                    timerProgressBar: true
+                });
+                const response = await getProjectGalleryByProject(id);
+                setDetails(response);
+            } catch (error) {
+                console.error('Error deleting gallery item:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'There was an error deleting the data.',
+                    confirmButtonText: 'OK'
+                });
+            }
         }
     };
+    
 
     const handleOpenModal = async () => {
         setSelectedItemId(id); // Set selected item ID
@@ -243,9 +263,9 @@ export default function ProjectGallery() {
                                                                                     <button
                                                                                         className="btn btn-danger btn-xs"
                                                                                         onClick={() => {
-                                                                                            if (window.confirm('Are you sure you want to delete this Detail?')) {
+                                                                                           
                                                                                                 handleDelete(detail._id);
-                                                                                            }
+                                                                                  
                                                                                         }}
                                                                                     >
                                                                                         <i className="fa fa-trash"></i>

@@ -175,7 +175,9 @@ export default function AddDeveloper() {
                     icon: 'success',
                     title:  'Success!',
                     text:  'Data updated successfully.',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    timer: 1000,
+                    timerProgressBar: true,
                 });;
             } else {
                 response = await addDeveloper(formData);

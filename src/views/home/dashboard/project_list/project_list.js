@@ -98,27 +98,45 @@ export default function ProjectList() {
     
     
 
-    const handledeleteProject = async (projectID, image) => {
+   const handledeleteProject = async (projectID, image) => {
+    // Show confirmation dialog
+    const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "This action will permanently delete the project.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33', // Red for delete
+        cancelButtonColor: '#3085d6', // Blue for cancel
+        confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (result.isConfirmed) {
         try {
-            await deleteProject(projectID ,image);
+            await deleteProject(projectID, image);
             Swal.fire({
                 icon: 'success',
-                title:  'Success!',
-                text:  'Data Deleted successfully.',
+                title: 'Deleted!',
+                text: 'Project deleted successfully.',
                 confirmButtonText: 'OK',
-                timer: 2000, 
-                timerProgressBar: true, 
+                timer: 2000,
+                timerProgressBar: true,
+                willClose: async () => {
+                    // Refresh the list of projects after deletion
+                    await handlefetchProjects();
+                }
             });
-            handlefetchProjects(id);
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Error Deleting data.',
+                text: error.message || 'Error deleting the project.',
                 confirmButtonText: 'OK'
             });
+            // Optional: console.error('Error deleting project:', error);
         }
-    };
+    }
+};
+
 
     const totalPages = Math.ceil(filteredProperty.length / itemsPerPage);
 
@@ -271,9 +289,9 @@ export default function ProjectList() {
                                                                         <button
                                                                             className="btn btn-danger btn-xs"
                                                                             onClick={() => {
-                                                                                if (window.confirm('Are you sure you want to delete this Project?')) {
+                                                                            
                                                                                     handledeleteProject(project._id, project.projectLogo);
-                                                                                }
+                                                                          
                                                                             }}
                                                                         >
                                                                             <i className="fa fa-trash"></i>

@@ -54,7 +54,7 @@ export default function LocationAdvantages(){
                     title:  'Success!',
                     text:  'Data Deleted successfully.',
                     confirmButtonText: 'OK',
-                    timer: 2000, 
+                    timer: 1000, 
                     timerProgressBar: true, 
                 });
                 const data = await getLocationAdvantages();

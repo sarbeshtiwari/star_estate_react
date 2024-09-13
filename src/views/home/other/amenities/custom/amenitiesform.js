@@ -45,27 +45,41 @@ const useAmenities = () => {
 
     const handleDeleteAmenity = async (cat_id) => {
         try {
-            await deleteAmenity(cat_id);
-            Swal.fire({
-                icon: 'success',
-                title:  'Success!',
-                text:  'Data Deleted successfully.',
-                confirmButtonText: 'OK',
-                timer: 2000, 
-                timerProgressBar: true, 
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to undo this action!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33', // Danger color
+                cancelButtonColor: '#3085d6', // Safe color
+                confirmButtonText: 'Yes, delete it!'
             });
-            setAmenities(prevAmenities =>
-                prevAmenities.filter(amenity => amenity._id !== cat_id)
-            );
+    
+            if (result.isConfirmed) {
+                await deleteAmenity(cat_id);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'Amenity deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000,
+                    timerProgressBar: true, 
+                });
+    
+                setAmenities(prevAmenities =>
+                    prevAmenities.filter(amenity => amenity._id !== cat_id)
+                );
+            }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Error Deleting data.',
+                text: error.message || 'Error deleting the amenity.',
                 confirmButtonText: 'OK'
             });
         }
     };
+    
 
     return {
         amenities,

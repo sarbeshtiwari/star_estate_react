@@ -47,25 +47,40 @@ const Category = () => {
     };
 
     const handleDeleteCategory = async (id) => {
-        if (window.confirm('Are you sure you want to delete this category?')) {
-            try {
+        try {
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33', // Danger color for confirm button
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            });
+    
+            if (result.isConfirmed) {
                 await deleteCategory(id);
                 Swal.fire({
                     icon: 'success',
-                    title:  'Success!',
-                    text:  'Data Deleted successfully.',
+                    title: 'Deleted!',
+                    text: 'The category has been deleted.',
                     confirmButtonText: 'OK',
-                    timer: 2000, 
-                    timerProgressBar: true, 
+                    timer: 2000,
+                    timerProgressBar: true,
                 });
                 setCategories((prevCategories) =>
                     prevCategories.filter((cat) => cat._id !== id)
                 );
-            } catch (error) {
-                // console.error('Error deleting category:', error);
             }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'Something went wrong while deleting the category!',
+            });
         }
     };
+    
 
     return (
        <>

@@ -43,27 +43,44 @@ export default function StarRera() {
 
     const handleDelete = async (detailId) => {
         try {
-            await deleteStarRera(detailId);
-            Swal.fire({
-                icon: 'success',
-                title:  'Success!',
-                text:  'Data Deleted successfully.',
-                confirmButtonText: 'OK',
-                timer: 2000, 
-                timerProgressBar: true, 
+            // Show SweetAlert confirmation dialog
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "This action will permanently delete the selected detail.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33', // Red for danger
+                cancelButtonColor: '#3085d6', // Blue for cancel
+                confirmButtonText: 'Yes, delete it!'
             });
-            const response =  await getStarRera();
-            setDetails(response);
+    
+            // Proceed if the user confirms the deletion
+            if (result.isConfirmed) {
+                await deleteStarRera(detailId);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'Data deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000,
+                    timerProgressBar: true, 
+                });
+    
+                // Refresh the data
+                const response = await getStarRera();
+                setDetails(response);
+            }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Error Deleting data.',
+                text: error.message || 'There was an issue deleting the data.',
                 confirmButtonText: 'OK'
             });
-            // console.error('Error deleting detail:', error);
+            // Optional: console.error('Error deleting detail:', error);
         }
     };
+    
 
     return (
         <div >
@@ -148,9 +165,9 @@ export default function StarRera() {
                                                                                     <button
                                                                                         className="btn btn-danger btn-xs"
                                                                                         onClick={() => {
-                                                                                            if (window.confirm('Are you sure you want to delete this Detail?')) {
+                                                                                           
                                                                                                 handleDelete(detail._id);
-                                                                                            }
+                                                                                          
                                                                                         }}
                                                                                     >
                                                                                         <i className="fa fa-trash"></i>

@@ -51,27 +51,42 @@ const JobPost = () => {
     };
 
     const handleDeleteJob = async (id) => {
-        if (window.confirm('Are you sure you want to delete this job?')) {
-            setLoading(true);
-            try {
+        try {
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33', // Danger color for confirm button
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            });
+    
+            if (result.isConfirmed) {
+                setLoading(true); // Start loading state
                 await deleteJob(id);
                 Swal.fire({
                     icon: 'success',
-                    title:  'Success!',
-                    text:  'Data Deleted successfully.',
+                    title: 'Deleted!',
+                    text: 'The job has been deleted.',
                     confirmButtonText: 'OK',
-                    timer: 2000, 
-                    timerProgressBar: true, 
+                    timer: 2000,
+                    timerProgressBar: true,
                 });
-                loadJobs();
-            } catch (error) {
-                setError(error.message);
-                // console.error('Error deleting job:', error);
-            } finally {
-                setLoading(false);
+                loadJobs(); // Reload job listings
             }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'Something went wrong while deleting the job!',
+            });
+            setError(error.message); // Set error state if needed
+        } finally {
+            setLoading(false); // Stop loading state
         }
     };
+    
 
     return (
         <>

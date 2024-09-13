@@ -46,26 +46,40 @@ export default function NewsPaper() {
 
     const handleDeleteNews = async (id, image, image2) => {
         try {
-            await deleteNews(id, image, image2);
-            Swal.fire({
-                icon: 'success',
-                title:  'Success!',
-                text:  'Data Deleted successfully.',
-                confirmButtonText: 'OK',
-                timer: 2000, 
-                timerProgressBar: true, 
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "This action will permanently delete the news article and its associated images.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33', // Red for danger
+                cancelButtonColor: '#3085d6', // Blue for cancel
+                confirmButtonText: 'Yes, delete it!'
             });
-            fetchNewsData();
+    
+            if (result.isConfirmed) {
+                await deleteNews(id, image, image2);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'News article and images deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000,
+                    timerProgressBar: true, 
+                });
+    
+                fetchNewsData(); // Refresh the news data
+            }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Error Deleting data.',
+                text: error.message || 'There was an issue deleting the news article.',
                 confirmButtonText: 'OK'
             });
-            // console.error('Error deleting news:', error);
+            // Optional: console.error('Error deleting news:', error);
         }
     };
+    
 
     return (
         <div >
@@ -158,9 +172,9 @@ export default function NewsPaper() {
                                                                                 <button
                                                                                     className="btn btn-danger btn-xs"
                                                                                     onClick={() => {
-                                                                                        if (window.confirm('Are you sure you want to delete this news?')) {
+                                                                                      
                                                                                             handleDeleteNews(newsItem._id, newsItem.newsImage, newsItem.newsThumb);
-                                                                                        }
+                                                                                     
                                                                                     }}
                                                                                 >
                                                                                     <i className="fa fa-trash"></i>

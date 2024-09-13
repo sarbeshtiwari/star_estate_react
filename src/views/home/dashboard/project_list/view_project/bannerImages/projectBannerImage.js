@@ -65,32 +65,53 @@ export default function ProjectHomeBanner() {
     };
 
     const handleDeleteHomeBanner = async (imageID) => {
-        try {
-            const result = await deleteBanner(imageID);
-            if (result.success) {
+        // Show confirmation dialog
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "This action will permanently delete the banner.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33', // Red for delete
+            cancelButtonColor: '#3085d6', // Blue for cancel
+            confirmButtonText: 'Yes, delete it!'
+        });
+    
+        if (result.isConfirmed) {
+            try {
+                const response = await deleteBanner(imageID);
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: 'Banner deleted successfully.',
+                        confirmButtonText: 'OK',
+                        timer: 1000,
+                        timerProgressBar: true,
+                        willClose: async () => {
+                            // Refresh the list of home banners after deletion
+                            await loadHomeBanner();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: `Error: ${response.message}`,
+                        confirmButtonText: 'OK'
+                    });
+                }
+            } catch (error) {
+                console.error('Error deleting home banner:', error);
                 Swal.fire({
-                    icon: 'success',
-                    title:  'Success!',
-                    text:  'Data Deleted successfully.',
-                    confirmButtonText: 'OK',
-                    timer: 2000, 
-                    timerProgressBar: true, 
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error deleting data.',
+                    confirmButtonText: 'OK'
                 });
-                
-                loadHomeBanner(id);
-            } else {
-                alert(`Error: ${result.message}`);
             }
-        } catch (error) {
-            console.error('Error deleting home banner:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Error Deleting data.',
-                confirmButtonText: 'OK'
-            });
         }
     };
+    
 
     return (
         <>
@@ -195,9 +216,9 @@ export default function ProjectHomeBanner() {
                                                                                 <button
                                                                                     className="btn btn-danger btn-xs"
                                                                                     onClick={() => {
-                                                                                        if (window.confirm('Are you sure you want to delete this home banner?')) {
+                                                                                       
                                                                                             handleDeleteHomeBanner(banner._id);
-                                                                                        }
+                                                                                    
                                                                                     }}
                                                                                 >
                                                                                     <i className="fa fa-trash"></i>

@@ -153,7 +153,9 @@ export default function AddProjectLocationAdvantages() {
                 icon: 'success',
                 title: validStatus ? 'Success!' : 'Unchecked Successfully',
                 text: validStatus ? 'Data updated successfully.' : 'Data unchecked successfully.',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                timer: 1000,
+                timerProgressBar: true
             });
         } catch (error) {
             console.error('Error adding/updating data:', error);
@@ -232,7 +234,9 @@ export default function AddProjectLocationAdvantages() {
                     icon: 'success',
                     title:  'Success!',
                     text:  'Data added successfully.',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    timer: 1000,
+                    timerProgressBar: true
                 });
                 navigate(-1);
             }

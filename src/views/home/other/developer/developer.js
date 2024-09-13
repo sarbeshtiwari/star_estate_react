@@ -48,29 +48,41 @@ export default function Developer() {
     };
 
     const handleDelete = async (id, image) => {
-        if (window.confirm('Are you sure you want to delete this developer?')) {
-            try {
+        try {
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "This action will permanently delete the developer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33', // Red for danger
+                cancelButtonColor: '#3085d6', // Blue for cancel
+                confirmButtonText: 'Yes, delete it!'
+            });
+    
+            if (result.isConfirmed) {
                 await deleteDeveloper(id, image);
                 Swal.fire({
                     icon: 'success',
-                    title:  'Success!',
-                    text:  'Data Deleted successfully.',
+                    title: 'Deleted!',
+                    text: 'Developer deleted successfully.',
                     confirmButtonText: 'OK',
-                    timer: 2000, 
+                    timer: 2000,
                     timerProgressBar: true, 
                 });
+    
                 const data = await fetchDevelopers();
-                setDevelopers(data);
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Error Deleting data.',
-                    confirmButtonText: 'OK'
-                });
+                setDevelopers(data); // Refresh the developer list
             }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'Error deleting the developer.',
+                confirmButtonText: 'OK'
+            });
         }
     };
+    
     
     return (
         <div>

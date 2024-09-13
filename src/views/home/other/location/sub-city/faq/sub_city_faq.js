@@ -44,28 +44,45 @@ export default function SubCityFooterFAQ() {
     };
 
     const handleDeleteFAQ = async (id) => {
-        try {
-            await deleteFAQ(id);
-            Swal.fire({
-                icon: 'success',
-                title:  'Success!',
-                text:  'Data Deleted successfully.',
-                confirmButtonText: 'OK',
-                timer: 2000, 
-                timerProgressBar: true, 
-            });
-            const faqs = await fetchFAQs(sub_city, content_type);
-            setFAQ(faqs);
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Error Deleting data.',
-                confirmButtonText: 'OK'
-            });
-            // console.error('Error deleting FAQ:', error);
+        // Show confirmation dialog
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "This action will permanently delete the FAQ.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33', // Red for delete
+            cancelButtonColor: '#3085d6', // Blue for cancel
+            confirmButtonText: 'Yes, delete it!'
+        });
+    
+        if (result.isConfirmed) {
+            try {
+                await deleteFAQ(id);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'FAQ deleted successfully.',
+                    confirmButtonText: 'OK',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    willClose: async () => {
+                        // Fetch updated FAQs data after the success message
+                        const faqs = await fetchFAQs(sub_city, content_type);
+                        setFAQ(faqs);
+                    }
+                });
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'There was an error deleting the FAQ.',
+                    confirmButtonText: 'OK'
+                });
+                // Optional: console.error('Error deleting FAQ:', error);
+            }
         }
     };
+    
 
     return (
         <div >
@@ -135,9 +152,9 @@ export default function SubCityFooterFAQ() {
                                                                         <button
                                                                             className="btn btn-danger btn-xs"
                                                                             onClick={() => {
-                                                                                if (window.confirm('Are you sure you want to delete this category?')) {
+                                                                              
                                                                                     handleDeleteFAQ(faqItem._id);
-                                                                                }
+                                                                             
                                                                             }}
                                                                         >
                                                                             <i className="fa fa-trash"></i>

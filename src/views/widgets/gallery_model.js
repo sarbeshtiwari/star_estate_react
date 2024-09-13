@@ -29,7 +29,9 @@ const GalleryModal = ({ showModal, handleClose, handleFormSubmit, eventId }) => 
                 icon: 'success',
                 title:  'Success!',
                 text:  'Data added successfully.',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                timer: 1000,
+                timerProgressBar: true
             });
             handleClose(); // Close modal after submission
         } catch (error) {
