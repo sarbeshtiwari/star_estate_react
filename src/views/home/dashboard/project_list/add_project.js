@@ -716,6 +716,24 @@ export default function AddProject() {
                                                         onChange={handleChange}
                                                     /> Recent
                                                 </label>
+                                                <label>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="project_status"
+                                                        value="residential"
+                                                        checked={formData.project_status.includes('residential')}
+                                                        onChange={handleChange}
+                                                    /> Residential
+                                                </label>
+                                                <label>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="project_status"
+                                                        value="commercial"
+                                                        checked={formData.project_status.includes('commercial')}
+                                                        onChange={handleChange}
+                                                    /> Commercial
+                                                </label>
                                                 
                                             </div>
                                             

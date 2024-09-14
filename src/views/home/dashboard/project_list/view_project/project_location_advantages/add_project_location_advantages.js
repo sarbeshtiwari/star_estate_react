@@ -132,13 +132,7 @@ export default function AddProjectLocationAdvantages() {
     
         // If it's checked (status = true) and title is missing, show an alert and prevent the update
         if (status && !title) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Title is Mandatory',
-                text: 'Please provide a title before submitting.',
-                confirmButtonText: 'OK',
-                timer: 1000,
-            });
+            // if (!title) errors.title = 'Title is required';
             return;
         }
     
@@ -154,7 +148,7 @@ export default function AddProjectLocationAdvantages() {
                 title: validStatus ? 'Success!' : 'Unchecked Successfully',
                 text: validStatus ? 'Data updated successfully.' : 'Data unchecked successfully.',
                 confirmButtonText: 'OK',
-                timer: 1000,
+                timer: 500,
                 timerProgressBar: true
             });
         } catch (error) {
@@ -163,7 +157,9 @@ export default function AddProjectLocationAdvantages() {
                 icon: 'error',
                 title: 'Error',
                 text: 'Failed to add/update data.',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                timer: 1000,
+                timerProgressBar: true
             });
         }
     
@@ -324,7 +320,7 @@ export default function AddProjectLocationAdvantages() {
                                                             <img
                                                                 src={`${imageURL}/${detail.image}`}
                                                                 alt={detail.title}
-                                                                style={{ height: '100px', objectFit: 'cover' }}
+                                                                style={{ height: '70px', objectFit: 'cover' }}
                                                                 className="card-img-top"
                                                             />
 

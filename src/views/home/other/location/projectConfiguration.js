@@ -146,7 +146,7 @@ export default function ProjectConfiguration() {
                                                         <th>No</th>
                                                         <th>City</th>
                                                         <th>Project Configuration</th>   
-                                                        <th>Project Type</th>                                                                                                         
+                                                        {/* <th>Project Type</th>                                                                                                          */}
                                                         
                                                         <th>FAQs</th>
                                                         
@@ -160,7 +160,7 @@ export default function ProjectConfiguration() {
                                                             <td className="sorting_1">{index + 1}</td>
                                                             <td>{id}</td>
                                                             <td>{data.projectConfiguration}</td>
-                                                            <td>{data.projectType}</td>
+                                                            {/* <td>{data.projectType}</td> */}
                                                            
                                                             <td>
                                                                 <ul className="list-inline d-flex justify-content-center">

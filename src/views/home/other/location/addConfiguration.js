@@ -14,7 +14,7 @@ export default function AddConfiguration() {
         meta_title: '',
         meta_key: '',
         meta_desc: '',
-        projectType:'',
+        // projectType:'',
         projectConfiguration: '',
         ctcontent: '',
         schema: '',
@@ -71,7 +71,7 @@ export default function AddConfiguration() {
     const validateForm = () => {
         const errors = {};
         if (!formData.projectConfiguration) errors.projectConfiguration = 'Project Configuration Type is required';
-        if (!formData.projectType) errors.projectType = 'Project Type is required';
+        // if (!formData.projectType) errors.projectType = 'Project Type is required';
         return errors;
     };
 
@@ -85,7 +85,7 @@ export default function AddConfiguration() {
             setValidationErrors(errors);
             return;
         }
-        const { meta_title, meta_key, meta_desc, projectConfiguration, projectType, ctcontent, schema} = formData;
+        const { meta_title, meta_key, meta_desc, projectConfiguration, ctcontent, schema} = formData;
         
         // const dataArray = [{
         //     // projectConfiguration: formData.projectConfiguration,
@@ -195,7 +195,7 @@ export default function AddConfiguration() {
                                                         <label className="label_field">Meta Description</label>
                                                         <textarea name="meta_desc" id="meta_desc" value={formData.meta_desc} onChange={handleInputChange} className="form-control" rows="5"></textarea>
                                                     </div>
-                                                    <div className="col-md-6 form-group">
+                                                    {/* <div className="col-md-6 form-group">
                                                         <label className="label_field">Project Type</label>
                                                         <select 
                                                             name="projectType" 
@@ -204,10 +204,10 @@ export default function AddConfiguration() {
                                                             onChange={handleInputChange} 
                                                             className={`form-control ${validationErrors.projectType ? 'is-invalid' : ''}`}
                                                         >
-                                                            <option value="">Select Project Type</option>
+                                                            <option value="">Select Project Type</option> */}
                                                             
                                                             {/* BHK Flats */}
-                                                           
+{/*                                                            
                                                                 <option value="new-project">New Project</option>
                                                                 <option value="residential">Residential</option>
                                                                 <option value="commercial">Commercial</option>
@@ -222,7 +222,7 @@ export default function AddConfiguration() {
                                                         {validationErrors.projectType && (
                                                             <div className='invalid-feedback'>{validationErrors.projectType}</div>
                                                         )}
-                                                    </div>
+                                                    </div> */}
                                                     <div className="col-md-6 form-group">
                                                         <label className="label_field">Project Configuration</label>
                                                         <select 
