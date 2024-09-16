@@ -10,6 +10,8 @@ export default function NRIQuery(){
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [itemsPerPage, setItemsPerPage] = useState(10); // Items per page state
+    const [currentPage, setCurrentPage] = useState(1); // Current page state
 
     useEffect(() => {
         const fetchData = async () => {
@@ -86,6 +88,14 @@ export default function NRIQuery(){
     };
 
     const deleteNRIQuery = () => {}
+
+    const totalPages = Math.ceil(filteredNRIQuery.length / itemsPerPage);
+
+    const currentData = filteredNRIQuery.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
     
     return (
@@ -197,7 +207,7 @@ export default function NRIQuery(){
                                                         </thead>
                                                         <tbody>
                                                             {filteredNRIQuery.map((NRIQuery, index) => (
-                                                                <tr key={NRIQuery.id}>
+                                                                <tr key={NRIQuery._id}>
                                                                     <td>{index + 1}</td>
                                                                     <td>
                                                                         {NRIQuery.Name}
@@ -230,6 +240,39 @@ export default function NRIQuery(){
                                                             ))}
                                                         </tbody>
                                                     </table>
+                                                    <div className="dataTables_info" id="subct_info" role="status" aria-live="polite">
+                                                    Showing {currentData.length} of {filteredNRIQuery.length} entries
+                                                </div>
+                                                <div className="dataTables_paginate paging_simple_numbers" id="subct_paginate">
+                                                    <button 
+                                                        className="paginate_button previous" 
+                                                        aria-controls="subct" 
+                                                        onClick={() => handlePageChange(currentPage - 1)}
+                                                        disabled={currentPage === 1}
+                                                    >
+                                                        Previous
+                                                    </button>
+                                                    <span>
+                                                        {[...Array(totalPages).keys()].map(page => (
+                                                            <button 
+                                                                key={page} 
+                                                                className={`paginate_button ${page + 1 === currentPage ? 'current' : ''}`} 
+                                                                aria-controls="subct" 
+                                                                onClick={() => handlePageChange(page + 1)}
+                                                            >
+                                                                {page + 1}
+                                                            </button>
+                                                        ))}
+                                                    </span>
+                                                    <button 
+                                                        className="paginate_button next" 
+                                                        aria-controls="subct" 
+                                                        onClick={() => handlePageChange(currentPage + 1)}
+                                                        disabled={currentPage === totalPages}
+                                                    >
+                                                        Next
+                                                    </button>
+                                                </div>
                                                 </div>
                                             </div>
                                         </div>

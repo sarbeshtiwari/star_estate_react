@@ -17,6 +17,8 @@ const ContactUs = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [itemsPerPage, setItemsPerPage] = useState(10); // Items per page state
+    const [currentPage, setCurrentPage] = useState(1); // Current page state
 
 
     useEffect(() => {
@@ -148,6 +150,14 @@ const ContactUs = () => {
         doc.save('data.pdf');
     };
 
+    const totalPages = Math.ceil(query.length / itemsPerPage);
+
+    const currentData = query.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
     return (
         <>
             <Sidebar />
@@ -249,7 +259,7 @@ const ContactUs = () => {
                                                         </thead>
                                                         <tbody>
                                                             {query.map((item, index) => (
-                                                                <tr key={item.id} className={index % 2 === 0 ? 'even' : 'odd'}>
+                                                                <tr key={item._id} className={index % 2 === 0 ? 'even' : 'odd'}>
                                                                     <td>{index + 1}</td>
                                                                     <td>{item.Name}</td>
                                                                     <td>{item.Email}</td>
@@ -285,14 +295,39 @@ const ContactUs = () => {
                                                             ))}
                                                         </tbody>
                                                     </table>
-                                                    <div className="dataTables_info" role="status" aria-live="polite">Showing 1 to {data.length} of {data.length} entries</div>
-                                                    <div className="dataTables_paginate paging_simple_numbers">
-                                                        <Link className="paginate_button previous disabled" id="pjdataTable_previous">Previous</Link>
-                                                        <span>
-                                                            <Link className="paginate_button current" id="pjdataTable_page1">1</Link>
-                                                        </span>
-                                                        <Link className="paginate_button next" id="pjdataTable_next">Next</Link>
-                                                    </div>
+                                                    <div className="dataTables_info" id="subct_info" role="status" aria-live="polite">
+                                                    Showing {currentData.length} of {query.length} entries
+                                                </div>
+                                                <div className="dataTables_paginate paging_simple_numbers" id="subct_paginate">
+                                                    <button 
+                                                        className="paginate_button previous" 
+                                                        aria-controls="subct" 
+                                                        onClick={() => handlePageChange(currentPage - 1)}
+                                                        disabled={currentPage === 1}
+                                                    >
+                                                        Previous
+                                                    </button>
+                                                    <span>
+                                                        {[...Array(totalPages).keys()].map(page => (
+                                                            <button 
+                                                                key={page} 
+                                                                className={`paginate_button ${page + 1 === currentPage ? 'current' : ''}`} 
+                                                                aria-controls="subct" 
+                                                                onClick={() => handlePageChange(page + 1)}
+                                                            >
+                                                                {page + 1}
+                                                            </button>
+                                                        ))}
+                                                    </span>
+                                                    <button 
+                                                        className="paginate_button next" 
+                                                        aria-controls="subct" 
+                                                        onClick={() => handlePageChange(currentPage + 1)}
+                                                        disabled={currentPage === totalPages}
+                                                    >
+                                                        Next
+                                                    </button>
+                                                </div>
                                                 </div>
                                             </div>
                                         </div>

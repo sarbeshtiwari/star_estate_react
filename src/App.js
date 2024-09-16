@@ -80,6 +80,8 @@ import AddConfigurationFAQ from './views/home/other/location/addConfigurationFAQ
 import ProjectHomeBanner from './views/home/dashboard/project_list/view_project/bannerImages/projectBannerImage';
 import AddProjectBannerImage from './views/home/dashboard/project_list/view_project/bannerImages/addProjectBannerImage';
 import NRIQuery from './views/home/enquiry/nri_query';
+import Investor from './views/home/enquiry/investors';
+import PropertyEvaluation from './views/home/enquiry/propertyEvaluation';
 
 function App() {
   return (
@@ -119,15 +121,20 @@ function App() {
         <Route path="/:id/addProjectRERA/:ids" element={<ProtectedRoute element ={<AddProjectRERA/>}/>}/>
         <Route path="/projectBanks/:id" element={<ProtectedRoute element ={<ProjectBanksRatings/>}/>}/>
         <Route path="/:id/addBanks/:ids" element={<ProtectedRoute element ={<AddBanksandRatings/>}/>}/>
-
+        <Route path='/projectBannerImage/:id' element={<ProtectedRoute element={<ProjectHomeBanner/>}/>}/>
+        <Route path='/addBanner/:id' element={<ProtectedRoute element={<AddProjectBannerImage/>}/>}/>
 
         <Route path="/category" element ={<ProtectedRoute element ={<Category/>}/>}/>       
         <Route  path="/AddCategory/:id" element ={<ProtectedRoute element ={<AddCategory/>}/>}/>
 
-        <Route path="/nriQuery" element ={<ProtectedRoute element ={<NRIQuery/>}/>}/>
+        <Route path="/bannerImage" element = {<ProtectedRoute element={ <HomeBanner/>}/>}/>
+        <Route path='/addHomeBanner' element = {<ProtectedRoute element={<AddBannerImage/>}/>}/> 
+        
         <Route path="/jobPost" element = {<ProtectedRoute element ={<JobPost/>}/>}/>
         <Route path="/AddCareer/:id" element = {<ProtectedRoute element ={<AddCareer/>}/>}/>
+        
         <Route path="/logout" element ={<ProtectedRoute element ={<LogoutComponent/>}/>}/>
+
         {/* Others */}
         {/* <Route path="/amenities_category" element={<ProtectedRoute element ={<AmenitiesCategory/>}/>}/>
         <Route path="/addAmenitiesCategory/:id" element={<ProtectedRoute element ={<AddAminitiesCategory/>}/>}/> */}
@@ -136,15 +143,15 @@ function App() {
 
         <Route path="/location" element={<ProtectedRoute element ={<Cities/>}/>}/>
         <Route path="/addLocation/:ids/:id" element={<ProtectedRoute element ={<AddLocation/>}/>}/>
+
         <Route path="/subCities/:id" element={<ProtectedRoute element ={<SubCities/>}/>}/>
         <Route path="/addSubCities/:id/:ids" element={<ProtectedRoute element ={<AddSubCity/>}/>}/>
-        <Route path="/projects/:id" element={<ProtectedRoute element={<ProjectConfiguration/>}/>}/>
 
+        <Route path="/projects/:id" element={<ProtectedRoute element={<ProjectConfiguration/>}/>}/>
         <Route path='/:ids/addConfiguration/:id' element={<ProtectedRoute element={<AddConfiguration/>}/>}/>
+
         <Route path= '/:city/configurationFAQ/:slugURL/:propertyType' element={<ProtectedRoute element={<ConfigurationFAQ/>}/>}/>
         <Route path='/addConfigurationFAQ/:slugURL/:id' element={<ProtectedRoute element={<AddConfigurationFAQ/>}/>}/>
-
-
 
         <Route path = "/SubCityfooterFAQ/:sub_city/:content_type" element = {<ProtectedRoute element ={<SubCityFooterFAQ/>}/>}/>
         <Route path = "/SubCityaddFAQ/:ids/:id" element = {<ProtectedRoute element ={<SubCityAddFAQ/>}/>}/>
@@ -161,6 +168,14 @@ function App() {
         <Route path="/developer" element={<ProtectedRoute element ={<Developer/>}/>}/>
         <Route path="/addDeveloper/:id" element={<ProtectedRoute element ={<AddDeveloper/>}/>}/>
 
+        <Route path='/starRera' element={<ProtectedRoute element={<StarRera/>}/>}/>
+        <Route path='/addStarRera/:id' element={<ProtectedRoute element={<AddStarRERA/>}/>}/>
+
+        <Route path='/clientSpeak' element={<ProtectedRoute element={<ClientSpeak/>}/>}/>
+        <Route path='/addClientSpeak/:id' element={<ProtectedRoute element={<AddClientSpeak/>}/>}/>
+
+        {/* Media */}
+
         <Route path="/blogs" element={<ProtectedRoute element ={<Blogs/>}/>}/>
         <Route path="/addBlogs/:id" element={<ProtectedRoute element ={<AddBlogs/>}/>}/>
 
@@ -169,13 +184,7 @@ function App() {
         <Route path="/eventsGallery/:id" element={<ProtectedRoute element ={<EventsGallery/>}/>}/>
 
         <Route path="/newsPaper" element = {<ProtectedRoute element ={<NewsPaper/>}/>}/>
-        <Route path="/addNewsPaper/:id" element = {<ProtectedRoute element ={<AddNewsPaper/>}/>}/>
-
-        <Route path="/bannerImage" element = {<ProtectedRoute element={ <HomeBanner/>}/>}/>
-        <Route path='/addHomeBanner' element = {<ProtectedRoute element={<AddBannerImage/>}/>}/>
-
-        <Route path='/starRera' element={<ProtectedRoute element={<StarRera/>}/>}/>
-        <Route path='/addStarRera/:id' element={<ProtectedRoute element={<AddStarRERA/>}/>}/>
+        <Route path="/addNewsPaper/:id" element = {<ProtectedRoute element ={<AddNewsPaper/>}/>}/>               
 
         <Route path='/advertisements' element={<ProtectedRoute element={<Advertisements/>}/>}/>
         <Route path='/addAdvertisements' element={<ProtectedRoute element={<AddAdvertisements/>}/>}/>
@@ -183,22 +192,14 @@ function App() {
         <Route path='/awards' element={<ProtectedRoute element={<Awards/>}/>}/>
         <Route path='/addAwards' element={<ProtectedRoute element={<AddAwards/>}/>}/>
 
-        <Route path='/clientSpeak' element={<ProtectedRoute element={<ClientSpeak/>}/>}/>
-        <Route path='/addClientSpeak/:id' element={<ProtectedRoute element={<AddClientSpeak/>}/>}/>
-
-        <Route path='/projectBannerImage/:id' element={<ProtectedRoute element={<ProjectHomeBanner/>}/>}/>
-        <Route path='/addBanner/:id' element={<ProtectedRoute element={<AddProjectBannerImage/>}/>}/>
-
-
-
-
-
-
-
         {/* Enquiry */}
         <Route path="/ProjectQueries" element = {<ProtectedRoute element ={<ProjectQueries/>}/>}/>
         <Route path="/ContactUs" element = {<ProtectedRoute element ={<ContactUs/>}/>}/>
         <Route path="/career" element = {<ProtectedRoute element ={<Career/>}/>}/>
+        <Route path="/nriQuery" element ={<ProtectedRoute element ={<NRIQuery/>}/>}/>
+        <Route path="/investor" element = {<ProtectedRoute element={<Investor/>}/>}/>
+        <Route path="/propertyEvaluation" element = {<ProtectedRoute element={<PropertyEvaluation/>}/>}/>
+
       </Routes>
       <Footer/>
     </BrowserRouter>

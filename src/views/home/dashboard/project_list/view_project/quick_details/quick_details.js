@@ -25,7 +25,7 @@ export default function QuickDetails() {
             const data = await fetchDetails(id);
             setDetails(data);
         } catch (err) {
-            // console.error('Error fetching details:', err);
+             // console.error('Error fetching details:', err);
         }
         setLoading(false)
     };
@@ -67,6 +67,7 @@ export default function QuickDetails() {
                     timerProgressBar: true
                 });
                 fetchDetailsHandler(); // Refresh the details list
+
             } catch (error) {
                 console.error('Error deleting detail:', error);
                 Swal.fire({

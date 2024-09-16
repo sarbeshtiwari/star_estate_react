@@ -1,7 +1,7 @@
 import axios from 'axios';
 import axiosInstance from '../../imageURL';
 
-const API_URL = 'https://ecis.in/apis/star-estate-API/projectBannerImages';
+const API_URL = 'http://localhost:4000';
 
 export const deleteBanner = async (id) => {
     try {

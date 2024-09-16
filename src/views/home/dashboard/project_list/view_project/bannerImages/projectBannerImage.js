@@ -89,7 +89,7 @@ export default function ProjectHomeBanner() {
                         timerProgressBar: true,
                         willClose: async () => {
                             // Refresh the list of home banners after deletion
-                            await loadHomeBanner();
+                            await loadHomeBanner(id);
                         }
                     });
                 } else {

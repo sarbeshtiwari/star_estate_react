@@ -415,6 +415,9 @@ export default function Sidebar() {
                             </Nav.Link>
                             {showEnquiry && (
                                 <Nav className="flex-column bg-light p-2 rounded" id="enquiry-items">
+                                    <Nav.Link as={Link} to="/investor" className="text-dark">
+                                        Investor
+                                    </Nav.Link>
                                     <Nav.Link as={Link} to="/nriQuery" className="text-dark">
                                         NRI Query
                                     </Nav.Link>
@@ -426,6 +429,9 @@ export default function Sidebar() {
                                     </Nav.Link>
                                     <Nav.Link as={Link} to="/career" className="text-dark">
                                         Career
+                                    </Nav.Link>
+                                    <Nav.Link as={Link} to="/propertyEvaluation" className="text-dark">
+                                        Property Evaluation
                                     </Nav.Link>
                                 </Nav>
                             )}
