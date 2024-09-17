@@ -684,7 +684,7 @@ export default function AddProject() {
                                                     <input
                                                         type="checkbox"
                                                         name="project_status"
-                                                        value="new launch"
+                                                        value="new-launch"
                                                         checked={formData.project_status.includes('new-launch')}
                                                         onChange={handleChange} 
                                                     /> New Launch

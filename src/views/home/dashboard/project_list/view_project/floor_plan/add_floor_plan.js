@@ -94,29 +94,35 @@ const AddApprovedBanks = () => {
                 });
         } else if (field === 'areaRangeSqft' || field === 'areaRangeSqm') {
             const [min, max] = value.split('-').map(val => val.trim());
-    
+        
             const minValue = min || ''; // Use the first value as min if it's present, or an empty string
             const maxValue = max || '0'; // If no second value is provided, treat max as min
             
+            // Check if the max value is 0 or empty
+            const isMaxZero = maxValue === '0' || maxValue === '';
+        
             if (field === 'areaRangeSqft') {
                 const minSqm = isNaN(parseFloat(minValue)) ? '' : (parseFloat(minValue) * 0.092903).toFixed(2);
                 const maxSqm = isNaN(parseFloat(maxValue)) ? '' : (parseFloat(maxValue) * 0.092903).toFixed(2);
+        
                 updatedHeadings[index] = { 
                     ...updatedHeadings[index], 
-                    areaRangeSqft: value, 
-                    areaRangeSqm: minSqm && maxSqm ? `${minSqm} - ${maxSqm}` : '' 
+                    areaRangeSqft: value,
+                    areaRangeSqm: isMaxZero && minSqm ? minSqm : (minSqm && maxSqm ? `${minSqm} - ${maxSqm}` : '') 
                 };
             } else if (field === 'areaRangeSqm') {
                 const minSqft = isNaN(parseFloat(minValue)) ? '' : (parseFloat(minValue) / 0.092903).toFixed(2);
                 const maxSqft = isNaN(parseFloat(maxValue)) ? '' : (parseFloat(maxValue) / 0.092903).toFixed(2);
+        
                 updatedHeadings[index] = { 
                     ...updatedHeadings[index], 
-                    areaRangeSqm: value, 
-                    areaRangeSqft: minSqft && maxSqft ? `${minSqft} - ${maxSqft}` : '' 
+                    areaRangeSqm: value,
+                    areaRangeSqft: isMaxZero && minSqft ? minSqft : (minSqft && maxSqft ? `${minSqft} - ${maxSqft}` : '') 
                 };
             }
             setHeadings(updatedHeadings);
-        } else {
+        }
+         else {
             updatedHeadings[index] = { ...updatedHeadings[index], [field]: value };
             setHeadings(updatedHeadings);
         }
