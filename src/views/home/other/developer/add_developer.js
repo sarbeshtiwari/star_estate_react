@@ -18,6 +18,7 @@ export default function AddDeveloper() {
         // ongoingProjects: '',
         // experience: '',
         developerPriority: '',
+        briefContent: '',
         description: '',
         // developerLogo: null
     });
@@ -142,6 +143,7 @@ export default function AddDeveloper() {
         if (!formData.metaKeyword) errors.metaKeyword = 'Meta Keyword is required';
         if (!formData.metaDescription) errors.metaDescription = 'Meta Description is required';
         if (!formData.developerName) errors.developerName = 'Developer Name is required';
+        if (!formData.briefContent) errors.briefContent = 'Brief description is required';
         if (!formData.description) errors.description = 'Description is required';
         // if (!formData.developerLogo) errors.developerLogo = 'Image is required';
         return errors;
@@ -349,6 +351,20 @@ export default function AddDeveloper() {
                                                         
                                                         
                                                     />
+                                                </div>
+                                                <div className="col-md-12 form-group">
+                                                    <label className="label_field">Brief Description</label>
+                                                    <textarea
+                                                        name="briefContent"
+                                                        value={formData.briefContent}
+                                                        onChange={handleInputChange}
+                                                        className={`form-control ${validationErrors.briefContent ? 'is-invalid' : ''}`}
+                                                        rows="3"
+                                                       
+                                                    ></textarea>
+                                                    {validationErrors.briefContent && (
+                                                            <div className="invalid-feedback">{validationErrors.briefContent}</div>
+                                                        )}
                                                 </div>
                                                 <div className="col-md-12 form-group">
                                                     <label className="label_field">Description</label>

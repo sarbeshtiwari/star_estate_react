@@ -16,6 +16,7 @@ export default function AddLocation() {
         location: '',
         state: '',
         priority: '',
+        briefContent: '',
         ctcontent: '',
         schema: '',
         content_above_faqs: ''
@@ -48,6 +49,7 @@ export default function AddLocation() {
                                 location: city.location || '',
                                 state: city.state || '',
                                 priority: city.priority || '',
+                                briefContent: specificDataItem.briefContent || '',
                                 ctcontent: specificDataItem.ctcontent || '',
                                 schema: specificDataItem.schema || '',
                                 content_above_faqs: specificDataItem.content_above_faqs || ''
@@ -186,7 +188,7 @@ export default function AddLocation() {
             setValidationErrors(errors);
             return;
         }
-        const { metaTitle, metaKeyword, metaDescription, location_type, location, state, priority, ctcontent, schema, content_above_faqs } = formData;
+        const { metaTitle, metaKeyword, metaDescription, location_type, location, state, priority, briefContent, ctcontent, schema, content_above_faqs } = formData;
     
         // Prepare form data
         const dataArray = [{
@@ -194,6 +196,7 @@ export default function AddLocation() {
             metaTitle: metaTitle || ' ',
             metaKeyword: metaKeyword || ' ',
             metaDescription: metaDescription || ' ',
+            briefContent: briefContent || ' ',
             ctcontent: ctcontent || ' ',
             schema: schema || ' ',
             content_above_faqs: content_above_faqs || ' ',
@@ -412,6 +415,11 @@ export default function AddLocation() {
                                                             height="70"
                                                         />
                                                     )}
+                                                    </div>
+                                                    <div className="col-md-12 form-group">
+                                                        <label className="label_field">Brief Content</label>
+                                                        <textarea name="briefContent" id="briefContent" value={formData.briefContent} onChange={handleInputChange}  className='form-control' rows="3"></textarea>
+                                                        
                                                     </div>
                                                     <div className="col-md-12 form-group">
                                                         <label className="label_field">Content</label>

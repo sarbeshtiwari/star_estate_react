@@ -285,34 +285,33 @@ export default function AddProject() {
             setValidationErrors(errors);
             return;
         }
-        if (formData.project_status.length === 0){  
+        if (formData.project_status.length === 0) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Atleast One Project Status is required.',
+                text: 'At least one Project Status is required.',
                 confirmButtonText: 'OK'
             });
             setValidationErrors(errors);
             return;
         }
-
-        // Concatenate the project price with the selected price unit
-            const formattedPrice = isPriceRevealingSoon
+    
+        // Conditionally concatenate the project price with the selected price unit, excluding extra space if no unit is chosen
+        const formattedPrice = isPriceRevealingSoon
             ? 'Revealing Soon'
-            : `${formData.projectPrice} ${priceUnit}`;
-
+            : priceUnit
+            ? `${formData.projectPrice} ${priceUnit}`
+            : formData.projectPrice;
+    
         // Update formData with the formatted price
         const updatedFormData = {
             ...formData,
             projectPrice: formattedPrice,
         };
-
-
+    
         setLoading(true);
-        console.log(formData)
-
+    
         try {
-            console.log('true')
             if (id === 'add') {
                 await addProject(updatedFormData);
             } else {
@@ -338,6 +337,7 @@ export default function AddProject() {
         }
         setLoading(false);
     };
+    
     
 
     return(
@@ -698,7 +698,7 @@ export default function AddProject() {
                                                         onChange={handleChange}
                                                     /> Luxury
                                                 </label>
-                                                <label>
+                                                {/* <label>
                                                     <input
                                                         type="checkbox"
                                                         name="project_status"
@@ -706,16 +706,8 @@ export default function AddProject() {
                                                         checked={formData.project_status.includes('featured')}
                                                         onChange={handleChange}
                                                     /> Featured
-                                                </label>
-                                                <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        name="project_status"
-                                                        value="recent"
-                                                        checked={formData.project_status.includes('recent')}
-                                                        onChange={handleChange}
-                                                    /> Recent
-                                                </label>
+                                                </label> */}
+                                                
                                                 <label>
                                                     <input
                                                         type="checkbox"

@@ -47,7 +47,7 @@ const GalleryModal = ({ showModal, handleClose, handleFormSubmit, eventId }) => 
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Add Event Gallery</h5>
+                        <h5 className="modal-title">Add Event Gallery (upto 100 images)</h5>
                         <button type="button" className="close" onClick={handleClose}>
                             &times;
                         </button>

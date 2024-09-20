@@ -10,6 +10,7 @@ const AddCategory = () => {
         metaTitle: '',
         metaKeyword: '',
         metaDescription: '',
+        briefContent: '',
         category: '',
         content: ''
     });
@@ -39,6 +40,7 @@ const AddCategory = () => {
                 metaTitle: categoryData.metaTitle || '',
                 metaKeyword: categoryData.metaKeyword || '',
                 metaDescription: categoryData.metaDescription || '',
+                briefContent: categoryData.briefContent || '',
                 category: categoryData.category || '',
                 content: categoryData.content || ''
             });
@@ -62,6 +64,7 @@ const AddCategory = () => {
         if (!formData.metaTitle) errors.metaTitle = 'Meta Title is required';
         if (!formData.metaKeyword) errors.metaKeyword = 'Meta Keyword is required';
         if (!formData.metaDescription) errors.metaDescription = 'Meta Description is required';
+        if (!formData.briefContent) errors.briefContent = 'Brief Content is required';
         if (!formData.category) errors.category = 'Category is required';
         if (!formData.content) errors.content = 'Content is required';
         return errors;
@@ -75,12 +78,13 @@ const AddCategory = () => {
             return;
         }
 
-        const { metaTitle, metaKeyword, metaDescription, category, content } = formData;
+        const { metaTitle, metaKeyword, metaDescription, briefContent, category, content } = formData;
 
         const dataToSubmit = {
             metaTitle: metaTitle || ' ',
             metaKeyword: metaKeyword || ' ',
             metaDescription: metaDescription || ' ',
+            briefContent,
             category,
             content: content || ' '
         };
@@ -212,6 +216,21 @@ const AddCategory = () => {
                                                     {validationErrors.category && (
                                                             <div className="invalid-feedback">{validationErrors.category}</div>
                                                         )}
+                                                </div>
+                                                <div className="col-md-12 form-group">
+                                                    <label className="label_field">Brief Content</label>
+                                                    <textarea
+                                                    rows={3}
+                                                        name="briefContent"
+                                                        
+                                                        value={formData.briefContent}
+                                                        onChange={handleChange}
+                                                        disabled={loading}
+                                                        className={`form-control ${validationErrors.briefContent ? 'is-invalid' : ''}`}
+                                                        ></textarea>
+                                                        {validationErrors.briefContent && (
+                                                                        <div className="invalid-feedback">{validationErrors.briefContent}</div>
+                                                                    )}
                                                 </div>
                                                 <div className="col-md-12 form-group">
                                                     <label className="label_field">Content</label>
