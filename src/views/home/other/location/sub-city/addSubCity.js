@@ -15,6 +15,7 @@ export default function AddSubCity() {
         city: '',
         sub_city: '',
         priority: '',
+        briefContent: '',
         ctcontent: '',
         schema: '',
     });
@@ -51,6 +52,7 @@ export default function AddSubCity() {
                                 city: cityData.city,
                                 sub_city: cityData.sub_city,
                                 priority: cityData.priority || '',
+                                briefContent: specificDataItem.briefContent || '',
                                 ctcontent: specificDataItem.ctcontent || '',
                                 schema: specificDataItem.schema || '',
                             });
@@ -154,6 +156,7 @@ export default function AddSubCity() {
         if (!formData.content_type) errors.content_type = 'Location Type is required';
         if (!formData.city) errors.city = 'Location is required';
         if (!formData.sub_city) errors.sub_city = 'Sub City is required';
+        // if (!formData.briefContent) errors.briefContent = 'Brief Content is required';
         // if (!formData.ctcontent) errors.ctcontent = 'Content is required';
         if (!image) errors.image = 'Image is required';
         return errors;
@@ -166,12 +169,13 @@ export default function AddSubCity() {
             setValidationErrors(errors);
             return;
         }
-        const { city, sub_city, metaTitle, metaKeyword, metaDescription,  priority, ctcontent, schema, content_type} = formData;
+        const { city, sub_city, metaTitle, metaKeyword, metaDescription,  priority, briefContent, ctcontent, schema, content_type} = formData;
         const dataArray = [{
             metaTitle: metaTitle || ' ',
             metaKeyword: metaKeyword || ' ',
             metaDescription: metaDescription || ' ',
             ctcontent: ctcontent || ' ',
+            briefContent: briefContent || ' ',
             schema: schema || ' ',
             content_type: content_type || ' '
         }];
@@ -351,6 +355,13 @@ export default function AddSubCity() {
                                                             height="70"
                                                         />
                                                     )}
+                                                    </div>
+                                                    <div className="col-md-12 form-group">
+                                                        <label className="label_field">Brief Content</label>
+                                                        <textarea name="briefContent" id="briefContent" value={formData.briefContent} onChange={handleInputChange} className={`form-control ${validationErrors.briefContent ? 'is-invalid' : ''}`} rows="3"></textarea>
+                                                        {validationErrors.briefContent && (
+                                                            <div className='invalid-feedback'>{validationErrors.briefContent}</div>
+                                                        )}
                                                     </div>
                                                     <div className="col-md-12 form-group">
                                                         <label className="label_field">Content</label>

@@ -16,6 +16,7 @@ export default function AddConfiguration() {
         meta_desc: '',
         // projectType:'',
         projectConfiguration: '',
+        briefContent: '',
         ctcontent: '',
         schema: '',
     }));
@@ -85,7 +86,7 @@ export default function AddConfiguration() {
             setValidationErrors(errors);
             return;
         }
-        const { meta_title, meta_key, meta_desc, projectConfiguration, ctcontent, schema} = formData;
+        const { meta_title, meta_key, meta_desc, projectConfiguration, briefContent, ctcontent, schema} = formData;
         
         // const dataArray = [{
         //     // projectConfiguration: formData.projectConfiguration,
@@ -278,7 +279,13 @@ export default function AddConfiguration() {
                                                     </div>
                                                    
                                                     
-                                                    
+                                                    <div className="col-md-12 form-group">
+                                                        <label className="label_field">Brief Content</label>
+                                                        <textarea name="briefContent" id="briefContent" value={formData.briefContent} onChange={handleInputChange}  className={`form-control ${validationErrors.briefContent ? 'is-invalid' : ''}`} rows="3"></textarea>
+                                                        {validationErrors.briefContent && (
+                                                            <div className="invalid-feedback">{validationErrors.briefContent}</div>
+                                                        )}
+                                                    </div>
                                                     
                                                     <div className="col-md-12 form-group">
                                                         <label className="label_field">Content</label>

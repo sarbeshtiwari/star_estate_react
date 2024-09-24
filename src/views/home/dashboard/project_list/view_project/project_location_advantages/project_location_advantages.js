@@ -49,6 +49,7 @@ export default function ProjectLocationAdvantage() {
       
            
             setLocationAdvantages(finalLocationAdvantages);
+           
 
         } catch (err) {
             console.error('Error fetching details:', err);

@@ -108,6 +108,7 @@ const BASE_URL_DEVELOPERS = 'https://ecis.in/apis/star-estate-API/developers';
 export const fetchCities = async () => {
     try {
         const response = await axios.get(`${BASE_URL_CITIES}/city/getCities`);
+        // const filteredCity = response.data.filter(city => city.status === true);
         return response.data;
     } catch (error) {
         console.error('Error fetching cities:', error);

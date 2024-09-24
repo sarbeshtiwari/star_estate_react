@@ -9,6 +9,11 @@ import Swal from 'sweetalert2';
 export default function LocationAdvantages(){
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredData = data.filter(item =>
+        (item.title || '').toLowerCase().includes(searchQuery.toLowerCase())        
+    ); 
 
     useEffect(() => {
         fetchData();
@@ -100,6 +105,20 @@ export default function LocationAdvantages(){
                                                                 <span className="ml-2">Loading...</span>
                                                             </div>
                                                         ) : ''}
+                                                        <div id="subct_wrapper" className="dataTables_wrapper no-footer">
+                                    
+                                    <div id="pjdataTable_filter" className="dataTables_filter">
+                                                    <label>Search:
+                                                    <input
+                                                        type="search"
+                                                        className=""
+                                                        placeholder=""
+                                                        aria-controls="pjdataTable"
+                                                        value={searchQuery}
+                                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                                    />
+                                                    </label>
+                                                </div></div>
                                         <div className="row">
                                             <div className="col-lg-12">
                                                 <div className="table-responsive-sm">
@@ -116,7 +135,7 @@ export default function LocationAdvantages(){
                                                         </thead>
                                                         <tbody>
                                                             
-                                                            {data.map((data, index) => (
+                                                            {filteredData.map((data, index) => (
                                                                 <tr key={data._id}>
                                                                     <td>{index + 1}</td>
                                                                     <td>

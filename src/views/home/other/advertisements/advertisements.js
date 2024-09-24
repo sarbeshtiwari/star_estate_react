@@ -9,6 +9,9 @@ export default function Advertisements() {
 
     const [event, setEvent] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [itemsPerPage, setItemsPerPage] = useState(10); // Items per page state
+    const [currentPage, setCurrentPage] = useState(1); // Current page state
 
     const [error, setError] = useState(null);
 
@@ -30,6 +33,10 @@ export default function Advertisements() {
         // Scroll to the top of the page when the component mounts
         window.scrollTo(0, 0);
     }, []);
+
+    const filteredEvents = event.filter(item =>
+        (item.advertisementTitle || '').toLowerCase().includes(searchQuery.toLowerCase())        
+    ); 
 
     const handleStatusUpdate = async (id, currentStatus) => {
         try {
@@ -75,6 +82,14 @@ export default function Advertisements() {
             setError(error.message);
         }
     };
+
+    const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
+
+    const currentData = filteredEvents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
     
 
 
@@ -107,6 +122,20 @@ export default function Advertisements() {
                                                                 <span className="ml-2">Loading...</span>
                                                             </div>
                                                         ) : ''}
+                                                        <div id="subct_wrapper" className="dataTables_wrapper no-footer">
+                                    
+                                        <div id="pjdataTable_filter" className="dataTables_filter">
+                                                        <label>Search:
+                                                        <input
+                                                            type="search"
+                                                            className=""
+                                                            placeholder=""
+                                                            aria-controls="pjdataTable"
+                                                            value={searchQuery}
+                                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                                        />
+                                                        </label>
+                                                    </div></div>
                                         <div className="row">
                                             <div className="col-lg-12">
                                                 <div className="table-responsive-sm">
@@ -122,9 +151,9 @@ export default function Advertisements() {
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {event.map((evt, index) => (
+                                                            {filteredEvents.map((evt, index) => (
                                                                 <tr key={evt._id}>
-                                                                    <td>{index + 1}</td>
+                                                                    <td className="sorting_1">{(currentPage - 1) * itemsPerPage + index + 1}</td>
                                                                     
                                                                     <td>
                                                                             <img 
@@ -171,6 +200,7 @@ export default function Advertisements() {
                                                         </tbody>
                                                     </table>
                                                 </div>
+                                                
                                             </div>
                                         </div>
                                     </div>

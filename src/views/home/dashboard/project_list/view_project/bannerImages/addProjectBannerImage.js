@@ -6,7 +6,15 @@ import Swal from 'sweetalert2';
 
 export default function AddProjectBannerImage() {
     const navigate = useNavigate();
-    const {id} = useParams();
+    const { id } = useParams();
+
+    // Function to format alt tag
+    const formatAltTag = (projectId) => {
+        return projectId
+            .split('-') // Assuming your id might be hyphenated, adapt based on actual format
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    };
 
     useEffect(() => {
         // Scroll to the top of the page when the component mounts
@@ -17,11 +25,12 @@ export default function AddProjectBannerImage() {
         desktop_image_path: '',
         mobile_image_path: '',
         tablet_image_path: '',
-        alt_tag_desktop: '',
-        alt_tag_mobile: '',
-        alt_tag_tablet: '',
+        alt_tag_desktop: formatAltTag(id), // Prefill alt tag for desktop
+        alt_tag_mobile: formatAltTag(id),  // Prefill alt tag for mobile
+        alt_tag_tablet: formatAltTag(id),  // Prefill alt tag for tablet
         projectName: id,
     }]);
+
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
 
@@ -227,6 +236,7 @@ export default function AddProjectBannerImage() {
                                     <form onSubmit={handleFormSubmit} encType="multipart/form-data">
                                         {banners.map((banner, index) => (
                                             <div className="row mb-3" key={index}>
+                                                {/* Desktop Image */}
                                                 <div className="col-md-4">
                                                     <div className="card mb-3">
                                                         <div className="card-body">
@@ -240,28 +250,30 @@ export default function AddProjectBannerImage() {
                                                             {banner.desktop_image_path && (
                                                                 <img
                                                                     src={URL.createObjectURL(banner.desktop_image_path)}
-                                                                    alt="Desktop"
-                                                                    className="img-thumbnail mt-2"
-                                                                    style={{ width: '150px' }}
+                                                                    alt="Desktop Preview"
+                                                                    className="img-fluid mt-3"
+                                                                    style={{ maxHeight: '100px' }}
                                                                 />
                                                             )}
-                                                            <div className="form-group mt-3">
-                                                                <label className="label_field">Alt Tag</label>
-                                                                <input
-                                                                    type="text"
-                                                                    name="alt_tag_desktop"
-                                                                    value={banner.alt_tag_desktop}
-                                                                    onChange={(e) => handleInputChange(index, e)}
-                                                                    className={`form-control ${validationErrors[`alt_tag_desktop`] ? 'is-invalid' : ''}`}
-                                                                />
-                                                                {validationErrors[`alt_tag_desktop`] && (
-                                                                    <div className="invalid-feedback">{validationErrors[`alt_tag_desktop`]}</div>
-                                                                )}
-                                                            </div>
                                                         </div>
                                                     </div>
+                                                    {/* Alt tag for Desktop Image */}
+                                                    <input
+                                                        type="text"
+                                                        name={`alt_tag_desktop`}
+                                                        value={banner.alt_tag_desktop}
+                                                        onChange={(e) => handleInputChange(index, e)}
+                                                        className={`form-control ${validationErrors[`alt_tag_desktop`] ? 'is-invalid' : ''}`}
+                                                        placeholder="Alt tag for desktop image"
+                                                    />
+                                                    {validationErrors[`alt_tag_desktop`] && (
+                                                        <div className="invalid-feedback">
+                                                            {validationErrors[`alt_tag_desktop`]}
+                                                        </div>
+                                                    )}
                                                 </div>
 
+                                                {/* Mobile Image */}
                                                 <div className="col-md-4">
                                                     <div className="card mb-3">
                                                         <div className="card-body">
@@ -275,28 +287,30 @@ export default function AddProjectBannerImage() {
                                                             {banner.mobile_image_path && (
                                                                 <img
                                                                     src={URL.createObjectURL(banner.mobile_image_path)}
-                                                                    alt="Mobile"
-                                                                    className="img-thumbnail mt-2"
-                                                                    style={{ width: '150px' }}
+                                                                    alt="Mobile Preview"
+                                                                    className="img-fluid mt-3"
+                                                                    style={{ maxHeight: '100px' }}
                                                                 />
                                                             )}
-                                                            <div className="form-group mt-3">
-                                                                <label className="label_field">Alt Tag</label>
-                                                                <input
-                                                                    type="text"
-                                                                    name="alt_tag_mobile"
-                                                                    value={banner.alt_tag_mobile}
-                                                                    onChange={(e) => handleInputChange(index, e)}
-                                                                    className={`form-control ${validationErrors[`alt_tag_mobile`] ? 'is-invalid' : ''}`}
-                                                                />
-                                                                {validationErrors[`alt_tag_mobile`] && (
-                                                                    <div className="invalid-feedback">{validationErrors[`alt_tag_mobile`]}</div>
-                                                                )}
-                                                            </div>
                                                         </div>
                                                     </div>
+                                                    {/* Alt tag for Mobile Image */}
+                                                    <input
+                                                        type="text"
+                                                        name={`alt_tag_mobile`}
+                                                        value={banner.alt_tag_mobile}
+                                                        onChange={(e) => handleInputChange(index, e)}
+                                                        className={`form-control ${validationErrors[`alt_tag_mobile`] ? 'is-invalid' : ''}`}
+                                                        placeholder="Alt tag for mobile image"
+                                                    />
+                                                    {validationErrors[`alt_tag_mobile`] && (
+                                                        <div className="invalid-feedback">
+                                                            {validationErrors[`alt_tag_mobile`]}
+                                                        </div>
+                                                    )}
                                                 </div>
 
+                                                {/* Tablet Image */}
                                                 <div className="col-md-4">
                                                     <div className="card mb-3">
                                                         <div className="card-body">
@@ -310,43 +324,44 @@ export default function AddProjectBannerImage() {
                                                             {banner.tablet_image_path && (
                                                                 <img
                                                                     src={URL.createObjectURL(banner.tablet_image_path)}
-                                                                    alt="Tablet"
-                                                                    className="img-thumbnail mt-2"
-                                                                    style={{ width: '150px' }}
+                                                                    alt="Tablet Preview"
+                                                                    className="img-fluid mt-3"
+                                                                    style={{ maxHeight: '100px' }}
                                                                 />
                                                             )}
-                                                            <div className="form-group mt-3">
-                                                                <label className="label_field">Alt Tag</label>
-                                                                <input
-                                                                    type="text"
-                                                                    name="alt_tag_tablet"
-                                                                    value={banner.alt_tag_tablet}
-                                                                    onChange={(e) => handleInputChange(index, e)}
-                                                                    className={`form-control ${validationErrors[`alt_tag_tablet`] ? 'is-invalid' : ''}`}
-                                                                />
-                                                                {validationErrors[`alt_tag_tablet`] && (
-                                                                    <div className="invalid-feedback">{validationErrors[`alt_tag_tablet`]}</div>
-                                                                )}
-                                                            </div>
                                                         </div>
                                                     </div>
+                                                    {/* Alt tag for Tablet Image */}
+                                                    <input
+                                                        type="text"
+                                                        name={`alt_tag_tablet`}
+                                                        value={banner.alt_tag_tablet}
+                                                        onChange={(e) => handleInputChange(index, e)}
+                                                        className={`form-control ${validationErrors[`alt_tag_tablet`] ? 'is-invalid' : ''}`}
+                                                        placeholder="Alt tag for tablet image"
+                                                    />
+                                                    {validationErrors[`alt_tag_tablet`] && (
+                                                        <div className="invalid-feedback">
+                                                            {validationErrors[`alt_tag_tablet`]}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}
+
+                                        {/* Submit Button */}
+                                        <div className="form-group text">
+                                            <button type="submit" className="main_bt" disabled={loading}>
+                                                {loading ? 'Submitting...' : 'Submit'}
+                                            </button>
+                                        </div>
+
+                                        {/* General validation error */}
                                         {validationErrors.general && (
-                                            <div className="alert alert-danger">
+                                            <div className="alert alert-danger text-center">
                                                 {validationErrors.general}
                                             </div>
                                         )}
-                                        <div className="form-group margin_0">
-                                            <button className="main_bt" type="submit" disabled={loading}>
-                                                {loading ? (
-                                                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                ) : (
-                                                    'Add Banner'
-                                                )}
-                                            </button>
-                                        </div>
                                     </form>
                                 </div>
                             </div>

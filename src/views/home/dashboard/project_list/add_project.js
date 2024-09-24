@@ -69,6 +69,7 @@ export default function AddProject() {
                     if (data.state) {
                         // Fetch cities for the state
                         const citiesData = await fetchCitiesByState(data.state);
+                       
                         setCities(citiesData);
                         
                         if (data.cityLocation) {

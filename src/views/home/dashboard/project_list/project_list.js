@@ -21,7 +21,6 @@ export default function ProjectList() {
 
     useEffect(() => {
         handlefetchProjects(id);
-        console.log(imageURL)
     }, [id]);
 
     useEffect(() => {

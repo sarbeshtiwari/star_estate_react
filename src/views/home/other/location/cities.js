@@ -115,13 +115,13 @@ export default function Cities() {
                                         
                                                 <div className="table-responsive">
                                                 {loading ? (
-    <div className="d-flex justify-content-center align-items-center">
-        <div className="spinner-border text-primary" role="status">
-            <span className="sr-only">Loading...</span>
-        </div>
-        <span className="ml-2">Loading...</span>
-    </div>
-) : ''} 
+                                                        <div className="d-flex justify-content-center align-items-center">
+                                                            <div className="spinner-border text-primary" role="status">
+                                                                <span className="sr-only">Loading...</span>
+                                                            </div>
+                                                            <span className="ml-2">Loading...</span>
+                                                        </div>
+                                                    ) : ''} 
                                                     <table className="table table-striped projects dataTable no-footer">
                                                     
                                                         <thead className="thead-dark">

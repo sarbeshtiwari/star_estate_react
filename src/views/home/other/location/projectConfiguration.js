@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../sidebar';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { deleteConfiguration, fetchProjectConfiguration, updateConfigurationStatus } from '../../../../api/location/configuration_api';
 import Swal from 'sweetalert2';
 
@@ -18,6 +18,8 @@ export default function ProjectConfiguration() {
         // Scroll to the top of the page when the component mounts
         window.scrollTo(0, 0);
     }, []);
+
+    const navigate = useNavigate();
 
     const loadProjectConfiguration = async (id) => {
         setLoading(true);
@@ -129,6 +131,12 @@ export default function ProjectConfiguration() {
                                     <div className="white_shd full margin_bottom_30">
                                         <div className="full graph_head">
                                             <Link to={`/${id}/addConfiguration/common`} className="btn btn-success btn-xs">Add Project Configuration</Link>
+                                            <button 
+                                    className="btn btn-primary btn-xs float-right"
+                                    onClick={() => navigate(-1)}
+                                >
+                                    Back
+                                </button>
                                         </div>
                                         <div className="full price_table padding_infor_info">
                                         {loading ? (

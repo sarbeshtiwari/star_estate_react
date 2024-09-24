@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from '../../sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import useAmenities from './custom/amenitiesform'; 
@@ -7,6 +7,11 @@ import { imageURL } from '../../../../imageURL';
 export default function Amenities() {
     const { amenities, error, handleUpdateStatus, handleDeleteAmenity, loading } = useAmenities();
     const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredAmenities = amenities.filter(item =>
+        (item.title || '').toLowerCase().includes(searchQuery.toLowerCase())        
+    ); 
 
     return (
         <div>
@@ -33,7 +38,9 @@ export default function Amenities() {
                                     Back
                                 </button> */}
                                     </div>
+                                    
                                     <div className="full price_table padding_infor_info">
+                                   
                                     {loading ? (
                                                             <div className="d-flex justify-content-center align-items-center">
                                                                 <div className="spinner-border text-primary" role="status">
@@ -42,6 +49,20 @@ export default function Amenities() {
                                                                 <span className="ml-2">Loading...</span>
                                                             </div>
                                                         ) : ''}
+                                                         <div id="subct_wrapper" className="dataTables_wrapper no-footer">
+                                    
+                                        <div id="pjdataTable_filter" className="dataTables_filter">
+                                                        <label>Search:
+                                                        <input
+                                                            type="search"
+                                                            className=""
+                                                            placeholder=""
+                                                            aria-controls="pjdataTable"
+                                                            value={searchQuery}
+                                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                                        />
+                                                        </label>
+                                                    </div></div>
                                         {error && <div className="alert alert-danger">{error}</div>}
                                         <div className="row">
                                             <div className="col-lg-12">
@@ -57,7 +78,7 @@ export default function Amenities() {
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {amenities.length > 0 ? amenities.map((amenity, index) => (
+                                                            {filteredAmenities.length > 0 ? filteredAmenities.map((amenity, index) => (
                                                                 <tr key={amenity._id}>
                                                                     <td>{index + 1}</td>
                                                                     <td>
