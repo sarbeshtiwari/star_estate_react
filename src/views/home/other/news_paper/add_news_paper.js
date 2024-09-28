@@ -139,7 +139,7 @@ export default function AddNewsPaper() {
         const errors = {};
         if (!formData.metaTitle) errors.metaTitle = 'Meta Title is required';
         if (!formData.metaKeyword) errors.metaKeyword = 'Meta Keyword is required';
-        if (!formData.metaDescription) errors.metaDescription = 'Meta Description is required';
+        if (!formData.metaDesc) errors.metaDesc = 'Meta Description is required';
         if (!formData.heading) errors.heading = 'Title is required';
         if (!formData.paperName) errors.paperName = 'Paper Name is required';
         if (!formData.newsDate) errors.newsDate = 'News Date is required';
@@ -261,13 +261,13 @@ export default function AddNewsPaper() {
                                                     <label className="label_field">Meta Description</label>
                                                     <textarea
                                                         rows={'5'}
-                                                        name="metaDescription"
-                                                        value={formData.metaDescription}
+                                                        name="metaDesc"
+                                                        value={formData.metaDesc}
                                                         onChange={handleInputChange}
-                                                        className={`form-control ${validationErrors.metaDescription ? 'is-invalid' : ''}`}
+                                                        className={`form-control ${validationErrors.metaDesc ? 'is-invalid' : ''}`}
                                                         />
-                                                        {validationErrors.metaDescription && (
-                                                                        <div className="invalid-feedback">{validationErrors.metaDescription}</div>
+                                                        {validationErrors.metaDesc && (
+                                                                        <div className="invalid-feedback">{validationErrors.metaDesc}</div>
                                                                     )}
                                                 </div>
                                                 <div className="col-md-6 form-group">

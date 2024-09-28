@@ -1,6 +1,8 @@
 import axios from 'axios';
 
 const API_BASE_URL = 'https://ecis.in/apis/star-estate-API/subCity';
+// const API_BASE_URL = 'http://localhost:4000/subCity';
+
 
 export const fetchSubCities = async (id) => {
     try {

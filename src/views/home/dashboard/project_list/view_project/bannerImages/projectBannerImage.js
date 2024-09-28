@@ -164,7 +164,7 @@ export default function ProjectHomeBanner() {
                                                                    
                                                                     <td>
                                                                 <img
-                                                                    src={banner.desktop_image_url ? `${banner.desktop_image_url}` : '/url/to/default/image'}
+                                                                    src={banner.desktop_image_url ? `${imageURL}/${banner.desktop_image_url}` : '/url/to/default/image'}
                                                                     // className="rounded-circle"
                                                                     style={{ objectFit: 'cover' }}
                                                                     alt={banner.alt_tag}
@@ -175,7 +175,7 @@ export default function ProjectHomeBanner() {
                                                             </td>
                                                             <td>
                                                                 <img
-                                                                    src={banner.tablet_image_url ? `${banner.tablet_image_url}` : '/url/to/default/image'}
+                                                                    src={banner.tablet_image_url ? `${imageURL}/${banner.tablet_image_url}` : '/url/to/default/image'}
                                                                     // className="rounded-circle"
                                                                     style={{ objectFit: 'cover' }}
                                                                     alt={banner.alt_tag}
@@ -186,7 +186,7 @@ export default function ProjectHomeBanner() {
                                                             </td>
                                                             <td>
                                                                 <img
-                                                                    src={banner.mobile_image_url ? `${banner.mobile_image_url}` : '/url/to/default/image'}
+                                                                    src={banner.mobile_image_url ? `${imageURL}/${banner.mobile_image_url}` : '/url/to/default/image'}
                                                                     // className="rounded-circle"
                                                                     style={{ objectFit: 'cover' }}
                                                                     alt={banner.alt_tag}

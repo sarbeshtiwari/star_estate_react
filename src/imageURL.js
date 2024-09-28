@@ -4,11 +4,15 @@ import axios from 'axios';
 
 export const imageURL = `https://res.cloudinary.com/dmf5snnz9/image/upload/v1724843870`;
 // src/axiosInstance.js
+// export const imageURL = `http://localhost:4000`;
+
 
 
 // Create an axios instance with default settings
 const axiosInstance = axios.create({
     baseURL: 'https://ecis.in/apis/star-estate-API', // Replace with your API base URL
+    // baseURL: 'http://localhost:4000', // Replace with your API base URL
+    
     // timeout: 10000, // Optional: Set a default timeout (in milliseconds)
     // headers: {
     //     'Content-Type': 'application/json',

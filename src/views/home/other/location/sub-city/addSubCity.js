@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import {fetchCityDetails, addSubCity, updateSubCity } from '../../../../../api/location/sub_city/sub_city_api';
 import { fetchCities } from '../../../../../api/location/location_api';
 import Swal from 'sweetalert2';
+import { imageURL } from '../../../../../imageURL';
 
 export default function AddSubCity() {
     const [cities, setCities] = useState([]);
@@ -61,7 +62,7 @@ export default function AddSubCity() {
                             image: specificDataItem.image ? specificDataItem.image : null
                         })
                         if (specificDataItem.image) {
-                            setPreviewUrl(`${specificDataItem.image}`);
+                            setPreviewUrl(`${imageURL}/${specificDataItem.image}`);
                             
                         }
                     }

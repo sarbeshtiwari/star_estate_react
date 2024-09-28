@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../../sidebar';
 import { fetchCityDetails, addCity, updateCity } from '../../../../api/location/location_api';
 import Swal from 'sweetalert2';
+import { imageURL } from '../../../../imageURL';
 
 export default function AddLocation() {
     const navigate = useNavigate();
@@ -60,7 +61,7 @@ export default function AddLocation() {
                                 image: specificDataItem.image ? specificDataItem.image : null
                             })
                             if (specificDataItem.image) {
-                                setPreviewUrl(`${specificDataItem.image}`);
+                                setPreviewUrl(`${imageURL}/${specificDataItem.image}`);
                                 
                             }
                             
